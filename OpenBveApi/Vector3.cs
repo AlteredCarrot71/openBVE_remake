@@ -1,6 +1,4 @@
-﻿#pragma warning disable 0660, 0661
-
-using System;
+﻿using System;
 
 namespace OpenBveApi.Math {
 	/// <summary>Represents a three-dimensional vector.</summary>

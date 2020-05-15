@@ -46,7 +46,6 @@ namespace OpenBve {
 				this.Size = new Size(Interface.CurrentOptions.MainMenuWidth, Interface.CurrentOptions.MainMenuHeight);
 				this.CenterToScreen();
 			}
-			#pragma warning disable 0162 // Unreachable code
 			if (Program.IsDevelopmentVersion) {
 				labelVersion.Text = "   v" + Application.ProductVersion + " (development)";
 				labelVersion.Location = new Point(0, labelInfoTop.Bottom);
@@ -57,7 +56,6 @@ namespace OpenBve {
 			} else {
 				labelVersion.Text = "v" + Application.ProductVersion;
 			}
-			#pragma warning restore 0162 // Unreachable code
 			System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
 			// form icon
 			try {
@@ -968,7 +966,6 @@ namespace OpenBve {
 						MessageBox.Show(Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						Found = true;
 					}
-					#pragma warning disable 0162 // Unreachable code
 					if (Program.IsDevelopmentVersion) {
 						if (IsNewVersionHigher(Application.ProductVersion, DevelopmentVersion)) {
 							string Message = Interface.GetInterfaceString("panel_updates_new") + DevelopmentText.ToString().Trim();
@@ -978,7 +975,6 @@ namespace OpenBve {
 							Found = true;
 						}
 					}
-					#pragma warning restore 0162 // Unreachable code
 					if (!Found) {
 						string Message = Interface.GetInterfaceString("panel_updates_old");
 						MessageBox.Show(Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
