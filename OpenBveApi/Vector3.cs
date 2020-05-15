@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OpenBveApi.Math {
+namespace OpenBveApi.Math 
+{
 	/// <summary>Represents a three-dimensional vector.</summary>
-	public struct Vector3 {
-		
+	public struct Vector3 
+	{
 		// --- members ---
-		
 		/// <summary>The x-coordinate.</summary>
 		public double X;
 		
@@ -15,9 +15,7 @@ namespace OpenBveApi.Math {
 		/// <summary>The z-coordinate.</summary>
 		public double Z;
 		
-		
 		// --- constructors ---
-		
 		/// <summary>Creates a new three-dimensional vector.</summary>
 		/// <param name="x">The x-coordinate.</param>
 		/// <param name="y">The y-coordinate.</param>
@@ -28,9 +26,7 @@ namespace OpenBveApi.Math {
 			this.Z = z;
 		}
 		
-		
 		// --- arithmetic operators ---
-		
 		/// <summary>Adds two vectors.</summary>
 		/// <param name="a">The first vector.</param>
 		/// <param name="b">The second vector.</param>
@@ -149,9 +145,7 @@ namespace OpenBveApi.Math {
 			}
 		}
 
-		
 		// --- comparison operators ---
-		
 		/// <summary>Checks whether the two specified vectors are equal.</summary>
 		/// <param name="a">The first vector.</param>
 		/// <param name="b">The second vector.</param>
@@ -174,9 +168,7 @@ namespace OpenBveApi.Math {
 			return false;
 		}
 		
-		
 		// --- instance functions ---
-		
 		/// <summary>Normalizes the vector.</summary>
 		/// <exception cref="System.DivideByZeroException">Raised when the vector is a null vector.</exception>
 		public void Normalize() {
@@ -396,29 +388,38 @@ namespace OpenBveApi.Math {
 			return System.Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z);
 		}
 
-		
 		// --- read-only fields ---
-		
 		/// <summary>Represents a null vector.</summary>
-		public static readonly Vector3 Null = new Vector3(0.0, 0.0, 0.0);
+		public static Vector3 Null = new Vector3(0.0, 0.0, 0.0);
 		
 		/// <summary>Represents a vector pointing left.</summary>
-		public static readonly Vector3 Left = new Vector3(-1.0, 0.0, 0.0);
+		public static Vector3 Left = new Vector3(-1.0, 0.0, 0.0);
 		
 		/// <summary>Represents a vector pointing right.</summary>
-		public static readonly Vector3 Right = new Vector3(1.0, 0.0, 0.0);
+		public static Vector3 Right = new Vector3(1.0, 0.0, 0.0);
 		
 		/// <summary>Represents a vector pointing up.</summary>
-		public static readonly Vector3 Up = new Vector3(0.0, -1.0, 0.0);
+		public static Vector3 Up = new Vector3(0.0, -1.0, 0.0);
 		
 		/// <summary>Represents a vector pointing down.</summary>
-		public static readonly Vector3 Down = new Vector3(0.0, 1.0, 0.0);
+		public static Vector3 Down = new Vector3(0.0, 1.0, 0.0);
 		
 		/// <summary>Represents a vector pointing up.</summary>
-		public static readonly Vector3 Backward = new Vector3(0.0, 0.0, -1.0);
+		public static Vector3 Backward = new Vector3(0.0, 0.0, -1.0);
 		
 		/// <summary>Represents a vector pointing down.</summary>
-		public static readonly Vector3 Forward = new Vector3(0.0, 0.0, 1.0);
-		
+		public static Vector3 Forward = new Vector3(0.0, 0.0, 1.0);
+
+		/// <summary>Check whether the specified vectors are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

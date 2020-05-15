@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OpenBveApi.Math {
+namespace OpenBveApi.Math 
+{
 	/// <summary>Represents an orientation in three-dimensional space.</summary>
-	public struct Orientation3 {
-		
+	public struct Orientation3 
+	{
 		// --- members ---
-		
 		/// <summary>The vector pointing right.</summary>
 		public Vector3 X;
 		
@@ -15,9 +15,7 @@ namespace OpenBveApi.Math {
 		/// <summary>The vector pointing forward.</summary>
 		public Vector3 Z;
 		
-		
 		// --- constructors ---
-		
 		/// <summary>Creates a new orientation in three-dimensional space.</summary>
 		/// <param name="x">The vector pointing right.</param>
 		/// <param name="y">The vector pointing up.</param>
@@ -28,14 +26,35 @@ namespace OpenBveApi.Math {
 			this.Z = z;
 		}
 		
-		
 		// --- read-only fields ---
-		
 		/// <summary>Represents a null orientation.</summary>
 		public static readonly Orientation3 Null = new Orientation3(Vector3.Null, Vector3.Null, Vector3.Null);
 		
 		/// <summary>Represents the default orientation with X = {1, 0, 0}, Y = {0, 1, 0} and Z = {0, 0, 1}.</summary>
 		public static readonly Orientation3 Default = new Orientation3(Vector3.Right, Vector3.Up, Vector3.Forward);
-		
+
+		/// <summary>Check whether the specified orientations are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Check whether the specified orientations are equal.</summary>
+		public static bool operator ==(Orientation3 left, Orientation3 right)
+		{
+			return left.Equals(right);
+		}
+
+		/// <summary>Check whether the specified orientations are unequal.</summary>
+		public static bool operator !=(Orientation3 left, Orientation3 right)
+		{
+			return !(left == right);
+		}
 	}
 }

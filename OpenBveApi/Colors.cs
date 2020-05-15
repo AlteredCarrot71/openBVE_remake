@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace OpenBveApi.Colors {
-	
+namespace OpenBveApi.Colors 
+{
 	// --- color 24 ---
-	
 	/// <summary>Represents a 24-bit color with red, green and blue channels at 8 bits each.</summary>
-	public struct Color24 {
+	public struct Color24 
+	{
 		// --- members ---
 		/// <summary>The red component.</summary>
 		public byte R;
@@ -55,13 +55,24 @@ namespace OpenBveApi.Colors {
 		public static readonly Color24 Yellow = new Color24(255, 255, 0);
 		/// <summary>Represents a white color.</summary>
 		public static readonly Color24 White = new Color24(255, 255, 255);
+
+		/// <summary>Checks whether two colors are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- color 32 ---
-	
 	/// <summary>Represents a 32-bit color with red, green, blue and alpha channels at 8 bits each.</summary>
-	public struct Color32 {
+	public struct Color32 
+	{
 		// --- members ---
 		/// <summary>The red component.</summary>
 		public byte R;
@@ -146,13 +157,24 @@ namespace OpenBveApi.Colors {
 		public static readonly Color32 White = new Color32(255, 255, 255);
 		/// <summary>Represents a transparent black color.</summary>
 		public static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
+
+		/// <summary>Checks whether two colors are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- color 96 ---
-
 	/// <summary>Represents a 96-bit color with red, green and blue channels at 32 bits each.</summary>
-	public struct Color96 {
+	public struct Color96 
+	{
 		// --- members ---
 		/// <summary>The red component.</summary>
 		public float R;
@@ -202,13 +224,24 @@ namespace OpenBveApi.Colors {
 		public static readonly Color96 Yellow = new Color96(1.0f, 1.0f, 0.0f);
 		/// <summary>Represents a white color.</summary>
 		public static readonly Color96 White = new Color96(1.0f, 1.0f, 1.0f);
+
+		/// <summary>Checks whether two colors are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- color 128 ---
-	
 	/// <summary>Represents a 128-bit color with red, green, blue and alpha channels at 32 bits each.</summary>
-	public struct Color128 {
+	public struct Color128 
+	{
 		// --- members ---
 		/// <summary>The red component.</summary>
 		public float R;
@@ -293,6 +326,17 @@ namespace OpenBveApi.Colors {
 		public static readonly Color128 White = new Color128(1.0f, 1.0f, 1.0f);
 		/// <summary>Represents a transparent black color.</summary>
 		public static readonly Color128 Transparent = new Color128(0.0f, 0.0f, 0.0f, 0.0f);
-	}
 
+		/// <summary>Checks whether two colors are equal.</summary>
+		public override bool Equals(object obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Returns the hash code for this instance.</summary>
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

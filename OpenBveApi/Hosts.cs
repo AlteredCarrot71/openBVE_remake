@@ -1,12 +1,12 @@
-﻿using System;
-using OpenBveApi.Objects;
+﻿using OpenBveApi.Objects;
 using OpenBveApi.Sounds;
 using OpenBveApi.Textures;
 
-namespace OpenBveApi.Hosts {
-
+namespace OpenBveApi.Hosts 
+{
 	/// <summary>Represents the type of problem that is reported to the host.</summary>
-	public enum ProblemType {
+	public enum ProblemType 
+	{
 		/// <summary>Indicates that a file could not be found.</summary>
 		FileNotFound = 1,
 		/// <summary>Indicates that a directory could not be found.</summary>
@@ -22,7 +22,8 @@ namespace OpenBveApi.Hosts {
 	}
 	
 	/// <summary>Represents the host application and functionality it exposes.</summary>
-	public abstract class HostInterface {
+	public abstract class HostInterface 
+	{
 
 		/// <summary>Reports a problem to the host application.</summary>
 		/// <param name="type">The type of problem that is reported.</param>
@@ -150,6 +151,5 @@ namespace OpenBveApi.Hosts {
 		public virtual bool PlaceObject(Objects.AbstractObject obj, Math.Vector3 position, Math.Orientation3 orientation) {
 			return false;
 		}
-
 	}
 }
