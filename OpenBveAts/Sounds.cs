@@ -1,11 +1,10 @@
-﻿using System;
-using OpenBveApi.Runtime;
+﻿using OpenBveApi.Runtime;
 
-namespace Plugin {
-	internal class Sounds {
-		
+namespace Plugin 
+{
+	internal class Sounds 
+	{
 		// --- classes ---
-		
 		/// <summary>Represents a looping sound.</summary>
 		internal class Sound {
 			internal int Index;
@@ -20,25 +19,19 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- members ---
-		
-		private PlaySoundDelegate PlaySound;
-		
+		private readonly PlaySoundDelegate PlaySound;
 		
 		// --- looping sounds ---
-		
 		internal Sound AtsBell;
 
 		internal Sound AtsChime;
 		
 		internal Sound Eb;
 
-		private Sound[] LoopingSounds;
-		
+		private readonly Sound[] LoopingSounds;
 		
 		// --- play once sounds ---
-		
 		internal Sound AtsPBell;
 		
 		internal Sound AtcBell;
@@ -47,11 +40,9 @@ namespace Plugin {
 		
 		internal Sound ToAtc;
 		
-		private Sound[] PlayOnceSounds;
-		
+		private readonly Sound[] PlayOnceSounds;
 		
 		// --- constructors ---
-		
 		/// <summary>Creates a new instance of sounds.</summary>
 		/// <param name="playSound">The delegate to the function to play sounds.</param>
 		internal Sounds(PlaySoundDelegate playSound) {
@@ -69,9 +60,7 @@ namespace Plugin {
 			this.PlayOnceSounds = new Sound[] { this.AtsPBell, this.AtcBell, this.ToAts, this.ToAtc };
 		}
 
-		
 		// --- functions ---
-		
 		/// <summary>Is called every frame.</summary>
 		/// <param name="data">The data.</param>
 		internal void Elapse(ElapseData data) {
@@ -94,6 +83,5 @@ namespace Plugin {
 				}
 			}
 		}
-		
 	}
 }

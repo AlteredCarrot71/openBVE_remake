@@ -5,23 +5,25 @@ using System.IO;
 using System.Text;
 using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents a train that is simulated by this plugin.</summary>
-	internal class Train {
-		
+	internal class Train 
+	{
 		// --- classes and enumerations ---
-		
 		/// <summary>Represents handles that can only be read from.</summary>
-		internal class ReadOnlyHandles {
+		internal class ReadOnlyHandles 
+		{
 			// --- members ---
 			/// <summary>The reverser position.</summary>
-			private int MyReverser;
+			private readonly int MyReverser;
 			/// <summary>The power notch.</summary>
-			private int MyPowerNotch;
+			private readonly int MyPowerNotch;
 			/// <summary>The brake notch.</summary>
-			private int MyBrakeNotch;
+			private readonly int MyBrakeNotch;
 			/// <summary>Whether the const speed system is enabled.</summary>
-			private bool MyConstSpeed;
+			private readonly bool MyConstSpeed;
+
 			// --- properties ---
 			/// <summary>Gets or sets the reverser position.</summary>
 			internal int Reverser {
@@ -58,15 +60,11 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- plugin ---
-		
 		/// <summary>Whether the plugin is currently initializing. This happens in-between Initialize and Elapse calls, for example when jumping to a station from the menu.</summary>
 		internal bool PluginInitializing;
 		
-		
 		// --- train ---
-
 		/// <summary>The train specifications.</summary>
 		internal VehicleSpecs Specs;
 		
@@ -79,24 +77,18 @@ namespace Plugin {
 		/// <summary>The current state of the doors.</summary>
 		internal DoorStates Doors;
 
-		
 		// --- panel and sound ---
-		
 		/// <summary>The panel variables.</summary>
 		internal int[] Panel;
 
 		/// <summary>The sounds used on this train.</summary>
 		internal Sounds Sounds;
 		
-		
 		// --- AI ---
-		
 		/// <summary>The AI component that drives the train.</summary>
 		internal AI AI;
 		
-		
 		// --- devices ---
-		
 		/// <summary>The ATS-Sx device, or a null reference if not installed.</summary>
 		internal AtsSx AtsSx;
 		
@@ -112,9 +104,7 @@ namespace Plugin {
 		/// <summary>A list of all the devices installed on this train. The devices must be in the order EB, ATC, ATS-P and ATS-Sx.</summary>
 		internal Device[] Devices;
 		
-		
 		// --- constructors ---
-
 		/// <summary>Creates a new train without any devices installed.</summary>
 		/// <param name="panel">The array of panel variables.</param>
 		/// <param name="playSound">The delegate to play sounds.</param>
@@ -129,9 +119,7 @@ namespace Plugin {
 			this.AI = new AI(this);
 		}
 		
-		
 		// --- functions ---
-		
 		/// <summary>Sets up the devices from the specified train.dat file.</summary>
 		/// <param name="file">The train.dat file.</param>
 		/// <returns>Whether loading the train.dat file was successful.</returns>
@@ -301,6 +289,5 @@ namespace Plugin {
 				device.SetBeacon(beacon);
 			}
 		}
-		
 	}
 }

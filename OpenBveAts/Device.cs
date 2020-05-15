@@ -1,10 +1,10 @@
-﻿using System;
-using OpenBveApi.Runtime;
+﻿using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents an abstract device.</summary>
-	internal abstract class Device {
-		
+	internal abstract class Device 
+	{
 		/// <summary>Is called when the device should initialize.</summary>
 		/// <param name="mode">The initialization mode.</param>
 		internal abstract void Initialize(InitializationModes mode);
@@ -45,6 +45,5 @@ namespace Plugin {
 		/// <summary>Is called when a beacon is passed.</summary>
 		/// <param name="beacon">The beacon data.</param>
 		internal abstract void SetBeacon(BeaconData beacon);
-
 	}
 }

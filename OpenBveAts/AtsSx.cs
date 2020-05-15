@@ -1,14 +1,15 @@
 ﻿using System;
 using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents ATS-Sx.</summary>
-	internal class AtsSx : Device {
-		
+	internal class AtsSx : Device 
+	{
 		// --- enumerations ---
-		
 		/// <summary>Represents different states of ATS-Sx.</summary>
-		internal enum States {
+		internal enum States 
+		{
 			/// <summary>The system is disabled.</summary>
 			Disabled = 0,
 			/// <summary>The system is enabled, but currently suppressed. This will change to States.Initializing once the emergency brakes are released.</summary>
@@ -25,11 +26,9 @@ namespace Plugin {
 			Emergency = 6
 		}
 		
-		
 		// --- members ---
-		
 		/// <summary>The underlying train.</summary>
-		private Train Train;
+		private readonly Train Train;
 		
 		/// <summary>The current state of the system.</summary>
 		internal States State;
@@ -48,9 +47,7 @@ namespace Plugin {
 		/// <summary>The location of the farthest known red signal, or System.Double.MinValue.</summary>
 		internal double RedSignalLocation;
 		
-		
 		// --- parameters ---
-		
 		/// <summary>The duration of the alarm until the emergency brakes are applied.</summary>
 		internal readonly double DurationOfAlarm = 5.0;
 		
@@ -60,9 +57,7 @@ namespace Plugin {
 		/// <summary>The duration of the Sx speed check.</summary>
 		internal readonly double DurationOfSpeedCheck = 0.5;
 		
-		
 		// --- constructors ---
-		
 		/// <summary>Creates a new instance of this system with default parameters.</summary>
 		/// <param name="train">The train.</param>
 		internal AtsSx(Train train) {
@@ -73,9 +68,7 @@ namespace Plugin {
 			this.RedSignalLocation = 0.0;
 		}
 		
-		
 		// --- inherited functions ---
-		
 		/// <summary>Is called when the system should initialize.</summary>
 		/// <param name="mode">The initialization mode.</param>
 		internal override void Initialize(InitializationModes mode) {
@@ -259,9 +252,7 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- private functions ---
-		
 		/// <summary>Updates the location of the farthest known red signal from the specified beacon.</summary>
 		/// <param name="beacon">The beacon that holds the distance to a known red signal.</param>
 		private void UpdateRedSignalLocation(BeaconData beacon) {
@@ -272,6 +263,5 @@ namespace Plugin {
 				}
 			}
 		}
-		
 	}
 }

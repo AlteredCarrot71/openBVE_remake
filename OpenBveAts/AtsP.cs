@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents ATS-P.</summary>
-	internal class AtsP : Device {
-		
+	internal class AtsP : Device 
+	{
 		// --- enumerations ---
-		
 		/// <summary>Represents different states of ATS-P.</summary>
-		internal enum States {
+		internal enum States 
+		{
 			/// <summary>The system is disabled.</summary>
 			Disabled = 0,
 			/// <summary>The system is enabled, but currently suppressed. This will change to States.Initializing once the emergency brakes are released.</summary>
@@ -29,12 +30,11 @@ namespace Plugin {
 			/// <summary>The system applies the emergency brakes due to an immediate stop command.</summary>
 			Emergency = 8
 		}
-
 		
 		// --- pattern ---
-		
 		/// <summary>Represents a pattern.</summary>
-		private class Pattern {
+		private class Pattern 
+		{
 			// --- members ---
 			/// <summary>The underlying ATS-P device.</summary>
 			internal AtsP Device;
@@ -59,6 +59,7 @@ namespace Plugin {
 				this.TargetSpeed = double.MaxValue;
 				this.Gradient = 0.0;
 			}
+
 			// --- functions ---
 			/// <summary>Updates the pattern.</summary>
 			/// <param name="system">The current ATS-P system.</param>
@@ -86,9 +87,7 @@ namespace Plugin {
 							this.WarningPattern = Math.Max(Math.Sqrt(sqrtTerm) - deceleration * this.Device.ReactionDelay, this.TargetSpeed - this.Device.PatternSpeedDifference);
 						}
 					}
-					/*
-					 * Calculate the brake pattern.
-					 * */
+					// Calculate the brake pattern.
 					{
 						double sqrtTerm = 2.0 * deceleration * distance + this.TargetSpeed * this.TargetSpeed;
 						if (sqrtTerm <= 0.0) {
@@ -103,12 +102,14 @@ namespace Plugin {
 					
 				}
 			}
+
 			/// <summary>Sets the position of the red signal.</summary>
 			/// <param name="distance">The position.</param>
 			internal void SetSignal(double position) {
 				this.Position = position;
 				this.TargetSpeed = 0.0;
 			}
+			
 			/// <summary>Sets a speed limit and the position of the speed limit.</summary>
 			/// <param name="speed">The speed.</param>
 			/// <param name="distance">The position.</param>
@@ -116,11 +117,13 @@ namespace Plugin {
 				this.Position = position;
 				this.TargetSpeed = speed;
 			}
+			
 			/// <summary>Sets the gradient.</summary>
 			/// <param name="gradient">The gradient.</param>
 			internal void SetGradient(double gradient) {
 				this.Gradient = gradient;
 			}
+			
 			/// <summary>Clears the pattern.</summary>
 			internal void Clear() {
 				this.Position = double.MaxValue;
@@ -133,7 +136,8 @@ namespace Plugin {
 		
 		// --- compatibility limit ---
 		/// <summary>Represents a speed limit at a specific track position.</summary>
-		private struct CompatibilityLimit {
+		private struct CompatibilityLimit 
+		{
 			// --- members ---
 			/// <summary>The speed limit.</summary>
 			internal double Limit;
@@ -149,11 +153,9 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- members ---
-		
 		/// <summary>The underlying train.</summary>
-		private Train Train;
+		private readonly Train Train;
 		
 		/// <summary>The current state of the system.</summary>
 		internal States State;
@@ -171,29 +173,25 @@ namespace Plugin {
 		private double Position;
 		
 		/// <summary>A list of all compatibility temporary speed limits in the route.</summary>
-		private List<CompatibilityLimit> CompatibilityLimits;
+		private readonly List<CompatibilityLimit> CompatibilityLimits;
 		
 		/// <summary>The element in the CompatibilityLimits list that holds the last speed limit.</summary>
 		private int CompatibilityLimitPointer;
 		
-		
 		// --- patterns ---
-		
 		/// <summary>The signal pattern.</summary>
-		private Pattern SignalPattern;
+		private readonly Pattern SignalPattern;
 		
 		/// <summary>The compatibility temporary pattern.</summary>
-		private Pattern CompatibilityTemporaryPattern;
+		private readonly Pattern CompatibilityTemporaryPattern;
 
 		/// <summary>The compatibility permanent pattern.</summary>
-		private Pattern CompatibilityPermanentPattern;
+		private readonly Pattern CompatibilityPermanentPattern;
 
 		/// <summary>A list of all patterns.</summary>
-		private Pattern[] Patterns;
-		
+		private readonly Pattern[] Patterns;
 		
 		// --- parameters ---
-
 		/// <summary>The duration of the initialization process.</summary>
 		internal readonly double DurationOfInitialization = 3.0;
 
@@ -229,16 +227,16 @@ namespace Plugin {
 			this.SignalPattern = new Pattern(this);
 			this.CompatibilityTemporaryPattern = new Pattern(this);
 			this.CompatibilityPermanentPattern = new Pattern(this);
-			List<Pattern> patterns = new List<Pattern>();
-			patterns.Add(this.SignalPattern);
-			patterns.Add(this.CompatibilityTemporaryPattern);
-			patterns.Add(this.CompatibilityPermanentPattern);
+			List<Pattern> patterns = new List<Pattern>
+			{
+				this.SignalPattern,
+				this.CompatibilityTemporaryPattern,
+				this.CompatibilityPermanentPattern
+			};
 			this.Patterns = patterns.ToArray();
 		}
 		
-		
 		// --- functions ---
-		
 		/// <summary>Changes to standby mode and continues in ATS-Sx.</summary>
 		private void SwitchToSx() {
 			if (this.Train.AtsSx != null) {
@@ -300,9 +298,7 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- inherited functions ---
-		
 		/// <summary>Is called when the system should initialize.</summary>
 		/// <param name="mode">The initialization mode.</param>
 		internal override void Initialize(InitializationModes mode) {
@@ -555,6 +551,5 @@ namespace Plugin {
 					break;
 			}
 		}
-
 	}
 }

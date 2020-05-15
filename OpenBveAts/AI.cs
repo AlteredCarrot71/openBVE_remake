@@ -2,28 +2,25 @@
 using OpenBveApi.Runtime;
 
 namespace Plugin {
-	internal class AI {
-		
+	internal class AI 
+	{
 		// --- members ---
-		
 		/// <summary>The underlying train.</summary>
-		private Train Train;
-		
+		private readonly Train Train;
 		
 		// --- constructors ---
-		
 		/// <summary>Creates a new AI.</summary>
 		/// <param name="train">The underlying train.</param>
-		internal AI(Train train) {
+		internal AI(Train train) 
+		{
 			this.Train = train;
 		}
 		
-		
 		// --- functions ---
-		
 		/// <summary>Is called when the plugin should perform the AI.</summary>
 		/// <param name="data">The AI data.</param>
-		internal void Perform(AIData data) {
+		internal void Perform(AIData data) 
+		{
 			// --- ats-sx ---
 			if (this.Train.AtsSx != null) {
 				if (this.Train.AtsSx.State == AtsSx.States.Disabled) {
@@ -198,6 +195,5 @@ namespace Plugin {
 				}
 			}
 		}
-		
 	}
 }

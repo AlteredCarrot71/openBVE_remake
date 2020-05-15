@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents ATC.</summary>
-	internal class Atc : Device {
-		
-		
+	internal class Atc : Device 
+	{
 		// --- enumerations and structures ---
-		
 		/// <summary>Represents different states of ATC.</summary>
-		internal enum States {
+		internal enum States 
+		{
 			/// <summary>The system is disabled.</summary>
 			Disabled = 0,
 			/// <summary>The system is enabled, but currently suppressed. This will change to States.Ats once the emergency brakes are released.</summary>
@@ -26,7 +26,8 @@ namespace Plugin {
 		}
 		
 		/// <summary>Represents different states of the compatibility ATC track.</summary>
-		private enum CompatibilityStates {
+		private enum CompatibilityStates 
+		{
 			/// <summary>ATC is not available.</summary>
 			Ats = 0,
 			/// <summary>ATC is available. The ToAtc reminder plays when the train has come to a stop.</summary>
@@ -38,7 +39,8 @@ namespace Plugin {
 		}
 		
 		/// <summary>Represents a speed limit at a specific track position.</summary>
-		private struct CompatibilityLimit {
+		private struct CompatibilityLimit 
+		{
 			// --- members ---
 			/// <summary>The speed limit.</summary>
 			internal double Limit;
@@ -54,11 +56,9 @@ namespace Plugin {
 			}
 		}
 		
-		
 		// --- members ---
-		
 		/// <summary>The underlying train.</summary>
-		private Train Train;
+		private readonly Train Train;
 		
 		/// <summary>The current state of the system.</summary>
 		internal States State;
@@ -73,7 +73,7 @@ namespace Plugin {
 		private CompatibilityStates CompatibilityState;
 		
 		/// <summary>A list of all ATC speed limits in the route.</summary>
-		private List<CompatibilityLimit> CompatibilityLimits;
+		private readonly List<CompatibilityLimit> CompatibilityLimits;
 		
 		/// <summary>The element in the CompatibilityLimits list that holds the last encountered speed limit.</summary>
 		private int CompatibilityLimitPointer;
@@ -81,11 +81,9 @@ namespace Plugin {
 		/// <summary>The state of the preceding train, or a null reference.</summary>
 		private PrecedingVehicleState PrecedingTrain;
 		
-		
 		// --- parameters ---
-		
 		/// <summary>Whether to automatically switch between ATS and ATC.</summary>
-		private bool AutomaticSwitch = false;
+		private readonly bool AutomaticSwitch = false;
 		
 		/// <summary>The permitted compatibility ATC speeds, which are X, 0, 15, 25, 45, 65, 75, 90, 100, 110 and 120.</summary>
 		private readonly double[] CompatibilitySpeeds = new double[] {
@@ -103,9 +101,7 @@ namespace Plugin {
 			120.0 / 3.6
 		};
 		
-		
 		// --- constructors ---
-		
 		/// <summary>Creates a new instance of this system.</summary>
 		/// <param name="train">The train.</param>
 		/// <param name="automaticSwitch">Whether to switch automatically between ATS to ATC.</param>
@@ -116,10 +112,8 @@ namespace Plugin {
 			this.CompatibilityLimits = new List<CompatibilityLimit>();
 			this.AutomaticSwitch = automaticSwitch;
 		}
-		
-		
+				
 		// --- functions ---
-		
 		/// <summary>Gets the current ATC speed, or -1 if ATC is not available. In emergency operation mode, returns 15 km/h.</summary>
 		/// <returns>The ATC speed, or -1 if ATC is not available.</returns>
 		private double GetCurrentAtcSpeed() {
@@ -243,9 +237,7 @@ namespace Plugin {
 			return false;
 		}
 		
-		
 		// --- inherited functions ---
-		
 		/// <summary>Is called when the system should initialize.</summary>
 		/// <param name="mode">The initialization mode.</param>
 		internal override void Initialize(InitializationModes mode) {
@@ -432,6 +424,5 @@ namespace Plugin {
 					break;
 			}
 		}
-
 	}
 }

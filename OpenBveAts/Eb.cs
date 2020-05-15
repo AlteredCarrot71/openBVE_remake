@@ -1,21 +1,19 @@
 ﻿using System;
 using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>Represents the EB device.</summary>
-	internal class Eb : Device {
-		
-		// --- members ---
-		
+	internal class Eb : Device 
+	{
+		// --- members ---		
 		/// <summary>The underlying train.</summary>
-		private Train Train;
+		private readonly Train Train;
 		
 		/// <summary>The counter. This starts at zero and counts up until the EbAlarm or EbBrake constants have been reached.</summary>
 		internal double Counter;
 		
-
 		// --- constants ---
-		
 		/// <summary>The time after which the bell is sound.</summary>
 		internal readonly double TimeUntilBell = 60.0;
 		
@@ -25,9 +23,7 @@ namespace Plugin {
 		/// <summary>The speed beyond which the EB is active.</summary>
 		internal readonly double SpeedThreshold = 5.0 / 3.6;
 		
-		
 		// --- constructors ---
-		
 		/// <summary>Creates a new instance of this system.</summary>
 		/// <param name="train">The train.</param>
 		internal Eb(Train train) {
@@ -35,9 +31,7 @@ namespace Plugin {
 			this.Counter = 0.0;
 		}
 		
-		
 		// --- inherited functions ---
-		
 		/// <summary>Is called when the system should initialize.</summary>
 		/// <param name="mode">The initialization mode.</param>
 		internal override void Initialize(InitializationModes mode) {
@@ -147,6 +141,5 @@ namespace Plugin {
 		/// <param name="beacon">The beacon data.</param>
 		internal override void SetBeacon(BeaconData beacon) {
 		}
-		
 	}
 }

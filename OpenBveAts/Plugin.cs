@@ -1,19 +1,15 @@
-﻿using System;
-using System.IO;
-using OpenBveApi.Runtime;
+﻿using OpenBveApi.Runtime;
 
-namespace Plugin {
+namespace Plugin 
+{
 	/// <summary>The interface to be implemented by the plugin.</summary>
-	public class Plugin : IRuntime {
-
+	public class Plugin : IRuntime 
+	{
 		// --- members ---
-		
 		/// <summary>The train that is simulated by this plugin.</summary>
 		private Train Train = null;
 		
-		
 		// --- interface functions ---
-		
 		/// <summary>Is called when the plugin is loaded.</summary>
 		/// <param name="properties">The properties supplied to the plugin on loading.</param>
 		/// <returns>Whether the plugin was loaded successfully.</returns>
@@ -27,7 +23,9 @@ namespace Plugin {
 					this.Train.AtsSx = new AtsSx(this.Train);
 					this.Train.Devices = new Device[] { this.Train.AtsSx };
 				}
-			} catch {
+			}
+			catch
+			{
 				this.Train.AtsSx = new AtsSx(this.Train);
 				this.Train.Devices = new Device[] { this.Train.AtsSx };
 			}
@@ -118,6 +116,5 @@ namespace Plugin {
 		public void PerformAI(AIData data) {
 			this.Train.AI.Perform(data);
 		}
-		
 	}
 }
