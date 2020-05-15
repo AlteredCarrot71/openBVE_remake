@@ -1,18 +1,19 @@
 ﻿using System;
 
-namespace OpenBveApi.Sounds {
-	
+namespace OpenBveApi.Sounds 
+{
 	// --- structures ---
-	
 	/// <summary>Represents a sound.</summary>
-	public class Sound {
+	public class Sound 
+	{
 		// --- members ---
 		/// <summary>The number of samples per second.</summary>
-		private int MySampleRate;
+		private readonly int MySampleRate;
 		/// <summary>The number of bits per sample. Allowed values are 8 or 16.</summary>
-		private int MyBitsPerSample;
+		private readonly int MyBitsPerSample;
 		/// <summary>The PCM sound data per channel. For 8 bits per sample, samples are unsigned from 0 to 255. For 16 bits per sample, samples are signed from -32768 to 32767 and in little endian byte order.</summary>
-		private byte[][] MyBytes;
+		private readonly byte[][] MyBytes;
+	
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="sampleRate">The number of samples per second.</param>
@@ -82,8 +83,8 @@ namespace OpenBveApi.Sounds {
 		/// <returns>Whether the two sounds are equal.</returns>
 		public static bool operator ==(Sound a, Sound b) {
 			if (object.ReferenceEquals(a, b)) return true;
-			if (object.ReferenceEquals(a, null)) return false;
-			if (object.ReferenceEquals(b, null)) return false;
+			if (a is null) return false;
+			if (b is null) return false;
 			if (a.MySampleRate != b.MySampleRate) return false;
 			if (a.MyBitsPerSample != b.MyBitsPerSample) return false;
 			if (a.MyBytes.Length != b.MyBytes.Length) return false;
@@ -101,8 +102,8 @@ namespace OpenBveApi.Sounds {
 		/// <returns>Whether the two sounds are unequal.</returns>
 		public static bool operator !=(Sound a, Sound b) {
 			if (object.ReferenceEquals(a, b)) return false;
-			if (object.ReferenceEquals(a, null)) return true;
-			if (object.ReferenceEquals(b, null)) return true;
+			if (a is null) return true;
+			if (b is null) return true;
 			if (a.MySampleRate != b.MySampleRate) return true;
 			if (a.MyBitsPerSample != b.MyBitsPerSample) return true;
 			if (a.MyBytes.Length != b.MyBytes.Length) return true;
@@ -119,8 +120,8 @@ namespace OpenBveApi.Sounds {
 		/// <returns>Whether this instance is equal to the specified object.</returns>
 		public override bool Equals(object obj) {
 			if (object.ReferenceEquals(this, obj)) return true;
-			if (object.ReferenceEquals(this, null)) return false;
-			if (object.ReferenceEquals(obj, null)) return false;
+			if (this is null) return false;
+			if (obj is null) return false;
 			if (!(obj is Sound)) return false;
 			Sound x = (Sound)obj;
 			if (this.MySampleRate != x.MySampleRate) return false;
@@ -134,20 +135,21 @@ namespace OpenBveApi.Sounds {
 			}
 			return true;
 		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- handles ---
-	
 	/// <summary>Represents a handle to a sound.</summary>
 	public abstract class SoundHandle { }
 	
-	
 	// --- interfaces ---
-	
 	/// <summary>Represents the interface for loading sounds. Plugins must implement this interface if they wish to expose sounds.</summary>
-	public abstract class SoundInterface {
-		
+	public abstract class SoundInterface 
+	{
 		/// <summary>Called when the plugin is loaded.</summary>
 		/// <param name="host">The host that loaded the plugin.</param>
 		public virtual void Load(Hosts.HostInterface host) { }
@@ -165,7 +167,5 @@ namespace OpenBveApi.Sounds {
 		/// <param name="sound">Receives the sound.</param>
 		/// <returns>Whether loading the sound was successful.</returns>
 		public abstract bool LoadSound(Path.PathReference path, out Sound sound);
-		
 	}
-	
 }

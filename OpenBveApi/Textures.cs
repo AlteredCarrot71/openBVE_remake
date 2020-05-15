@@ -1,10 +1,9 @@
 ﻿using System;
 using OpenBveApi.Colors;
 
-namespace OpenBveApi.Textures {
-	
+namespace OpenBveApi.Textures 
+{
 	// --- structures ---
-	
 	/// <summary>Represents the type of transparency encountered in a texture.</summary>
 	public enum TextureTransparencyType {
 		/// <summary>All pixels in the texture are fully opaque.</summary>
@@ -19,13 +18,13 @@ namespace OpenBveApi.Textures {
 	public class Texture {
 		// --- members ---
 		/// <summary>The width of the texture in pixels.</summary>
-		private int MyWidth;
+		private readonly int MyWidth;
 		/// <summary>The height of the texture in pixels.</summary>
-		private int MyHeight;
+		private readonly int MyHeight;
 		/// <summary>The number of bits per pixel. Must be 32.</summary>
-		private int MyBitsPerPixel;
+		private readonly int MyBitsPerPixel;
 		/// <summary>The texture data. Pixels are stored row-based from top to bottom, and within a row from left to right. For 32 bits per pixel, four bytes are used in the order red, green, blue and alpha.</summary>
-		private byte[] MyBytes;
+		private readonly byte[] MyBytes;
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="width">The width of the texture in pixels.</param>
@@ -81,8 +80,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two textures are equal.</returns>
 		public static bool operator ==(Texture a, Texture b) {
 			if (object.ReferenceEquals(a, b)) return true;
-			if (object.ReferenceEquals(a, null)) return false;
-			if (object.ReferenceEquals(b, null)) return false;
+			if (a is null) return false;
+			if (b is null) return false;
 			if (a.MyWidth != b.MyWidth) return false;
 			if (a.MyHeight != b.MyHeight) return false;
 			if (a.MyBitsPerPixel != b.MyBitsPerPixel) return false;
@@ -98,8 +97,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two textures are unequal.</returns>
 		public static bool operator !=(Texture a, Texture b) {
 			if (object.ReferenceEquals(a, b)) return false;
-			if (object.ReferenceEquals(a, null)) return true;
-			if (object.ReferenceEquals(b, null)) return true;
+			if (a is null) return true;
+			if (b is null) return true;
 			if (a.MyWidth != b.MyWidth) return true;
 			if (a.MyHeight != b.MyHeight) return true;
 			if (a.MyBitsPerPixel != b.MyBitsPerPixel) return true;
@@ -114,8 +113,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether this instance is equal to the specified object.</returns>
 		public override bool Equals(object obj) {
 			if (object.ReferenceEquals(this, obj)) return true;
-			if (object.ReferenceEquals(this, null)) return false;
-			if (object.ReferenceEquals(obj, null)) return false;
+			if (this is null) return false;
+			if (obj is null) return false;
 			if (!(obj is Texture)) return false;
 			Texture x = (Texture)obj;
 			if (this.MyWidth != x.MyWidth) return false;
@@ -159,28 +158,29 @@ namespace OpenBveApi.Textures {
 		public static Texture ApplyParameters(Texture texture, TextureParameters parameters) {
 			return Functions.ApplyParameters(texture, parameters);
 		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- handles ---
-	
 	/// <summary>Represents a handle to a texture.</summary>
 	public abstract class TextureHandle { }
 	
-	
 	// --- clip region ---
-	
 	/// <summary>Represents a region in a texture to be extracted.</summary>
 	public class TextureClipRegion {
 		// --- members ---
 		/// <summary>The left coordinate.</summary>
-		private int MyLeft;
+		private readonly int MyLeft;
 		/// <summary>The top coordinate.</summary>
-		private int MyTop;
+		private readonly int MyTop;
 		/// <summary>The width.</summary>
-		private int MyWidth;
+		private readonly int MyWidth;
 		/// <summary>The height.</summary>
-		private int MyHeight;
+		private readonly int MyHeight;
 		// --- properties ---
 		/// <summary>Gets the left coordinate.</summary>
 		public int Left {
@@ -233,8 +233,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two clip regions are equal.</returns>
 		public static bool operator ==(TextureClipRegion a, TextureClipRegion b) {
 			if (object.ReferenceEquals(a, b)) return true;
-			if (object.ReferenceEquals(a, null)) return false;
-			if (object.ReferenceEquals(b, null)) return false;
+			if (a is null) return false;
+			if (b is null) return false;
 			if (a.MyLeft != b.MyLeft) return false;
 			if (a.MyTop != b.MyTop) return false;
 			if (a.MyWidth != b.MyWidth) return false;
@@ -247,8 +247,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two clip regions are unequal.</returns>
 		public static bool operator !=(TextureClipRegion a, TextureClipRegion b) {
 			if (object.ReferenceEquals(a, b)) return false;
-			if (object.ReferenceEquals(a, null)) return true;
-			if (object.ReferenceEquals(b, null)) return true;
+			if (a is null) return true;
+			if (b is null) return true;
 			if (a.MyLeft != b.MyLeft) return true;
 			if (a.MyTop != b.MyTop) return true;
 			if (a.MyWidth != b.MyWidth) return true;
@@ -260,8 +260,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether this instance is equal to the specified object.</returns>
 		public override bool Equals(object obj) {
 			if (object.ReferenceEquals(this, obj)) return true;
-			if (object.ReferenceEquals(this, null)) return false;
-			if (object.ReferenceEquals(obj, null)) return false;
+			if (this is null) return false;
+			if (obj is null) return false;
 			if (!(obj is TextureClipRegion)) return false;
 			TextureClipRegion x = (TextureClipRegion)obj;
 			if (this.MyLeft != x.MyLeft) return false;
@@ -270,16 +270,19 @@ namespace OpenBveApi.Textures {
 			if (this.MyHeight != x.MyHeight) return false;
 			return true;
 		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- parameters ---
-	
 	/// <summary>Represents additional parameters that specify how to process the texture.</summary>
 	public class TextureParameters {
 		// --- members ---
 		/// <summary>The region in the texture to be extracted, or a null reference for the entire texture.</summary>
-		private TextureClipRegion MyClipRegion;
+		private readonly TextureClipRegion MyClipRegion;
 		/// <summary>The color in the texture that should become transparent, or a null reference for no transparent color.</summary>
 		private Nullable<Color24> MyTransparentColor;
 		// --- properties ---
@@ -310,8 +313,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two texture parameters are equal.</returns>
 		public static bool operator ==(TextureParameters a, TextureParameters b) {
 			if (object.ReferenceEquals(a, b)) return true;
-			if (object.ReferenceEquals(a, null)) return false;
-			if (object.ReferenceEquals(b, null)) return false;
+			if (a is null) return false;
+			if (b is null) return false;
 			if (a.MyClipRegion != b.MyClipRegion) return false;
 			if (a.MyTransparentColor != b.MyTransparentColor) return false;
 			return true;
@@ -322,8 +325,8 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether the two texture parameters are unequal.</returns>
 		public static bool operator !=(TextureParameters a, TextureParameters b) {
 			if (object.ReferenceEquals(a, b)) return false;
-			if (object.ReferenceEquals(a, null)) return true;
-			if (object.ReferenceEquals(b, null)) return true;
+			if (a is null) return true;
+			if (b is null) return true;
 			if (a.MyClipRegion != b.MyClipRegion) return true;
 			if (a.MyTransparentColor != b.MyTransparentColor) return true;
 			return false;
@@ -333,22 +336,25 @@ namespace OpenBveApi.Textures {
 		/// <returns>Whether this instance is equal to the specified object.</returns>
 		public override bool Equals(object obj) {
 			if (object.ReferenceEquals(this, obj)) return true;
-			if (object.ReferenceEquals(this, null)) return false;
-			if (object.ReferenceEquals(obj, null)) return false;
+			if (this is null) return false;
+			if (obj is null) return false;
 			if (!(obj is TextureParameters)) return false;
 			TextureParameters x = (TextureParameters)obj;
 			if (this.MyClipRegion != x.MyClipRegion) return false;
 			if (this.MyTransparentColor != x.MyTransparentColor) return false;
 			return true;
 		}
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 	
-	
 	// --- interfaces ---
-	
 	/// <summary>Represents the interface for loading textures. Plugins must implement this interface if they wish to expose textures.</summary>
-	public abstract class TextureInterface {
-		
+	public abstract class TextureInterface 
+	{
 		/// <summary>Called when the plugin is loaded.</summary>
 		/// <param name="host">The host that loaded the plugin.</param>
 		public virtual void Load(Hosts.HostInterface host) { }
@@ -373,7 +379,5 @@ namespace OpenBveApi.Textures {
 		/// <param name="texture">Receives the texture.</param>
 		/// <returns>Whether loading the texture was successful.</returns>
 		public abstract bool LoadTexture(Path.PathReference path, out Texture texture);
-		
 	}
-	
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using OpenBveApi.Colors;
 
-namespace OpenBveApi.Textures {
+namespace OpenBveApi.Textures 
+{
 	/// <summary>Provides functions for manipulating textures.</summary>
-	internal static class Functions {
-		
+	internal static class Functions 
+	{
 		/// <summary>Applies parameters onto a texture.</summary>
 		/// <param name="texture">The original texture.</param>
 		/// <param name="parameters">The parameters, or a null reference.</param>
@@ -132,6 +133,5 @@ namespace OpenBveApi.Textures {
 				throw new NotSupportedException();
 			}
 		}
-		
 	}
 }

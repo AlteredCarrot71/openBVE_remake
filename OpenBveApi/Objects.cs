@@ -1,12 +1,12 @@
 ﻿using System;
 using OpenBveApi.Math;
 
-namespace OpenBveApi.Objects {
-	
+namespace OpenBveApi.Objects 
+{
 	// --- objects ---
-	
 	/// <summary>Represents an abstract object. This is the base class from which all objects must inherit.</summary>
-	public abstract class AbstractObject {
+	public abstract class AbstractObject 
+	{
 		/// <summary>Translates the object by the specified offset.</summary>
 		/// <param name="offset">The offset by which to translate.</param>
 		public abstract void Translate(Vector3 offset);
@@ -34,15 +34,11 @@ namespace OpenBveApi.Objects {
 	/// <summary>Represents an abstract animated object. This is the base class from which all animated objects must inherit.</summary>
 	public abstract class AnimatedObject : AbstractObject { }
 	
-	
 	// --- materials ---
-	
 	/// <summary>Represents an abstract material. This is the base class from which all materials must inherit.</summary>
 	public abstract class AbstractMaterial { }
 	
-	
 	// --- glow ---
-	
 	/// <summary>Represents an abstract glow. This is the base class from which all glows must inherit.</summary>
 	public abstract class AbstractGlow { }
 	
@@ -58,18 +54,13 @@ namespace OpenBveApi.Objects {
 		public abstract double GetIntensity(Vector3 cameraPosition, Orientation3 cameraOrientation, Vector3 objectPosition, Vector3 objectOrientation);
 	}
 	
-	
 	// --- handles ---
-	
 	/// <summary>Represents a handle to an object.</summary>
 	public abstract class ObjectHandle { }
 	
-	
 	// --- interfaces ---
-	
 	/// <summary>Represents the interface for loading objects. Plugins must implement this interface if they wish to expose objects.</summary>
 	public abstract class ObjectInterface {
-		
 		/// <summary>Called when the plugin is loaded.</summary>
 		/// <param name="host">The host that loaded the plugin.</param>
 		public virtual void Load(Hosts.HostInterface host) { }
@@ -87,7 +78,5 @@ namespace OpenBveApi.Objects {
 		/// <param name="obj">Receives the object.</param>
 		/// <returns>Whether loading the object was successful.</returns>
 		public abstract bool LoadObject(Path.PathReference path, out Object obj);
-		
 	}
-	
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using OpenBveApi.Math;
 
-namespace OpenBveApi.Objects {
-
+namespace OpenBveApi.Objects 
+{
 	/// <summary>Represents a vertex used in a shared mesh.</summary>
-	public struct SharedVertex {
+	public struct SharedVertex 
+	{
 		// --- members ---
 		/// <summary>A reference to the list of spatial coordinates in the underlying shared mesh.</summary>
 		public int SpatialCoordinates;
@@ -15,7 +16,8 @@ namespace OpenBveApi.Objects {
 	}
 
 	/// <summary>Represents a face used in a shared mesh.</summary>
-	public struct SharedFace {
+	public struct SharedFace 
+	{
 		// --- members ---
 		/// <summary>The vertices of this face.</summary>
 		public SharedVertex[] Vertices;
@@ -29,7 +31,8 @@ namespace OpenBveApi.Objects {
 	}
 	
 	/// <summary>Represents a mesh with coordinates and colors shared between faces.</summary>
-	public class SharedMesh : StaticObject {
+	public class SharedMesh : StaticObject 
+	{
 		// --- members ---
 		/// <summary>The list of unique spatial coordinates.</summary>
 		public Vector3[] SpatialCoordinates;
@@ -111,8 +114,6 @@ namespace OpenBveApi.Objects {
 					this.Faces[i].Flip();
 				}
 			}
-			
 		}
 	}
-	
 }

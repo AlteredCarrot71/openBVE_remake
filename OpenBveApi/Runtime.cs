@@ -1,16 +1,12 @@
-﻿using System;
-
-namespace OpenBveApi.Runtime {
-	
+﻿namespace OpenBveApi.Runtime 
+{
 	/* ------------------------------------------------------------------------------------
 	 * This part of the API is stable. Any modification must retain backward compatibility.
 	 * ------------------------------------------------------------------------------------ */
-
-	
 	// --- load ---
-	
 	/// <summary>Represents the handle to a sound.</summary>
-	public class SoundHandle {
+	public class SoundHandle 
+	{
 		// --- members ---
 		/// <summary>Whether the handle to the sound is valid.</summary>
 		protected bool MyValid;
@@ -20,11 +16,7 @@ namespace OpenBveApi.Runtime {
 		protected double MyPitch;
 		// --- properties ---
 		/// <summary>Gets whether the sound is still playing. Once this returns false, the sound handle is invalid.</summary>
-		public bool Playing {
-			get {
-				return this.MyValid;
-			}
-		}
+		public readonly bool Playing;
 		/// <summary>Gets whether the sound has stopped. Once this returns true, the sound handle is invalid.</summary>
 		public bool Stopped {
 			get {
@@ -32,23 +24,9 @@ namespace OpenBveApi.Runtime {
 			}
 		}
 		/// <summary>Gets or sets the volume. A value of 1.0 represents nominal volume.</summary>
-		public double Volume {
-			get {
-				return this.MyVolume;
-			}
-			set {
-				this.MyVolume = value;
-			}
-		}
+		public double Volume;
 		/// <summary>Gets or sets the pitch. A value of 1.0 represents nominal pitch.</summary>
-		public double Pitch {
-			get {
-				return this.MyPitch;
-			}
-			set {
-				this.MyPitch = value;
-			}
-		}
+		public double Pitch;
 		// functions
 		/// <summary>Stops the sound and invalidates the handle.</summary>
 		public void Stop() {
@@ -77,14 +55,14 @@ namespace OpenBveApi.Runtime {
 	public class LoadProperties {
 		// --- members ---
 		/// <summary>The absolute path to the plugin folder.</summary>
-		private string MyPluginFolder;
+		private readonly string MyPluginFolder;
 		/// <summary>The absolute path to the train folder.</summary>
-		private string MyTrainFolder;
+		private readonly string MyTrainFolder;
 		/// <summary>The array of panel variables.</summary>
 		private int[] MyPanel;
 		/// <summary>The callback function for playing sounds.</summary>
 		/// <exception cref="System.InvalidOperationException">Raised when the host application does not allow the function to be called.</exception>
-		private PlaySoundDelegate MyPlaySound;
+		private readonly PlaySoundDelegate MyPlaySound;
 		/// <summary>The extent to which the plugin supports the AI.</summary>
 		private AISupport MyAISupport;
 		/// <summary>The reason why the plugin failed loading.</summary>
@@ -148,9 +126,7 @@ namespace OpenBveApi.Runtime {
 		}
 	}
 	
-	
 	// --- set vehicle specs ---
-	
 	/// <summary>Represents the type of brake the train uses.</summary>
 	public enum BrakeTypes {
 		/// <summary>The train uses the electromagnetic straight air brake. The numerical value of this constant is 0.</summary>
@@ -165,15 +141,15 @@ namespace OpenBveApi.Runtime {
 	public class VehicleSpecs {
 		// --- members ---
 		/// <summary>The number of power notches the train has.</summary>
-		private int MyPowerNotches;
+		private readonly int MyPowerNotches;
 		/// <summary>The type of brake the train uses.</summary>
-		private BrakeTypes MyBrakeType;
+		private readonly BrakeTypes MyBrakeType;
 		/// <summary>Whether the train has a hold brake.</summary>
-		private bool MyHasHoldBrake;
+		private readonly bool MyHasHoldBrake;
 		/// <summary>The number of brake notches the train has, including the hold brake, but excluding the emergency brake.</summary>
-		private int MyBrakeNotches;
+		private readonly int MyBrakeNotches;
 		/// <summary>The number of cars the train has.</summary>
-		private int MyCars;
+		private readonly int MyCars;
 		// --- properties ---
 		/// <summary>Gets the number of power notches the train has.</summary>
 		public int PowerNotches {
@@ -238,9 +214,7 @@ namespace OpenBveApi.Runtime {
 		}
 	}
 	
-	
 	// --- initialize ---
-	
 	/// <summary>Represents the mode in which the plugin should initialize.</summary>
 	public enum InitializationModes {
 		/// <summary>The safety system should be enabled. The train has its service brakes applied. The numerical value of this constant is -1.</summary>
@@ -251,14 +225,13 @@ namespace OpenBveApi.Runtime {
 		OffEmergency = 1
 	}
 
-	
 	// --- elapse ---
-
 	/// <summary>Represents a speed.</summary>
 	public class Speed {
 		// --- members ---
 		/// <summary>The speed in meters per second.</summary>
-		private double MyValue;
+		private readonly double MyValue;
+		
 		// --- properties ---
 		/// <summary>Gets the speed in meters per second.</summary>
 		public double MetersPerSecond {
@@ -278,6 +251,7 @@ namespace OpenBveApi.Runtime {
 				return 2.236936 * this.MyValue;
 			}
 		}
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="value">The speed in meters per second.</param>
@@ -290,7 +264,8 @@ namespace OpenBveApi.Runtime {
 	public class Time {
 		// --- members ---
 		/// <summary>The time in seconds.</summary>
-		private double MyValue;
+		private readonly double MyValue;
+		
 		// --- properties ---
 		/// <summary>Gets the time in seconds.</summary>
 		public double Seconds {
@@ -304,6 +279,7 @@ namespace OpenBveApi.Runtime {
 				return 1000.0 * this.MyValue;
 			}
 		}
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="value">The time in seconds.</param>
@@ -316,19 +292,20 @@ namespace OpenBveApi.Runtime {
 	public class VehicleState {
 		// --- members ---
 		/// <summary>The location of the front of the train, in meters.</summary>
-		private double MyLocation;
+		private readonly double MyLocation;
 		/// <summary>The speed of the train.</summary>
-		private Speed MySpeed;
+		private readonly Speed MySpeed;
 		/// <summary>The pressure in the brake cylinder, in pascal.</summary>
-		private double MyBcPressure;
+		private readonly double MyBcPressure;
 		/// <summary>The pressure in the main reservoir, in pascal.</summary>
-		private double MyMrPressure;
+		private readonly double MyMrPressure;
 		/// <summary>The pressure in the emergency reservoir, in pascal.</summary>
-		private double MyErPressure;
+		private readonly double MyErPressure;
 		/// <summary>The pressure in the brake pipe, in pascal.</summary>
-		private double MyBpPressure;
+		private readonly double MyBpPressure;
 		/// <summary>The pressure in the straight air pipe, in pascal.</summary>
-		private double MySapPressure;
+		private readonly double MySapPressure;
+		
 		// --- properties ---
 		/// <summary>Gets the location of the front of the train, in meters.</summary>
 		public double Location {
@@ -396,30 +373,24 @@ namespace OpenBveApi.Runtime {
 	public class PrecedingVehicleState {
 		// --- members ---
 		/// <summary>The location of the back of the preceding train, in meters.</summary>
-		private double MyLocation;
+		private readonly double MyLocation;
 		/// <summary>The distance from the front of the current train to the back of the preceding train, in meters.</summary>
-		private double MyDistance;
+		private readonly double MyDistance;
 		/// <summary>The current speed of the preceding train.</summary>
-		private Speed MySpeed;
+		private readonly Speed MySpeed;
+		
 		// --- properties ---
 		/// <summary>Gets the location of the back of the preceding train, in meters.</summary>
-		public double Location {
-			get {
-				return this.MyLocation;
-			}
-		}
+		public readonly double Location;
 		/// <summary>Gets the distance from the front of the current train to the back of the preceding train, in meters.</summary>
-		public double Distance {
-			get {
-				return this.MyDistance;
-			}
-		}
+		public readonly double Distance;
 		/// <summary>Gets the speed of the preceding train.</summary>
 		public Speed Speed {
 			get {
 				return this.MySpeed;
 			}
 		}
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="location">Gets the location of the back of the preceding train, in meters.</param>
@@ -443,6 +414,7 @@ namespace OpenBveApi.Runtime {
 		private int MyBrakeNotch;
 		/// <summary>Whether the const speed system is enabled.</summary>
 		private bool MyConstSpeed;
+		
 		// --- properties ---
 		/// <summary>Gets or sets the reverser position.</summary>
 		public int Reverser {
@@ -498,15 +470,15 @@ namespace OpenBveApi.Runtime {
 	public class ElapseData {
 		// --- members ---
 		/// <summary>The state of the train.</summary>
-		private VehicleState MyVehicle;
+		private readonly VehicleState MyVehicle;
 		/// <summary>The state of the preceding train, or a null reference if there is no preceding train.</summary>
-		private PrecedingVehicleState MyPrecedingVehicle;
+		private readonly PrecedingVehicleState MyPrecedingVehicle;
 		/// <summary>The virtual handles.</summary>
 		private Handles MyHandles;
 		/// <summary>The current absolute time.</summary>
-		private Time MyTotalTime;
+		private readonly Time MyTotalTime;
 		/// <summary>The elapsed time since the last call to Elapse.</summary>
-		private Time MyElapsedTime;
+		private readonly Time MyElapsedTime;
 		/// <summary>The debug message the plugin wants the host application to display.</summary>
 		private string MyDebugMessage;
 		// --- constructors ---
@@ -570,7 +542,6 @@ namespace OpenBveApi.Runtime {
 	}
 	
 	// --- key down / key up ---
-	
 	/// <summary>Represents a virtual key.</summary>
 	public enum VirtualKeys {
 		/// <summary>The virtual S key. The default assignment is Space. The numerical value of this constant is 0.</summary>
@@ -607,9 +578,7 @@ namespace OpenBveApi.Runtime {
 		L = 15
 	}
 	
-	
 	// --- horn blow ---
-	
 	/// <summary>Represents the type of horn.</summary>
 	public enum HornTypes {
 		/// <summary>The primary horn. The numerical value of this constant is 0.</summary>
@@ -620,9 +589,7 @@ namespace OpenBveApi.Runtime {
 		Music = 3
 	}
 	
-	
 	// --- door change ---
-	
 	/// <summary>Represents the state of the doors.</summary>
 	public enum DoorStates {
 		/// <summary>No door is open.</summary>
@@ -635,23 +602,17 @@ namespace OpenBveApi.Runtime {
 		Both = 3
 	}
 	
-	
 	// --- set signal ---
-	
 	/// <summary>Represents information about a signal or section.</summary>
 	public class SignalData {
 		// --- members ---
 		/// <summary>The aspect of the signal or section.</summary>
-		private int MyAspect;
+		private readonly int MyAspect;
 		/// <summary>The underlying section. Possible values are 0 for the current section, 1 for the upcoming section, or higher values for sections further ahead.</summary>
-		private double MyDistance;
+		private readonly double MyDistance;
 		// --- properties ---
 		/// <summary>Gets the aspect of the signal or section.</summary>
-		public int Aspect {
-			get {
-				return this.MyAspect;
-			}
-		}
+		public readonly int Aspect;
 		/// <summary>Gets the distance to the signal or section.</summary>
 		public double Distance {
 			get {
@@ -668,18 +629,17 @@ namespace OpenBveApi.Runtime {
 		}
 	}
 	
-	
 	// --- set beacon ---
-	
 	/// <summary>Represents data trasmitted by a beacon.</summary>
 	public class BeaconData {
 		// --- members ---
 		/// <summary>The type of beacon.</summary>
-		private int MyType;
+		private readonly int MyType;
 		/// <summary>Optional data the beacon transmits.</summary>
-		private int MyOptional;
+		private readonly int MyOptional;
 		/// <summary>The section the beacon is attached to.</summary>
-		private SignalData MySignal;
+		private readonly SignalData MySignal;
+		
 		// --- properties ---
 		/// <summary>Gets the type of beacon.</summary>
 		public int Type {
@@ -699,6 +659,7 @@ namespace OpenBveApi.Runtime {
 				return this.MySignal;
 			}
 		}
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="type">The type of beacon.</param>
@@ -712,7 +673,6 @@ namespace OpenBveApi.Runtime {
 	}
 	
 	// --- perform AI ---
-
 	/// <summary>Represents responses by the AI.</summary>
 	public enum AIResponse {
 		/// <summary>No action was performed by the plugin.</summary>
@@ -739,6 +699,7 @@ namespace OpenBveApi.Runtime {
 			this.MyHandles = handles;
 			this.MyResponse = AIResponse.None;
 		}
+		
 		// --- properties ---
 		/// <summary>Gets or sets the driver handles.</summary>
 		public Handles Handles {
@@ -760,12 +721,10 @@ namespace OpenBveApi.Runtime {
 		}
 	}
 	
-	
 	// --- interfaces ---
-	
 	/// <summary>Represents the interface for performing runtime train services.</summary>
-	public interface IRuntime {
-
+	public interface IRuntime 
+	{
 		/// <summary>Is called when the plugin is loaded.</summary>
 		/// <param name="properties">The properties supplied to the plugin on loading.</param>
 		/// <returns>Whether the plugin was loaded successfully.</returns>
@@ -828,7 +787,5 @@ namespace OpenBveApi.Runtime {
 		/// <summary>Is called when the plugin should perform the AI.</summary>
 		/// <param name="data">The AI data.</param>
 		void PerformAI(AIData data);
-		
 	}
-	
 }

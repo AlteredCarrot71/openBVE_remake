@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Text;
 
-namespace OpenBveApi {
+namespace OpenBveApi 
+{
 	/// <summary>Provides path-related functions for accessing files and directories in a cross-platform manner.</summary>
-	public static class Path {
-		
+	public static class Path 
+	{
 		// --- path references ---
-		
 		/// <summary>Represents an abstract reference to a file or directory. Use FileReference or DirectoryReference to create instances.</summary>
-		public abstract class PathReference {
+		public abstract class PathReference 
+		{
 			// --- operators ---
 			/// <summary>Checks whether two path references are equal.</summary>
 			/// <param name="a">The first path reference.</param>
@@ -48,17 +49,23 @@ namespace OpenBveApi {
 					return object.ReferenceEquals(this, obj);
 				}
 			}
+
 			// --- functions ---
 			/// <summary>Checks whether this path exists.</summary>
 			/// <returns>Whether this path exists.</returns>
 			public abstract bool Exists();
+
+			/// <summary>Returns the hash code for this instance.</summary>
+			public override int GetHashCode()
+			{
+				throw new NotImplementedException();
+			}
 		}
 		
-		
 		// --- file reference ---
-		
 		/// <summary>Represents a reference to a file.</summary>
-		public class FileReference : PathReference {
+		public class FileReference : PathReference 
+		{
 			// --- members ---
 			/// <summary>The absolute path to the file.</summary>
 			public string File;
@@ -66,6 +73,7 @@ namespace OpenBveApi {
 			public string Data;
 			/// <summary>The encoding that should be used to process textual data if no specific encoding is mandated.</summary>
 			public Encoding Encoding;
+
 			// --- constructors ---
 			/// <summary>Creates a new file reference.</summary>
 			/// <param name="file">The absolute path to the file.</param>
@@ -84,6 +92,7 @@ namespace OpenBveApi {
 				this.Data = data;
 				this.Encoding = encoding;
 			}
+
 			// --- operators ---
 			/// <summary>Checks whether two file references are equal.</summary>
 			/// <param name="a">The first file reference.</param>
@@ -91,8 +100,8 @@ namespace OpenBveApi {
 			/// <returns>Whether the two file references are equal.</returns>
 			public static bool operator ==(FileReference a, FileReference b) {
 				if (object.ReferenceEquals(a, b)) return true;
-				if (object.ReferenceEquals(a, null)) return false;
-				if (object.ReferenceEquals(b, null)) return false;
+				if (a is null) return false;
+				if (b is null) return false;
 				if (a.File != b.File) return false;
 				if (a.Data != b.Data) return false;
 				if (a.Encoding != b.Encoding) return false;
@@ -104,8 +113,8 @@ namespace OpenBveApi {
 			/// <returns>Whether the two file references are unequal.</returns>
 			public static bool operator !=(FileReference a, FileReference b) {
 				if (object.ReferenceEquals(a, b)) return false;
-				if (object.ReferenceEquals(a, null)) return true;
-				if (object.ReferenceEquals(b, null)) return true;
+				if (a is null) return true;
+				if (b is null) return true;
 				if (a.File != b.File) return true;
 				if (a.Data != b.Data) return true;
 				if (a.Encoding != b.Encoding) return true;
@@ -116,8 +125,8 @@ namespace OpenBveApi {
 			/// <returns>Whether this instance is equal to the specified object.</returns>
 			public override bool Equals(object obj) {
 				if (object.ReferenceEquals(this, obj)) return true;
-				if (object.ReferenceEquals(this, null)) return false;
-				if (object.ReferenceEquals(obj, null)) return false;
+				if (this is null) return false;
+				if (obj is null) return false;
 				if (!(obj is FileReference)) return false;
 				FileReference x = (FileReference)obj;
 				if (this.File != x.File) return true;
@@ -125,6 +134,7 @@ namespace OpenBveApi {
 				if (this.Encoding != x.Encoding) return true;
 				return false;
 			}
+
 			// --- functions ---
 			/// <summary>Checks whether the file represented by this reference exists.</summary>
 			/// <returns>Whether the file represented by this reference exists.</returns>
@@ -136,13 +146,18 @@ namespace OpenBveApi {
 			public override string ToString() {
 				return this.File;
 			}
+
+			/// <summary>Returns the hash code for this instance.</summary>
+			public override int GetHashCode()
+			{
+				throw new NotImplementedException();
+			}
 		}
 		
-		
 		// --- directory reference ---
-		
 		/// <summary>Represents a reference to a directory.</summary>
-		public class DirectoryReference : PathReference {
+		public class DirectoryReference : PathReference 
+		{
 			// --- members ---
 			/// <summary>The absolute path to the directory.</summary>
 			public string Directory;
@@ -150,6 +165,7 @@ namespace OpenBveApi {
 			public string Data;
 			/// <summary>The encoding that should be used to process textual data if no specific encoding is mandated.</summary>
 			public Encoding Encoding;
+
 			// --- constructors ---
 			/// <summary>Creates a new directory reference.</summary>
 			/// <param name="directory">The absolute path to the directory.</param>
@@ -168,6 +184,7 @@ namespace OpenBveApi {
 				this.Data = data;
 				this.Encoding = encoding;
 			}
+
 			// --- operators ---
 			/// <summary>Checks whether two directory references are equal.</summary>
 			/// <param name="a">The first directory reference.</param>
@@ -175,8 +192,8 @@ namespace OpenBveApi {
 			/// <returns>Whether the two directory references are equal.</returns>
 			public static bool operator ==(DirectoryReference a, DirectoryReference b) {
 				if (object.ReferenceEquals(a, b)) return true;
-				if (object.ReferenceEquals(a, null)) return false;
-				if (object.ReferenceEquals(b, null)) return false;
+				if (a is null) return false;
+				if (b is null) return false;
 				if (a.Directory != b.Directory) return false;
 				if (a.Data != b.Data) return false;
 				if (a.Encoding != b.Encoding) return false;
@@ -188,8 +205,8 @@ namespace OpenBveApi {
 			/// <returns>Whether the two directory references are unequal.</returns>
 			public static bool operator !=(DirectoryReference a, DirectoryReference b) {
 				if (object.ReferenceEquals(a, b)) return false;
-				if (object.ReferenceEquals(a, null)) return true;
-				if (object.ReferenceEquals(b, null)) return true;
+				if (a is null) return true;
+				if (b is null) return true;
 				if (a.Directory != b.Directory) return true;
 				if (a.Data != b.Data) return true;
 				if (a.Encoding != b.Encoding) return true;
@@ -200,8 +217,8 @@ namespace OpenBveApi {
 			/// <returns>Whether this instance is equal to the specified object.</returns>
 			public override bool Equals(object obj) {
 				if (object.ReferenceEquals(this, obj)) return true;
-				if (object.ReferenceEquals(this, null)) return false;
-				if (object.ReferenceEquals(obj, null)) return false;
+				if (this is null) return false;
+				if (obj is null) return false;
 				if (!(obj is DirectoryReference)) return false;
 				DirectoryReference x = (DirectoryReference)obj;
 				if (this.Directory != x.Directory) return true;
@@ -209,6 +226,7 @@ namespace OpenBveApi {
 				if (this.Encoding != x.Encoding) return true;
 				return false;
 			}
+
 			// --- functions ---
 			/// <summary>Checks whether the directory represented by this reference exists.</summary>
 			/// <returns>Whether the directory represented by this reference exists.</returns>
@@ -220,17 +238,19 @@ namespace OpenBveApi {
 			public override string ToString() {
 				return this.Directory;
 			}
+
+			/// <summary>Returns the hash code for this instance.</summary>
+			public override int GetHashCode()
+			{
+				throw new NotImplementedException();
+			}
 		}
 		
-		
 		// --- read-only fields ---
-		
 		/// <summary>The list of characters that are invalid in platform-independent relative paths.</summary>
 		private static readonly char[] InvalidPathChars = new char[] { ':', '*', '?', '"', '<', '>', '|' };
 		
-		
 		// --- public functions ---
-		
 		/// <summary>Combines a platform-specific absolute path with a platform-independent relative path that points to a directory.</summary>
 		/// <param name="absolute">The platform-specific absolute path.</param>
 		/// <param name="relative">The platform-independent relative path.</param>
@@ -377,9 +397,7 @@ namespace OpenBveApi {
 			throw new ArgumentException("The reference to the file is malformed.");
 		}
 		
-		
 		// --- private functions ---
-		
 		/// <summary>Checks whether the specified string consists only of periods.</summary>
 		/// <param name="text">The string to check.</param>
 		/// <returns>Whether the string consists only of periods.</returns>
@@ -391,6 +409,5 @@ namespace OpenBveApi {
 			}
 			return true;
 		}
-		
 	}
 }
