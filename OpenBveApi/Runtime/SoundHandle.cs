@@ -5,31 +5,17 @@
 	{
 		// --- members ---
 		/// <summary>Whether the handle to the sound is valid.</summary>
-		protected bool MyValid;
+		public bool Playing { get; set; }
 		/// <summary>The volume. A value of 1.0 represents nominal volume.</summary>
-		protected double MyVolume;
+		public double Volume { get; set; }
 		/// <summary>The pitch. A value of 1.0 represents nominal pitch.</summary>
-		protected double MyPitch;
-		// --- properties ---
-		/// <summary>Gets whether the sound is still playing. Once this returns false, the sound handle is invalid.</summary>
-		public readonly bool Playing;
-		/// <summary>Gets whether the sound has stopped. Once this returns true, the sound handle is invalid.</summary>
-		public bool Stopped
-		{
-			get
-			{
-				return !this.MyValid;
-			}
-		}
-		/// <summary>Gets or sets the volume. A value of 1.0 represents nominal volume.</summary>
-		public double Volume;
-		/// <summary>Gets or sets the pitch. A value of 1.0 represents nominal pitch.</summary>
-		public double Pitch;
+		public double Pitch { get; set; }
+
 		// functions
 		/// <summary>Stops the sound and invalidates the handle.</summary>
 		public void Stop()
 		{
-			this.MyValid = false;
+			this.Playing = false;
 		}
 	}
 

@@ -66,7 +66,7 @@ namespace Plugin
 		internal void Elapse(ElapseData data) {
 			foreach (Sound sound in this.LoopingSounds) {
 				if (sound.IsToBePlayed) {
-					if (sound.Handle == null || sound.Handle.Stopped) {
+					if (sound.Handle == null || sound.Handle.Playing) {
 						sound.Handle = PlaySound(sound.Index, 1.0, 1.0, true);
 					}
 				} else {

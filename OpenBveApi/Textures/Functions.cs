@@ -37,7 +37,7 @@ namespace OpenBveApi.Textures
 		/// <exception cref="System.NotSupportedException">Raised when the number of bits per pixel in the texture is not supported.</exception>
 		internal static Texture ExtractClipRegion(Texture texture, TextureClipRegion region)
 		{
-			if (region == null || region.Left == 0 && region.Top == 0 && region.Width == texture.Width && region.Height == texture.Height)
+			if ((region == null) || (region.Left == 0 && region.Top == 0 && region.Width == texture.Width && region.Height == texture.Height))
 			{
 				return texture;
 			}
@@ -60,7 +60,7 @@ namespace OpenBveApi.Textures
 					int i = 0;
 					for (int y = 0; y < clipHeight; y++)
 					{
-						int j = 3 * width * (clipTop + y) + 3 * clipLeft;
+						int j = (3 * width * (clipTop + y)) + (3 * clipLeft);
 						for (int x = 0; x < clipWidth; x++)
 						{
 							newBytes[i + 0] = bytes[j + 0];
@@ -78,7 +78,7 @@ namespace OpenBveApi.Textures
 					int i = 0;
 					for (int y = 0; y < clipHeight; y++)
 					{
-						int j = 4 * width * (clipTop + y) + 4 * clipLeft;
+						int j = (4 * width * (clipTop + y)) + (4 * clipLeft);
 						for (int x = 0; x < clipWidth; x++)
 						{
 							newBytes[i + 0] = bytes[j + 0];

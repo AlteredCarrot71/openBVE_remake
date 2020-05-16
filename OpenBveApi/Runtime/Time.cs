@@ -5,7 +5,7 @@
 	{
 		// --- members ---
 		/// <summary>The time in seconds.</summary>
-		private readonly double MyValue;
+		private readonly double Second;
 
 		// --- properties ---
 		/// <summary>Gets the time in seconds.</summary>
@@ -13,7 +13,7 @@
 		{
 			get
 			{
-				return this.MyValue;
+				return this.Second;
 			}
 		}
 		/// <summary>Gets the time in milliseconds.</summary>
@@ -21,7 +21,7 @@
 		{
 			get
 			{
-				return 1000.0 * this.MyValue;
+				return 1000.0 * this.Second;
 			}
 		}
 
@@ -30,7 +30,7 @@
 		/// <param name="value">The time in seconds.</param>
 		public Time(double value)
 		{
-			this.MyValue = value;
+			this.Second = value;
 		}
 	}
 }

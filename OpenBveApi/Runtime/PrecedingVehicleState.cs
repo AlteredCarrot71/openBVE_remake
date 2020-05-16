@@ -5,25 +5,11 @@
 	{
 		// --- members ---
 		/// <summary>The location of the back of the preceding train, in meters.</summary>
-		private readonly double MyLocation;
+		public double Location { get; private set; }
 		/// <summary>The distance from the front of the current train to the back of the preceding train, in meters.</summary>
-		private readonly double MyDistance;
+		public double Distance { get; private set; }
 		/// <summary>The current speed of the preceding train.</summary>
-		private readonly Speed MySpeed;
-
-		// --- properties ---
-		/// <summary>Gets the location of the back of the preceding train, in meters.</summary>
-		public readonly double Location;
-		/// <summary>Gets the distance from the front of the current train to the back of the preceding train, in meters.</summary>
-		public readonly double Distance;
-		/// <summary>Gets the speed of the preceding train.</summary>
-		public Speed Speed
-		{
-			get
-			{
-				return this.MySpeed;
-			}
-		}
+		public Speed Speed { get; private set; }
 
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
@@ -32,9 +18,9 @@
 		/// <param name="speed">Gets the speed of the preceding train.</param>
 		public PrecedingVehicleState(double location, double distance, Speed speed)
 		{
-			this.MyLocation = location;
-			this.MyDistance = distance;
-			this.MySpeed = speed;
+			this.Location = location;
+			this.Distance = distance;
+			this.Speed = speed;
 		}
 	}
 }

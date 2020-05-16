@@ -5,55 +5,24 @@
 	{
 		// --- members ---
 		/// <summary>The number of power notches the train has.</summary>
-		private readonly int MyPowerNotches;
+		public int PowerNotches { get; private set; }
 		/// <summary>The type of brake the train uses.</summary>
-		private readonly BrakeTypes MyBrakeType;
-		/// <summary>Whether the train has a hold brake.</summary>
-		private readonly bool MyHasHoldBrake;
+		public BrakeTypes BrakeType { get; private set; }
 		/// <summary>The number of brake notches the train has, including the hold brake, but excluding the emergency brake.</summary>
-		private readonly int MyBrakeNotches;
+		public int BrakeNotches { get; private set; }
+		/// <summary>Whether the train has a hold brake.</summary>
+		public bool HasHoldBrake { get; private set; }
 		/// <summary>The number of cars the train has.</summary>
-		private readonly int MyCars;
+		public int Cars { get; private set; }
+		
 		// --- properties ---
-		/// <summary>Gets the number of power notches the train has.</summary>
-		public int PowerNotches
-		{
-			get
-			{
-				return this.MyPowerNotches;
-			}
-		}
-		/// <summary>Gets the type of brake the train uses.</summary>
-		public BrakeTypes BrakeType
-		{
-			get
-			{
-				return this.MyBrakeType;
-			}
-		}
-		/// <summary>Gets the number of brake notches the train has, including the hold brake, but excluding the emergency brake.</summary>
-		public int BrakeNotches
-		{
-			get
-			{
-				return this.MyBrakeNotches;
-			}
-		}
-		/// <summary>Gets whether the train has a hold brake.</summary>
-		public bool HasHoldBrake
-		{
-			get
-			{
-				return this.MyHasHoldBrake;
-			}
-		}
 		/// <summary>Gets the index of the brake notch that corresponds to B1 or LAP.</summary>
 		/// <remarks>For trains without a hold brake, this returns 1. For trains with a hold brake, this returns 2.</remarks>
 		public int AtsNotch
 		{
 			get
 			{
-				if (this.MyHasHoldBrake)
+				if (this.HasHoldBrake)
 				{
 					return 2;
 				}
@@ -68,15 +37,7 @@
 		{
 			get
 			{
-				return (int)System.Math.Round(0.7 * this.MyBrakeNotches);
-			}
-		}
-		/// <summary>Gets the number of cars the train has.</summary>
-		public int Cars
-		{
-			get
-			{
-				return this.MyCars;
+				return (int)System.Math.Round(0.7 * this.BrakeNotches);
 			}
 		}
 		// --- constructors ---
@@ -88,11 +49,11 @@
 		/// <param name="cars">The number of cars the train has.</param>
 		public VehicleSpecs(int powerNotches, BrakeTypes brakeType, int brakeNotches, bool hasHoldBrake, int cars)
 		{
-			this.MyPowerNotches = powerNotches;
-			this.MyBrakeType = brakeType;
-			this.MyBrakeNotches = brakeNotches;
-			this.MyHasHoldBrake = hasHoldBrake;
-			this.MyCars = cars;
+			this.PowerNotches = powerNotches;
+			this.BrakeType = brakeType;
+			this.BrakeNotches = brakeNotches;
+			this.HasHoldBrake = hasHoldBrake;
+			this.Cars = cars;
 		}
 	}
 }

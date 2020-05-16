@@ -5,7 +5,7 @@
 	{
 		// --- members ---
 		/// <summary>The speed in meters per second.</summary>
-		private readonly double MyValue;
+		private readonly double Mps;
 
 		// --- properties ---
 		/// <summary>Gets the speed in meters per second.</summary>
@@ -13,7 +13,7 @@
 		{
 			get
 			{
-				return this.MyValue;
+				return this.Mps;
 			}
 		}
 		/// <summary>Gets the speed in kilometes per hour.</summary>
@@ -21,7 +21,7 @@
 		{
 			get
 			{
-				return 3.6 * this.MyValue;
+				return 3.6 * this.Mps;
 			}
 		}
 		/// <summary>Gets the speed in miles per hour.</summary>
@@ -29,7 +29,7 @@
 		{
 			get
 			{
-				return 2.236936 * this.MyValue;
+				return 2.236936 * this.Mps;
 			}
 		}
 
@@ -38,7 +38,7 @@
 		/// <param name="value">The speed in meters per second.</param>
 		public Speed(double value)
 		{
-			this.MyValue = value;
+			this.Mps = value;
 		}
 	}
 }

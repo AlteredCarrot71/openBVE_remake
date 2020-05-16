@@ -7,46 +7,14 @@ namespace OpenBveApi.Textures
 	{
 		// --- members ---
 		/// <summary>The left coordinate.</summary>
-		private readonly int MyLeft;
+		public int Left { get; private set; }
 		/// <summary>The top coordinate.</summary>
-		private readonly int MyTop;
+		public int Top { get; private set; }
 		/// <summary>The width.</summary>
-		private readonly int MyWidth;
+		public int Width { get; private set; }
 		/// <summary>The height.</summary>
-		private readonly int MyHeight;
-		// --- properties ---
-		/// <summary>Gets the left coordinate.</summary>
-		public int Left
-		{
-			get
-			{
-				return this.MyLeft;
-			}
-		}
-		/// <summary>Gets the top coordinate.</summary>
-		public int Top
-		{
-			get
-			{
-				return this.MyTop;
-			}
-		}
-		/// <summary>Gets the width.</summary>
-		public int Width
-		{
-			get
-			{
-				return this.MyWidth;
-			}
-		}
-		/// <summary>Gets the height.</summary>
-		public int Height
-		{
-			get
-			{
-				return this.MyHeight;
-			}
-		}
+		public int Height { get; private set; }
+		
 		// --- constructors ---
 		/// <summary>Creates a new clip region.</summary>
 		/// <param name="left">The left coordinate.</param>
@@ -67,10 +35,10 @@ namespace OpenBveApi.Textures
 			}
 			else
 			{
-				this.MyLeft = left;
-				this.MyTop = top;
-				this.MyWidth = width;
-				this.MyHeight = height;
+				this.Left = left;
+				this.Top = top;
+				this.Width = width;
+				this.Height = height;
 			}
 		}
 		// --- operators ---
@@ -83,10 +51,10 @@ namespace OpenBveApi.Textures
 			if (object.ReferenceEquals(a, b)) return true;
 			if (a is null) return false;
 			if (b is null) return false;
-			if (a.MyLeft != b.MyLeft) return false;
-			if (a.MyTop != b.MyTop) return false;
-			if (a.MyWidth != b.MyWidth) return false;
-			if (a.MyHeight != b.MyHeight) return false;
+			if (a.Left != b.Left) return false;
+			if (a.Top != b.Top) return false;
+			if (a.Width != b.Width) return false;
+			if (a.Height != b.Height) return false;
 			return true;
 		}
 		/// <summary>Checks whether two clip regions are unequal.</summary>
@@ -98,10 +66,10 @@ namespace OpenBveApi.Textures
 			if (object.ReferenceEquals(a, b)) return false;
 			if (a is null) return true;
 			if (b is null) return true;
-			if (a.MyLeft != b.MyLeft) return true;
-			if (a.MyTop != b.MyTop) return true;
-			if (a.MyWidth != b.MyWidth) return true;
-			if (a.MyHeight != b.MyHeight) return true;
+			if (a.Left != b.Left) return true;
+			if (a.Top != b.Top) return true;
+			if (a.Width != b.Width) return true;
+			if (a.Height != b.Height) return true;
 			return false;
 		}
 		/// <summary>Checks whether this instance is equal to the specified object.</summary>
@@ -114,10 +82,10 @@ namespace OpenBveApi.Textures
 			if (obj is null) return false;
 			if (!(obj is TextureClipRegion)) return false;
 			TextureClipRegion x = (TextureClipRegion)obj;
-			if (this.MyLeft != x.MyLeft) return false;
-			if (this.MyTop != x.MyTop) return false;
-			if (this.MyWidth != x.MyWidth) return false;
-			if (this.MyHeight != x.MyHeight) return false;
+			if (this.Left != x.Left) return false;
+			if (this.Top != x.Top) return false;
+			if (this.Width != x.Width) return false;
+			if (this.Height != x.Height) return false;
 			return true;
 		}
 

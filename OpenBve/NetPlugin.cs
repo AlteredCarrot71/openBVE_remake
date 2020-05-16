@@ -9,9 +9,9 @@ namespace OpenBve {
 		internal class SoundHandleEx : SoundHandle {
 			internal int SoundSourceIndex;
 			internal SoundHandleEx(double volume, double pitch, int soundSourceIndex) {
-				base.MyVolume = volume;
-				base.MyPitch = pitch;
-				base.MyValid = true;
+				base.Volume = volume;
+				base.Pitch = pitch;
+				base.Playing = true;
 				this.SoundSourceIndex = soundSourceIndex;
 			}
 		}
@@ -101,7 +101,7 @@ namespace OpenBve {
 				 * Process the sounds.
 				 * */
 				for (int i = 0; i < this.SoundCount; i++) {
-					if (this.Sounds[i].Stopped || !SoundManager.IsPlaying(this.Sounds[i].SoundSourceIndex)) {
+					if (this.Sounds[i].Playing || !SoundManager.IsPlaying(this.Sounds[i].SoundSourceIndex)) {
 						SoundManager.StopSound(ref this.Sounds[i].SoundSourceIndex);
 						this.Sounds[i].Stop();
 						this.Sounds[i] = this.Sounds[this.SoundCount - 1];

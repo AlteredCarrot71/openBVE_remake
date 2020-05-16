@@ -7,11 +7,11 @@ namespace OpenBveApi.Sounds
 	{
 		// --- members ---
 		/// <summary>The number of samples per second.</summary>
-		private readonly int MySampleRate;
+		public int SampleRate { get; private set; }
 		/// <summary>The number of bits per sample. Allowed values are 8 or 16.</summary>
-		private readonly int MyBitsPerSample;
+		public int BitsPerSample { get; private set; }
 		/// <summary>The PCM sound data per channel. For 8 bits per sample, samples are unsigned from 0 to 255. For 16 bits per sample, samples are signed from -32768 to 32767 and in little endian byte order.</summary>
-		private readonly byte[][] MyBytes;
+		public byte[][] Bytes { get; private set; }
 
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
@@ -55,41 +55,18 @@ namespace OpenBveApi.Sounds
 					throw new ArgumentException("The data bytes of the channels are of unequal length.");
 				}
 			}
-			this.MySampleRate = sampleRate;
-			this.MyBitsPerSample = bitsPerSample;
-			this.MyBytes = bytes;
+			this.SampleRate = sampleRate;
+			this.BitsPerSample = bitsPerSample;
+			this.Bytes = bytes;
 		}
+
 		// --- properties ---
-		/// <summary>Gets the number of samples per second.</summary>
-		public int SampleRate
-		{
-			get
-			{
-				return this.MySampleRate;
-			}
-		}
-		/// <summary>Gets the number of bits per sample. Allowed values are 8 or 16.</summary>
-		public int BitsPerSample
-		{
-			get
-			{
-				return this.MyBitsPerSample;
-			}
-		}
-		/// <summary>Gets the PCM sound data per channel. For 8 bits per sample, samples are unsigned from 0 to 255. For 16 bits per sample, samples are signed from -32768 to 32767 and in little endian byte order.</summary>
-		public byte[][] Bytes
-		{
-			get
-			{
-				return this.MyBytes;
-			}
-		}
 		/// <summary>Gets the duration of the sound in seconds.</summary>
 		public double Duration
 		{
 			get
 			{
-				return (double)(8 * this.MyBytes[0].Length / this.MyBitsPerSample) / (double)this.MySampleRate;
+				return (double)(8 * this.Bytes[0].Length / this.BitsPerSample) / (double)this.SampleRate;
 			}
 		}
 		// --- operators ---
@@ -102,15 +79,15 @@ namespace OpenBveApi.Sounds
 			if (object.ReferenceEquals(a, b)) return true;
 			if (a is null) return false;
 			if (b is null) return false;
-			if (a.MySampleRate != b.MySampleRate) return false;
-			if (a.MyBitsPerSample != b.MyBitsPerSample) return false;
-			if (a.MyBytes.Length != b.MyBytes.Length) return false;
-			for (int i = 0; i < a.MyBytes.Length; i++)
+			if (a.SampleRate != b.SampleRate) return false;
+			if (a.BitsPerSample != b.BitsPerSample) return false;
+			if (a.Bytes.Length != b.Bytes.Length) return false;
+			for (int i = 0; i < a.Bytes.Length; i++)
 			{
-				if (a.MyBytes[i].Length != b.MyBytes[i].Length) return false;
-				for (int j = 0; j < a.MyBytes[i].Length; j++)
+				if (a.Bytes[i].Length != b.Bytes[i].Length) return false;
+				for (int j = 0; j < a.Bytes[i].Length; j++)
 				{
-					if (a.MyBytes[i][j] != b.MyBytes[i][j]) return false;
+					if (a.Bytes[i][j] != b.Bytes[i][j]) return false;
 				}
 			}
 			return true;
@@ -124,15 +101,15 @@ namespace OpenBveApi.Sounds
 			if (object.ReferenceEquals(a, b)) return false;
 			if (a is null) return true;
 			if (b is null) return true;
-			if (a.MySampleRate != b.MySampleRate) return true;
-			if (a.MyBitsPerSample != b.MyBitsPerSample) return true;
-			if (a.MyBytes.Length != b.MyBytes.Length) return true;
-			for (int i = 0; i < a.MyBytes.Length; i++)
+			if (a.SampleRate != b.SampleRate) return true;
+			if (a.BitsPerSample != b.BitsPerSample) return true;
+			if (a.Bytes.Length != b.Bytes.Length) return true;
+			for (int i = 0; i < a.Bytes.Length; i++)
 			{
-				if (a.MyBytes[i].Length != b.MyBytes[i].Length) return true;
-				for (int j = 0; j < a.MyBytes[i].Length; j++)
+				if (a.Bytes[i].Length != b.Bytes[i].Length) return true;
+				for (int j = 0; j < a.Bytes[i].Length; j++)
 				{
-					if (a.MyBytes[i][j] != b.MyBytes[i][j]) return true;
+					if (a.Bytes[i][j] != b.Bytes[i][j]) return true;
 				}
 			}
 			return false;
@@ -147,15 +124,15 @@ namespace OpenBveApi.Sounds
 			if (obj is null) return false;
 			if (!(obj is Sound)) return false;
 			Sound x = (Sound)obj;
-			if (this.MySampleRate != x.MySampleRate) return false;
-			if (this.MyBitsPerSample != x.MyBitsPerSample) return false;
-			if (this.MyBytes.Length != x.MyBytes.Length) return false;
-			for (int i = 0; i < this.MyBytes.Length; i++)
+			if (this.SampleRate != x.SampleRate) return false;
+			if (this.BitsPerSample != x.BitsPerSample) return false;
+			if (this.Bytes.Length != x.Bytes.Length) return false;
+			for (int i = 0; i < this.Bytes.Length; i++)
 			{
-				if (this.MyBytes[i].Length != x.MyBytes[i].Length) return false;
-				for (int j = 0; j < this.MyBytes[i].Length; j++)
+				if (this.Bytes[i].Length != x.Bytes[i].Length) return false;
+				for (int j = 0; j < this.Bytes[i].Length; j++)
 				{
-					if (this.MyBytes[i][j] != x.MyBytes[i][j]) return false;
+					if (this.Bytes[i][j] != x.Bytes[i][j]) return false;
 				}
 			}
 			return true;

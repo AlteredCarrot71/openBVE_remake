@@ -5,17 +5,18 @@
 	{
 		// --- members ---
 		/// <summary>The state of the train.</summary>
-		private readonly VehicleState MyVehicle;
+		public VehicleState Vehicle { get; private set; }
 		/// <summary>The state of the preceding train, or a null reference if there is no preceding train.</summary>
-		private readonly PrecedingVehicleState MyPrecedingVehicle;
+		public PrecedingVehicleState PrecedingVehicle { get; private set; }
 		/// <summary>The virtual handles.</summary>
-		private Handles MyHandles;
+		public Handles Handles { get; set; }
 		/// <summary>The current absolute time.</summary>
-		private readonly Time MyTotalTime;
+		public Time TotalTime { get; private set; }
 		/// <summary>The elapsed time since the last call to Elapse.</summary>
-		private readonly Time MyElapsedTime;
+		public Time ElapsedTime { get; private set; }
 		/// <summary>The debug message the plugin wants the host application to display.</summary>
-		private string MyDebugMessage;
+		public string DebugMessage { get; set; }
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="vehicle">The state of the train.</param>
@@ -25,69 +26,12 @@
 		/// <param name="elapsedTime">The elapsed time since the last call to Elapse.</param>
 		public ElapseData(VehicleState vehicle, PrecedingVehicleState precedingVehicle, Handles handles, Time totalTime, Time elapsedTime)
 		{
-			this.MyVehicle = vehicle;
-			this.MyPrecedingVehicle = precedingVehicle;
-			this.MyHandles = handles;
-			this.MyTotalTime = totalTime;
-			this.MyElapsedTime = elapsedTime;
-			this.MyDebugMessage = null;
-		}
-		// --- properties ---
-		/// <summary>Gets the state of the train.</summary>
-		public VehicleState Vehicle
-		{
-			get
-			{
-				return this.MyVehicle;
-			}
-		}
-		/// <summary>Gets the state of the preceding train, or a null reference if there is no preceding train.</summary>
-		public PrecedingVehicleState PrecedingVehicle
-		{
-			get
-			{
-				return this.MyPrecedingVehicle;
-			}
-		}
-		/// <summary>Gets or sets the virtual handles.</summary>
-		public Handles Handles
-		{
-			get
-			{
-				return this.MyHandles;
-			}
-			set
-			{
-				this.MyHandles = value;
-			}
-		}
-		/// <summary>Gets the absolute in-game time.</summary>
-		public Time TotalTime
-		{
-			get
-			{
-				return this.MyTotalTime;
-			}
-		}
-		/// <summary>Gets the time that elapsed since the last call to Elapse.</summary>
-		public Time ElapsedTime
-		{
-			get
-			{
-				return this.MyElapsedTime;
-			}
-		}
-		/// <summary>Gets or sets the debug message the plugin wants the host application to display.</summary>
-		public string DebugMessage
-		{
-			get
-			{
-				return this.MyDebugMessage;
-			}
-			set
-			{
-				this.MyDebugMessage = value;
-			}
+			this.Vehicle = vehicle;
+			this.PrecedingVehicle = precedingVehicle;
+			this.Handles = handles;
+			this.TotalTime = totalTime;
+			this.ElapsedTime = elapsedTime;
+			this.DebugMessage = null;
 		}
 	}
 }

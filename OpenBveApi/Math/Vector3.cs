@@ -198,7 +198,7 @@ namespace OpenBveApi.Math
 		/// <exception cref="System.DivideByZeroException">Raised when the vector is a null vector.</exception>
 		public void Normalize()
 		{
-			double norm = this.X * this.X + this.Y * this.Y + this.Z * this.Z;
+			double norm = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z);
 			if (norm == 0.0)
 			{
 				throw new DivideByZeroException();
@@ -226,9 +226,9 @@ namespace OpenBveApi.Math
 		/// <param name="offset">The offset measured in the specified orientation.</param>
 		public void Translate(Orientation3 orientation, Vector3 offset)
 		{
-			this.X += orientation.X.X * offset.X + orientation.Y.X * offset.Y + orientation.Z.X * offset.Z;
-			this.Y += orientation.X.Y * offset.X + orientation.Y.Y * offset.Y + orientation.Z.Y * offset.Z;
-			this.Z += orientation.X.Z * offset.X + orientation.Y.Z * offset.Y + orientation.Z.Z * offset.Z;
+			this.X += (orientation.X.X * offset.X) + (orientation.Y.X * offset.Y) + (orientation.Z.X * offset.Z);
+			this.Y += (orientation.X.Y * offset.X) + (orientation.Y.Y * offset.Y) + (orientation.Z.Y * offset.Z);
+			this.Z += (orientation.X.Z * offset.X) + (orientation.Y.Z * offset.Y) + (orientation.Z.Z * offset.Z);
 		}
 
 		/// <summary>Scales the vector by a specified factor.</summary>
@@ -247,9 +247,9 @@ namespace OpenBveApi.Math
 		public void Rotate(Vector3 direction, double cosineOfAngle, double sineOfAngle)
 		{
 			double cosineComplement = 1.0 - cosineOfAngle;
-			double x = (cosineOfAngle + cosineComplement * direction.X * direction.X) * this.X + (cosineComplement * direction.X * direction.Y - sineOfAngle * direction.Z) * this.Y + (cosineComplement * direction.X * direction.Z + sineOfAngle * direction.Y) * this.Z;
-			double y = (cosineOfAngle + cosineComplement * direction.Y * direction.Y) * this.Y + (cosineComplement * direction.X * direction.Y + sineOfAngle * direction.Z) * this.X + (cosineComplement * direction.Y * direction.Z - sineOfAngle * direction.X) * this.Z;
-			double z = (cosineOfAngle + cosineComplement * direction.Z * direction.Z) * this.Z + (cosineComplement * direction.X * direction.Z - sineOfAngle * direction.Y) * this.X + (cosineComplement * direction.Y * direction.Z + sineOfAngle * direction.X) * this.Y;
+			double x = (cosineOfAngle + (cosineComplement * direction.X * direction.X)) * this.X + ((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * this.Y + ((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * this.Z;
+			double y = (cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * this.Y + ((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * this.X + ((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * this.Z;
+			double z = (cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * this.Z + ((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * this.X + ((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * this.Y;
 			this = new Vector3(x, y, z);
 		}
 
@@ -258,9 +258,9 @@ namespace OpenBveApi.Math
 		/// <remarks>The default orientation is X = {1, 0, 0), Y = {0, 1, 0} and Z = {0, 0, 1}.</remarks>
 		public void Rotate(Orientation3 orientation)
 		{
-			double x = orientation.X.X * this.X + orientation.Y.X * this.Y + orientation.Z.X * this.Z;
-			double y = orientation.X.Y * this.X + orientation.Y.Y * this.Y + orientation.Z.Y * this.Z;
-			double z = orientation.X.Z * this.X + orientation.Y.Z * this.Y + orientation.Z.Z * this.Z;
+			double x = (orientation.X.X * this.X) + (orientation.Y.X * this.Y) + (orientation.Z.X * this.Z);
+			double y = (orientation.X.Y * this.X) + (orientation.Y.Y * this.Y) + (orientation.Z.Y * this.Z);
+			double z = (orientation.X.Z * this.X) + (orientation.Y.Z * this.Y) + (orientation.Z.Z * this.Z);
 			this = new Vector3(x, y, z);
 		}
 
@@ -289,19 +289,17 @@ namespace OpenBveApi.Math
 		/// <returns>The vector norm.</returns>
 		public double Norm()
 		{
-			return System.Math.Sqrt(this.X * this.X + this.Y * this.Y + this.Z * this.Z);
+			return System.Math.Sqrt((this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z));
 		}
 
-
 		// --- static functions ---
-
 		/// <summary>Gives the dot product of two vectors.</summary>
 		/// <param name="a">The first vector.</param>
 		/// <param name="b">The second vector.</param>
 		/// <returns>The dot product of the two vectors.</returns>
 		public static double Dot(Vector3 a, Vector3 b)
 		{
-			return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+			return (a.X * b.X) + (a.Y * b.Y) + (a.Z * b.Z);
 		}
 
 		/// <summary>Gives the cross product of two vectors.</summary>
@@ -310,7 +308,7 @@ namespace OpenBveApi.Math
 		/// <returns>The cross product of the two vectors.</returns>
 		public static Vector3 Cross(Vector3 a, Vector3 b)
 		{
-			return new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+			return new Vector3((a.Y * b.Z) - (a.Z * b.Y), (a.Z * b.X) - (a.X * b.Z), (a.X * b.Y) - (a.Y * b.X));
 		}
 
 		/// <summary>Normalizes a vector.</summary>
@@ -319,7 +317,7 @@ namespace OpenBveApi.Math
 		/// <exception cref="System.DivideByZeroException">Raised when the vector is a null vector.</exception>
 		public static Vector3 Normalize(Vector3 vector)
 		{
-			double norm = vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
+			double norm = (vector.X * vector.X) + (vector.Y * vector.Y) + (vector.Z * vector.Z);
 			if (norm == 0.0)
 			{
 				throw new DivideByZeroException();
@@ -349,9 +347,9 @@ namespace OpenBveApi.Math
 		/// <param name="offset">The offset measured in the specified orientation.</param>
 		public static Vector3 Translate(Vector3 vector, Orientation3 orientation, Vector3 offset)
 		{
-			double x = vector.X + orientation.X.X * offset.X + orientation.Y.X * offset.Y + orientation.Z.X * offset.Z;
-			double y = vector.Y + orientation.X.Y * offset.X + orientation.Y.Y * offset.Y + orientation.Z.Y * offset.Z;
-			double z = vector.Z + orientation.X.Z * offset.X + orientation.Y.Z * offset.Y + orientation.Z.Z * offset.Z;
+			double x = vector.X + (orientation.X.X * offset.X) + (orientation.Y.X * offset.Y) + (orientation.Z.X * offset.Z);
+			double y = vector.Y + (orientation.X.Y * offset.X) + (orientation.Y.Y * offset.Y) + (orientation.Z.Y * offset.Z);
+			double z = vector.Z + (orientation.X.Z * offset.X) + (orientation.Y.Z * offset.Y) + (orientation.Z.Z * offset.Z);
 			return new Vector3(x, y, z);
 		}
 
@@ -376,9 +374,9 @@ namespace OpenBveApi.Math
 		public static Vector3 Rotate(Vector3 vector, Vector3 direction, double cosineOfAngle, double sineOfAngle)
 		{
 			double cosineComplement = 1.0 - cosineOfAngle;
-			double x = (cosineOfAngle + cosineComplement * direction.X * direction.X) * vector.X + (cosineComplement * direction.X * direction.Y - sineOfAngle * direction.Z) * vector.Y + (cosineComplement * direction.X * direction.Z + sineOfAngle * direction.Y) * vector.Z;
-			double y = (cosineOfAngle + cosineComplement * direction.Y * direction.Y) * vector.Y + (cosineComplement * direction.X * direction.Y + sineOfAngle * direction.Z) * vector.X + (cosineComplement * direction.Y * direction.Z - sineOfAngle * direction.X) * vector.Z;
-			double z = (cosineOfAngle + cosineComplement * direction.Z * direction.Z) * vector.Z + (cosineComplement * direction.X * direction.Z - sineOfAngle * direction.Y) * vector.X + (cosineComplement * direction.Y * direction.Z + sineOfAngle * direction.X) * vector.Y;
+			double x = (cosineOfAngle + (cosineComplement * direction.X * direction.X)) * vector.X + ((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * vector.Y + ((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * vector.Z;
+			double y = (cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * vector.Y + ((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * vector.X + ((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * vector.Z;
+			double z = (cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * vector.Z + ((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * vector.X + ((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * vector.Y;
 			return new Vector3(x, y, z);
 		}
 
@@ -389,9 +387,9 @@ namespace OpenBveApi.Math
 		/// <remarks>The default orientation is X = {1, 0, 0), Y = {0, 1, 0} and Z = {0, 0, 1}.</remarks>
 		public static Vector3 Rotate(Vector3 vector, Orientation3 orientation)
 		{
-			double x = orientation.X.X * vector.X + orientation.Y.X * vector.Y + orientation.Z.X * vector.Z;
-			double y = orientation.X.Y * vector.X + orientation.Y.Y * vector.Y + orientation.Z.Y * vector.Z;
-			double z = orientation.X.Z * vector.X + orientation.Y.Z * vector.Y + orientation.Z.Z * vector.Z;
+			double x = (orientation.X.X * vector.X) + (orientation.Y.X * vector.Y) + (orientation.Z.X * vector.Z);
+			double y = (orientation.X.Y * vector.X) + (orientation.Y.Y * vector.Y) + (orientation.Z.Y * vector.Z);
+			double z = (orientation.X.Z * vector.X) + (orientation.Y.Z * vector.Y) + (orientation.Z.Z * vector.Z);
 			return new Vector3(x, y, z);
 		}
 
@@ -404,7 +402,7 @@ namespace OpenBveApi.Math
 		public static bool CreateNormal(Vector3 a, Vector3 b, Vector3 c, out Vector3 normal)
 		{
 			normal = Vector3.Cross(b - a, c - a);
-			double norm = normal.X * normal.X + normal.Y * normal.Y + normal.Z * normal.Z;
+			double norm = (normal.X * normal.X) + (normal.Y * normal.Y) + (normal.Z * normal.Z);
 			if (norm != 0.0)
 			{
 				normal *= 1.0 / System.Math.Sqrt(norm);
@@ -440,7 +438,7 @@ namespace OpenBveApi.Math
 		/// <returns>The vector norm.</returns>
 		public static double Norm(Vector3 vector)
 		{
-			return System.Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z);
+			return System.Math.Sqrt((vector.X * vector.X) + (vector.Y * vector.Y) + (vector.Z * vector.Z));
 		}
 
 		// --- read-only fields ---

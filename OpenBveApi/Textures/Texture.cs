@@ -7,13 +7,14 @@ namespace OpenBveApi.Textures
 	{
 		// --- members ---
 		/// <summary>The width of the texture in pixels.</summary>
-		private readonly int MyWidth;
+		public int Width { get; private set; }
 		/// <summary>The height of the texture in pixels.</summary>
-		private readonly int MyHeight;
+		public int Height { get; private set; }
 		/// <summary>The number of bits per pixel. Must be 32.</summary>
-		private readonly int MyBitsPerPixel;
+		public int BitsPerPixel { get; private set; }
 		/// <summary>The texture data. Pixels are stored row-based from top to bottom, and within a row from left to right. For 32 bits per pixel, four bytes are used in the order red, green, blue and alpha.</summary>
-		private readonly byte[] MyBytes;
+		public byte[] Bytes { get; private set; }
+		
 		// --- constructors ---
 		/// <summary>Creates a new instance of this class.</summary>
 		/// <param name="width">The width of the texture in pixels.</param>
@@ -39,45 +40,13 @@ namespace OpenBveApi.Textures
 			}
 			else
 			{
-				this.MyWidth = width;
-				this.MyHeight = height;
-				this.MyBitsPerPixel = bitsPerPixel;
-				this.MyBytes = bytes;
+				this.Width = width;
+				this.Height = height;
+				this.BitsPerPixel = bitsPerPixel;
+				this.Bytes = bytes;
 			}
 		}
-		// --- properties ---
-		/// <summary>Gets the width of the texture in pixels.</summary>
-		public int Width
-		{
-			get
-			{
-				return this.MyWidth;
-			}
-		}
-		/// <summary>Gets the height of the texture in pixels.</summary>
-		public int Height
-		{
-			get
-			{
-				return this.MyHeight;
-			}
-		}
-		/// <summary>Gets the number of bits per pixel.</summary>
-		public int BitsPerPixel
-		{
-			get
-			{
-				return this.MyBitsPerPixel;
-			}
-		}
-		/// <summary>Gets the texture data. Pixels are stored row-based from top to bottom, and within a row from left to right. For 32 bits per pixel, four bytes are used in the order red, green, blue and alpha.</summary>
-		public byte[] Bytes
-		{
-			get
-			{
-				return this.MyBytes;
-			}
-		}
+		
 		// --- operators ---
 		/// <summary>Checks whether two textures are equal.</summary>
 		/// <param name="a">The first texture.</param>
@@ -88,13 +57,13 @@ namespace OpenBveApi.Textures
 			if (object.ReferenceEquals(a, b)) return true;
 			if (a is null) return false;
 			if (b is null) return false;
-			if (a.MyWidth != b.MyWidth) return false;
-			if (a.MyHeight != b.MyHeight) return false;
-			if (a.MyBitsPerPixel != b.MyBitsPerPixel) return false;
-			if (a.MyBytes.Length != b.MyBytes.Length) return false;
-			for (int i = 0; i < a.MyBytes.Length; i++)
+			if (a.Width != b.Width) return false;
+			if (a.Height != b.Height) return false;
+			if (a.BitsPerPixel != b.BitsPerPixel) return false;
+			if (a.Bytes.Length != b.Bytes.Length) return false;
+			for (int i = 0; i < a.Bytes.Length; i++)
 			{
-				if (a.MyBytes[i] != b.MyBytes[i]) return false;
+				if (a.Bytes[i] != b.Bytes[i]) return false;
 			}
 			return true;
 		}
@@ -107,13 +76,13 @@ namespace OpenBveApi.Textures
 			if (object.ReferenceEquals(a, b)) return false;
 			if (a is null) return true;
 			if (b is null) return true;
-			if (a.MyWidth != b.MyWidth) return true;
-			if (a.MyHeight != b.MyHeight) return true;
-			if (a.MyBitsPerPixel != b.MyBitsPerPixel) return true;
-			if (a.MyBytes.Length != b.MyBytes.Length) return true;
-			for (int i = 0; i < a.MyBytes.Length; i++)
+			if (a.Width != b.Width) return true;
+			if (a.Height != b.Height) return true;
+			if (a.BitsPerPixel != b.BitsPerPixel) return true;
+			if (a.Bytes.Length != b.Bytes.Length) return true;
+			for (int i = 0; i < a.Bytes.Length; i++)
 			{
-				if (a.MyBytes[i] != b.MyBytes[i]) return true;
+				if (a.Bytes[i] != b.Bytes[i]) return true;
 			}
 			return false;
 		}
@@ -127,13 +96,13 @@ namespace OpenBveApi.Textures
 			if (obj is null) return false;
 			if (!(obj is Texture)) return false;
 			Texture x = (Texture)obj;
-			if (this.MyWidth != x.MyWidth) return false;
-			if (this.MyHeight != x.MyHeight) return false;
-			if (this.MyBitsPerPixel != x.MyBitsPerPixel) return false;
-			if (this.MyBytes.Length != x.MyBytes.Length) return false;
-			for (int i = 0; i < this.MyBytes.Length; i++)
+			if (this.Width != x.Width) return false;
+			if (this.Height != x.Height) return false;
+			if (this.BitsPerPixel != x.BitsPerPixel) return false;
+			if (this.Bytes.Length != x.Bytes.Length) return false;
+			for (int i = 0; i < this.Bytes.Length; i++)
 			{
-				if (this.MyBytes[i] != x.MyBytes[i]) return false;
+				if (this.Bytes[i] != x.Bytes[i]) return false;
 			}
 			return true;
 		}
@@ -143,19 +112,19 @@ namespace OpenBveApi.Textures
 		/// <exception cref="System.NotSupportedException">Raised when the bits per pixel in the texture is not supported.</exception>
 		public TextureTransparencyType GetTransparencyType()
 		{
-			if (this.MyBitsPerPixel == 24)
+			if (this.BitsPerPixel == 24)
 			{
 				return TextureTransparencyType.Opaque;
 			}
-			else if (this.MyBitsPerPixel == 32)
+			else if (this.BitsPerPixel == 32)
 			{
-				for (int i = 3; i < this.MyBytes.Length; i += 4)
+				for (int i = 3; i < this.Bytes.Length; i += 4)
 				{
-					if (this.MyBytes[i] != 255)
+					if (this.Bytes[i] != 255)
 					{
-						for (int j = i; j < this.MyBytes.Length; j += 4)
+						for (int j = i; j < this.Bytes.Length; j += 4)
 						{
-							if (this.MyBytes[j] != 0)
+							if (this.Bytes[j] != 0)
 							{
 								return TextureTransparencyType.Alpha;
 							}
