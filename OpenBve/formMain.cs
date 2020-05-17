@@ -46,16 +46,7 @@ namespace OpenBve {
 				this.Size = new Size(Interface.CurrentOptions.MainMenuWidth, Interface.CurrentOptions.MainMenuHeight);
 				this.CenterToScreen();
 			}
-			if (Program.IsDevelopmentVersion) {
-				labelVersion.Text = "   v" + Application.ProductVersion + " (development)";
-				labelVersion.Location = new Point(0, labelInfoTop.Bottom);
-				labelVersion.Width = panelInfo.Width;
-				labelVersion.BackColor = Color.Firebrick;
-				labelInfoCenter.Location = new Point(0, labelVersion.Bottom);
-				labelInfoCenter.Visible = true;
-			} else {
-				labelVersion.Text = "v" + Application.ProductVersion;
-			}
+			labelVersion.Text = "v" + Application.ProductVersion;
 			System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
 			// form icon
 			try {
@@ -965,15 +956,6 @@ namespace OpenBve {
 						Message = Message.Replace("[date]", StableDate);
 						MessageBox.Show(Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						Found = true;
-					}
-					if (Program.IsDevelopmentVersion) {
-						if (IsNewVersionHigher(Application.ProductVersion, DevelopmentVersion)) {
-							string Message = Interface.GetInterfaceString("panel_updates_new") + DevelopmentText.ToString().Trim();
-							Message = Message.Replace("[version]", DevelopmentVersion);
-							Message = Message.Replace("[date]", DevelopmentDate);
-							MessageBox.Show(Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-							Found = true;
-						}
 					}
 					if (!Found) {
 						string Message = Interface.GetInterfaceString("panel_updates_old");
