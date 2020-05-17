@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Tao.OpenGl;
+using ReTao.OpenGl;
 
 namespace OpenBve {
 	internal static class TextureManager {
