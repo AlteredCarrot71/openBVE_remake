@@ -1,5 +1,5 @@
 ﻿namespace OpenBveApi.Textures
 {
-	/// <summary>Represents a handle to a texture.</summary>
-	public abstract class TextureHandle { }
+    /// <summary>Represents a handle to a texture.</summary>
+    public abstract class TextureHandle { }
 }
