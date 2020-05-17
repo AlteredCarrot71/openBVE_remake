@@ -1,15 +1,17 @@
-using System;
 using System.Threading;
 
-namespace OpenBve {
-    internal static class Asynchronous {
+namespace OpenBve
+{
+    internal static class Asynchronous
+    {
 
         // members
         private static Thread Worker = null;
         private static bool WorkerStop = false;
 
         // initialize
-        internal static void Initialize() {
+        internal static void Initialize()
+        {
             if (Worker != null) Deinitialize();
             Worker = new Thread(new ThreadStart(Perform));
             WorkerStop = false;
@@ -19,8 +21,10 @@ namespace OpenBve {
         }
 
         // deinitialize
-        internal static void Deinitialize() {
-            if (Worker != null) {
+        internal static void Deinitialize()
+        {
+            if (Worker != null)
+            {
                 WorkerStop = true;
                 Worker.Join();
                 Worker = null;
@@ -28,8 +32,10 @@ namespace OpenBve {
         }
 
         // perform
-        private static void Perform() {
-            while (!WorkerStop) {
+        private static void Perform()
+        {
+            while (!WorkerStop)
+            {
                 TextureManager.PerformAsynchronousOperations();
                 Thread.Sleep(10);
             }

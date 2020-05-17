@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("OpenBve")]
@@ -12,8 +11,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.2.13.0")]
 [assembly: CLSCompliant(true)]
 
-namespace OpenBve {
-	public static partial class Program {
-		internal const bool IsDevelopmentVersion = false;
-	}
+namespace OpenBve
+{
+    public static partial class Program
+    {
+        internal const bool IsDevelopmentVersion = false;
+    }
 }
