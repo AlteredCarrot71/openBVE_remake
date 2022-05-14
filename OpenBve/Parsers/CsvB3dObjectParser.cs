@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenBve
+namespace OpenBve.Parsers
 {
     internal static class CsvB3dObjectParser
     {

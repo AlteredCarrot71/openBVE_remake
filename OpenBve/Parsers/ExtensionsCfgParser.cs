@@ -1,10 +1,10 @@
-﻿using System;
+﻿using OpenBve.Parsers;
+using System;
 
-namespace OpenBve
+namespace OpenBve.Parsers
 {
     internal static class ExtensionsCfgParser
     {
-
         // parse extensions config
         internal static void ParseExtensionsConfig(string TrainPath, System.Text.Encoding Encoding, out ObjectManager.UnifiedObject[] CarObjects, TrainManager.Train Train)
         {
@@ -352,6 +352,5 @@ namespace OpenBve
                 }
             }
         }
-
     }
 }

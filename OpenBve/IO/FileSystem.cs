@@ -3,18 +3,12 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-// TODO: Ensure that parent directory references (../) are processed manually
-//       as System.IO.Path does not handle them correctly on all platforms.
-
-namespace OpenBve
+namespace OpenBve.IO
 {
     /// <summary>Represents the program's organization of files and folders.</summary>
     internal class FileSystem
     {
-
-
-        // --- members ---
-
+        #region members
         /// <summary>The location of the application data, including, among others, Compatibility, Flags and Languages.</summary>
         internal string DataFolder;
 
@@ -35,10 +29,9 @@ namespace OpenBve
 
         /// <summary>The arguments to supply to the process on restarting the program.</summary>
         internal string RestartArguments;
+        #endregion
 
-
-        // --- constructors ---
-
+        #region constructors
         /// <summary>Creates a new instance of this class with default locations.</summary>
         internal FileSystem()
         {
@@ -53,10 +46,9 @@ namespace OpenBve
             this.RestartProcess = assemblyFile;
             this.RestartArguments = string.Empty;
         }
+        #endregion
 
-
-        // --- internal functions ---
-
+        #region internal functions
         /// <summary>Creates the file system information from the command line arguments. If no configuration file is specified in the command line arguments, the default lookup location is used. If no configuration file is found, default values are used.</summary>
         /// <param name="args">The command line arguments.</param>
         /// <returns>The file system information.</returns>
@@ -118,10 +110,9 @@ namespace OpenBve
             }
             return folder;
         }
+        #endregion
 
-
-        // --- private functions ---
-
+        #region private functions
         /// <summary>Creates the file system information from the specified configuration file.</summary>
         /// <param name="file">The configuration file describing the file system.</param>
         /// <returns>The file system.</returns>
@@ -192,6 +183,6 @@ namespace OpenBve
             }
             return folder;
         }
-
+        #endregion
     }
 }

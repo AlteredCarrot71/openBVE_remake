@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace OpenBve
+namespace OpenBve.Parsers
 {
     internal class CsvRwRouteParser
     {

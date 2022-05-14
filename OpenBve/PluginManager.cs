@@ -1,4 +1,5 @@
 ﻿using OpenBveApi.Runtime;
+using OpenBve.Parsers;
 using System;
 using System.Reflection;
 
@@ -6,12 +7,10 @@ namespace OpenBve
 {
     internal static partial class PluginManager
     {
-
         /// <summary>Represents an abstract plugin.</summary>
         internal abstract class Plugin
         {
-
-            // --- members ---
+            #region members
             /// <summary>The file title of the plugin, including the file extension.</summary>
             internal string PluginTitle;
             /// <summary>Whether the plugin is the default ATS/ATC plugin.</summary>
@@ -40,8 +39,9 @@ namespace OpenBve
             internal int LastSection;
             /// <summary>The last exception the plugin raised.</summary>
             internal Exception LastException;
+            #endregion
 
-            // --- functions ---
+            #region functions
             /// <summary>Called to load and initialize the plugin.</summary>
             /// <param name="specs">The train specifications.</param>
             /// <param name="mode">The initialization mode of the train.</param>
@@ -57,9 +57,7 @@ namespace OpenBve
             /// <summary>Called every frame to update the plugin.</summary>
             internal void UpdatePlugin()
             {
-                /*
-				 * Prepare the vehicle state.
-				 * */
+                // Prepare the vehicle state.
                 double location = this.Train.Cars[0].FrontAxle.Follower.TrackPosition - this.Train.Cars[0].FrontAxlePosition + 0.5 * this.Train.Cars[0].Length;
                 double speed = this.Train.Cars[this.Train.DriverCar].Specs.CurrentPerceivedSpeed;
                 double bcPressure = this.Train.Cars[this.Train.DriverCar].Specs.AirBrake.BrakeCylinderCurrentPressure;
@@ -68,9 +66,7 @@ namespace OpenBve
                 double bpPressure = this.Train.Cars[this.Train.DriverCar].Specs.AirBrake.BrakePipeCurrentPressure;
                 double sapPressure = this.Train.Cars[this.Train.DriverCar].Specs.AirBrake.StraightAirPipeCurrentPressure;
                 VehicleState vehicle = new VehicleState(location, new Speed(speed), bcPressure, mrPressure, erPressure, bpPressure, sapPressure);
-                /*
-				 * Prepare the preceding vehicle state.
-				 * */
+                // Prepare the preceding vehicle state.
                 double bestLocation = double.MaxValue;
                 double bestSpeed = 0.0;
                 for (int i = 0; i < TrainManager.Trains.Length; i++)
@@ -95,22 +91,16 @@ namespace OpenBve
                 {
                     precedingVehicle = null;
                 }
-                /*
-				 * Get the driver handles.
-				 * */
+                // Get the driver handles.
                 Handles handles = GetHandles();
-                /*
-				 * Update the plugin.
-				 * */
+                // Update the plugin.
                 double totalTime = Game.SecondsSinceMidnight;
                 double elapsedTime = Game.SecondsSinceMidnight - LastTime;
                 ElapseData data = new ElapseData(vehicle, precedingVehicle, handles, new Time(totalTime), new Time(elapsedTime));
                 LastTime = Game.SecondsSinceMidnight;
                 Elapse(data);
                 this.PluginMessage = data.DebugMessage;
-                /*
-				 * Set the virtual handles.
-				 * */
+                // Set the virtual handles.
                 this.PluginValid = true;
                 SetHandles(data.Handles, true);
             }
@@ -173,9 +163,7 @@ namespace OpenBve
                     }
                     this.PluginValid = false;
                 }
-                /*
-				 * Process the power.
-				 * */
+                // Process the power.
                 if (handles.PowerNotch >= 0 & handles.PowerNotch <= this.Train.Specs.MaximumPowerNotch)
                 {
                     if (virtualHandles)
@@ -202,9 +190,7 @@ namespace OpenBve
                         this.Train.Specs.CurrentPowerNotch.Safety = 0;
                     }
                 }
-                /*
-				 * Process the brakes.
-				 * */
+                // Process the brakes.
                 if (virtualHandles)
                 {
                     this.Train.Specs.CurrentEmergencyBrake.Safety = false;
@@ -536,7 +522,7 @@ namespace OpenBve
             /// <param name="data">The AI data.</param>
             /// <remarks>This function should not be called directly. Call UpdateAI instead.</remarks>
             internal abstract void PerformAI(AIData data);
-
+            #endregion
         }
 
         /// <summary>Loads a custom plugin for the specified train.</summary>
@@ -749,6 +735,5 @@ namespace OpenBve
                 train.Plugin = null;
             }
         }
-
     }
 }

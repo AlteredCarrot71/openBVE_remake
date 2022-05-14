@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenBve.Parsers;
+using System;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -7,7 +8,6 @@ namespace OpenBve
 {
     internal static class Loading
     {
-
         // members
         internal static double RouteProgress;
         internal static double TrainProgress;
@@ -399,6 +399,5 @@ namespace OpenBve
 			 * but the follow-up initialization code needs a valid OpenGL context.
 			 * */
         }
-
     }
 }

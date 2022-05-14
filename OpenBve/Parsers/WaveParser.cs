@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace OpenBve
+namespace OpenBve.Parsers
 {
     internal static class WaveParser
     {

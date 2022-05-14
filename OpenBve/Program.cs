@@ -1,5 +1,7 @@
 ﻿using ReTao.OpenGl;
 using ReTao.Sdl;
+using OpenBve.IO;
+using OpenBve.Parsers;
 using System;
 using System.Windows.Forms;
 
@@ -7,7 +9,6 @@ namespace OpenBve
 {
     public static partial class Program
     {
-
         // system
         internal static string RestartProcessArguments = null;
         internal enum Platform { Windows, Linux, Mac }
@@ -410,6 +411,5 @@ namespace OpenBve
                 MessageBox.Show("SDL failed to create the window.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
-
     }
 }

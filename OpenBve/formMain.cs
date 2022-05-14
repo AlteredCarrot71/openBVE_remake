@@ -1,4 +1,5 @@
 ﻿using ReTao.Sdl;
+using OpenBve.Parsers;
 using System;
 using System.Drawing;
 using System.Text;
@@ -3032,6 +3033,5 @@ namespace OpenBve
                 return false;
             }
         }
-
     }
 }
