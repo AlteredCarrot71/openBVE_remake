@@ -5,7 +5,6 @@ namespace OpenBve
 {
     internal static class SoundManager
     {
-
         // general
         internal struct OpenAlIndex
         {
@@ -435,16 +434,14 @@ namespace OpenBve
                                 data = WaveParser.ConvertToMono8Or16(data);
                                 if (data.Format.BitsPerSample == 8)
                                 {
-                                    int buffer;
-                                    Al.alGenBuffers(1, out buffer);
+                                    Al.alGenBuffers(1, out int buffer);
                                     Al.alBufferData(buffer, Al.AL_FORMAT_MONO8, data.Bytes, data.Bytes.Length, data.Format.SampleRate);
                                     SoundBuffers[SoundBufferIndex].OpenAlBufferIndex = new OpenAlIndex(buffer, true);
                                     SoundBuffers[SoundBufferIndex].Duration = (double)data.Bytes.Length / (double)(data.Format.SampleRate);
                                 }
                                 else if (data.Format.BitsPerSample == 16)
                                 {
-                                    int buffer;
-                                    Al.alGenBuffers(1, out buffer);
+                                    Al.alGenBuffers(1, out int buffer);
                                     Al.alBufferData(buffer, Al.AL_FORMAT_MONO16, data.Bytes, data.Bytes.Length, data.Format.SampleRate);
                                     SoundBuffers[SoundBufferIndex].OpenAlBufferIndex = new OpenAlIndex(buffer, true);
                                     SoundBuffers[SoundBufferIndex].Duration = (double)data.Bytes.Length / (double)(2 * data.Format.SampleRate);
@@ -515,10 +512,12 @@ namespace OpenBve
                 {
                     Array.Resize<SoundBuffer>(ref SoundBuffers, SoundBuffers.Length << 1);
                 }
-                SoundBuffers[i] = new SoundBuffer();
-                SoundBuffers[i].FileName = FileName;
-                SoundBuffers[i].OpenAlBufferIndex = new OpenAlIndex(0, false);
-                SoundBuffers[i].Radius = (float)Radius;
+                SoundBuffers[i] = new SoundBuffer
+                {
+                    FileName = FileName,
+                    OpenAlBufferIndex = new OpenAlIndex(0, false),
+                    Radius = (float)Radius
+                };
                 return i;
             }
             else
@@ -746,6 +745,5 @@ namespace OpenBve
                 return false;
             }
         }
-
     }
 }

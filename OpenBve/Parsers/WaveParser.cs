@@ -5,9 +5,7 @@ namespace OpenBve
 {
     internal static class WaveParser
     {
-
         // --- structures and enumerations ---
-
         /// <summary>Represents the format of wave data.</summary>
         internal struct WaveFormat
         {
@@ -703,6 +701,5 @@ namespace OpenBve
                 }
             }
         }
-
     }
 }

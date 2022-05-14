@@ -247,9 +247,9 @@ namespace OpenBveApi.Math
         public void Rotate(Vector3 direction, double cosineOfAngle, double sineOfAngle)
         {
             double cosineComplement = 1.0 - cosineOfAngle;
-            double x = (cosineOfAngle + (cosineComplement * direction.X * direction.X)) * this.X + ((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * this.Y + ((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * this.Z;
-            double y = (cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * this.Y + ((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * this.X + ((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * this.Z;
-            double z = (cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * this.Z + ((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * this.X + ((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * this.Y;
+            double x = ((cosineOfAngle + (cosineComplement * direction.X * direction.X)) * this.X) + (((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * this.Y) + (((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * this.Z);
+            double y = ((cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * this.Y) + (((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * this.X) + (((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * this.Z);
+            double z = ((cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * this.Z) + (((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * this.X) + (((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * this.Y);
             this = new Vector3(x, y, z);
         }
 
@@ -374,9 +374,9 @@ namespace OpenBveApi.Math
         public static Vector3 Rotate(Vector3 vector, Vector3 direction, double cosineOfAngle, double sineOfAngle)
         {
             double cosineComplement = 1.0 - cosineOfAngle;
-            double x = (cosineOfAngle + (cosineComplement * direction.X * direction.X)) * vector.X + ((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * vector.Y + ((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * vector.Z;
-            double y = (cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * vector.Y + ((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * vector.X + ((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * vector.Z;
-            double z = (cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * vector.Z + ((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * vector.X + ((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * vector.Y;
+            double x = ((cosineOfAngle + (cosineComplement * direction.X * direction.X)) * vector.X) + (((cosineComplement * direction.X * direction.Y) - (sineOfAngle * direction.Z)) * vector.Y) + (((cosineComplement * direction.X * direction.Z) + (sineOfAngle * direction.Y)) * vector.Z);
+            double y = ((cosineOfAngle + (cosineComplement * direction.Y * direction.Y)) * vector.Y) + (((cosineComplement * direction.X * direction.Y) + (sineOfAngle * direction.Z)) * vector.X) + (((cosineComplement * direction.Y * direction.Z) - (sineOfAngle * direction.X)) * vector.Z);
+            double z = ((cosineOfAngle + (cosineComplement * direction.Z * direction.Z)) * vector.Z) + (((cosineComplement * direction.X * direction.Z) - (sineOfAngle * direction.Y)) * vector.X) + (((cosineComplement * direction.Y * direction.Z) + (sineOfAngle * direction.X)) * vector.Y);
             return new Vector3(x, y, z);
         }
 

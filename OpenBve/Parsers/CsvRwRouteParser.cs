@@ -6,7 +6,6 @@ namespace OpenBve
 {
     internal class CsvRwRouteParser
     {
-
         // structures
         private struct Rail
         {
@@ -4201,6 +4200,7 @@ namespace OpenBve
                                     }
                                     break;
                                 case "track.section":
+                                case "track.sections":
                                     {
                                         if (!PreviewOnly)
                                         {

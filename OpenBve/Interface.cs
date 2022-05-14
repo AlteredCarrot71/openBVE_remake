@@ -3224,7 +3224,8 @@ namespace OpenBve
         // get combined file name
         internal static string GetCombinedFileName(string SafeFolderPart, string UnsafeFilePart)
         {
-            return GetCorrectedFileName(System.IO.Path.Combine(SafeFolderPart, GetCorrectedPathSeparation(UnsafeFilePart)));
+            //return GetCorrectedFileName(System.IO.Path.Combine(SafeFolderPart, GetCorrectedPathSeparation(UnsafeFilePart)));
+            return GetCorrectedFileName(OpenBveApi.Path.CombineFile(SafeFolderPart, GetCorrectedPathSeparation(UnsafeFilePart)));
         }
 
         // get combined folder name
