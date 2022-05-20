@@ -4,8 +4,7 @@ namespace OpenBve
 {
     internal static class World
     {
-
-        // vectors
+        #region vectors
         /// <summary>Represents a 2D vector of System.Double coordinates.</summary>
         internal struct Vector2D
         {
@@ -81,8 +80,9 @@ namespace OpenBve
                 return true;
             }
         }
+        #endregion
 
-        // colors
+        #region colors
         /// <summary>Represents an RGB color with 8-bit precision per channel.</summary>
         internal struct ColorRGB
         {
@@ -111,8 +111,9 @@ namespace OpenBve
                 this.A = A;
             }
         }
+        #endregion
 
-        // vertices
+        #region vertices
         /// <summary>Represents a vertex consisting of 3D coordinates and 2D texture coordinates.</summary>
         internal struct Vertex
         {
@@ -142,8 +143,9 @@ namespace OpenBve
                 return false;
             }
         }
+        #endregion
 
-        // mesh material
+        #region mesh material
         /// <summary>Represents material properties.</summary>
         internal struct MeshMaterial
         {
@@ -192,8 +194,9 @@ namespace OpenBve
             Normal = 0,
             Additive = 1
         }
+        #endregion
 
-        // mesh face vertex
+        #region mesh face vertex
         /// <summary>Represents a reference to a vertex and the normal to be used for that vertex.</summary>
         internal struct MeshFaceVertex
         {
@@ -229,8 +232,9 @@ namespace OpenBve
                 return false;
             }
         }
+        #endregion
 
-        // mesh face
+        #region mesh face
         /// <summary>Represents a face consisting of vertices and material attributes.</summary>
         internal struct MeshFace
         {
@@ -279,8 +283,9 @@ namespace OpenBve
             internal const int FaceTypeQuadStrip = 4;
             internal const int Face2Mask = 8;
         }
+        #endregion
 
-        // mesh
+        #region mesh
         /// <summary>Represents a mesh consisting of a series of vertices, faces and material properties.</summary>
         internal struct Mesh
         {
@@ -323,8 +328,9 @@ namespace OpenBve
                 }
             }
         }
+        #endregion
 
-        // glow
+        #region glow
         internal enum GlowAttenuationMode
         {
             None = 0,
@@ -357,8 +363,9 @@ namespace OpenBve
             Mode = (GlowAttenuationMode)(Data >> 12);
             HalfDistance = (double)(Data & 4095);
         }
+        #endregion
 
-        // display
+        #region display
         internal static double HorizontalViewingAngle;
         internal static double VerticalViewingAngle;
         internal static double OriginalVerticalViewingAngle;
@@ -387,8 +394,9 @@ namespace OpenBve
         internal static Background TargetBackground = new Background(-1, 6, false);
         internal const double TargetBackgroundDefaultCountdown = 0.8;
         internal static double TargetBackgroundCountdown;
+        #endregion
 
-        // driver body
+        #region driver body
         internal struct DriverBody
         {
             internal double SlowX;
@@ -539,8 +547,9 @@ namespace OpenBve
                 }
             }
         }
+        #endregion
 
-        // mouse grab
+        #region mouse grab
         internal static bool MouseGrabEnabled = false;
         internal static bool MouseGrabIgnoreOnce = false;
         internal static Vector2D MouseGrabTarget = new Vector2D(0.0, 0.0);
@@ -562,8 +571,9 @@ namespace OpenBve
                 MouseGrabTarget = new Vector2D(0.0, 0.0);
             }
         }
+        #endregion
 
-        // relative camera
+        #region relative camera
         internal struct CameraAlignment
         {
             internal Vector3D Position;
@@ -594,13 +604,15 @@ namespace OpenBve
         internal const double CameraZoomTopSpeed = 2.0;
         internal enum CameraViewMode { Interior, InteriorLookAhead, Exterior, Track, FlyBy, FlyByZooming }
         internal static CameraViewMode CameraMode;
+        #endregion
 
-        // camera memory
+        #region camera memory
         internal static CameraAlignment CameraSavedInterior;
         internal static CameraAlignment CameraSavedExterior;
         internal static CameraAlignment CameraSavedTrack;
+        #endregion
 
-        // camera restriction
+        #region camera restriction
         internal static Vector3D CameraRestrictionBottomLeft = new Vector3D(-1.0, -1.0, 1.0);
         internal static Vector3D CameraRestrictionTopRight = new Vector3D(1.0, 1.0, 1.0);
         internal enum CameraRestrictionMode
@@ -613,14 +625,16 @@ namespace OpenBve
             On = 1
         }
         internal static CameraRestrictionMode CameraRestriction = CameraRestrictionMode.NotAvailable;
+        #endregion
 
-        // absolute camera
+        #region absolute camera
         internal static World.Vector3D AbsoluteCameraPosition;
         internal static World.Vector3D AbsoluteCameraDirection;
         internal static World.Vector3D AbsoluteCameraUp;
         internal static World.Vector3D AbsoluteCameraSide;
+        #endregion
 
-        // camera restriction
+        #region camera restriction
         internal static void InitializeCameraRestriction()
         {
             if ((CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead) & CameraRestriction == CameraRestrictionMode.On)
@@ -742,8 +756,9 @@ namespace OpenBve
                 return true;
             }
         }
+        #endregion
 
-        // update absolute camera
+        #region update absolute camera
         internal static void UpdateAbsoluteCamera(double TimeElapsed)
         {
             // zoom
@@ -1219,8 +1234,9 @@ namespace OpenBve
             if (World.VerticalViewingAngle > 1.5) World.VerticalViewingAngle = 1.5;
             MainLoop.UpdateViewport(MainLoop.ViewPortChangeMode.NoChange);
         }
+        #endregion
 
-        // update viewing distance
+        #region update viewing distance
         internal static void UpdateViewingDistances()
         {
             double f = Math.Atan2(World.CameraTrackFollower.WorldDirection.Z, World.CameraTrackFollower.WorldDirection.X);
@@ -1264,10 +1280,11 @@ namespace OpenBve
             World.BackwardViewingDistance = -d * min;
             ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + World.CameraCurrentAlignment.Position.Z, true);
         }
+        #endregion
 
         // ================================
 
-        // cross
+        #region  cross
         internal static void Cross(double ax, double ay, double az, double bx, double by, double bz, out double cx, out double cy, out double cz)
         {
             cx = ay * bz - az * by;
@@ -1279,8 +1296,9 @@ namespace OpenBve
             Vector3D C; Cross(A.X, A.Y, A.Z, B.X, B.Y, B.Z, out C.X, out C.Y, out C.Z);
             return C;
         }
+        #endregion
 
-        // transformation
+        #region transformation
         internal struct Transformation
         {
             internal Vector3D X;
@@ -1361,8 +1379,9 @@ namespace OpenBve
                 this.Z = z;
             }
         }
+        #endregion
 
-        // rotate
+        #region rotate
         internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
@@ -1473,8 +1492,9 @@ namespace OpenBve
             py = y * cosa + v * sina;
             pz = -dx * u + dz * v * cosa - dz * y * sina;
         }
+        #endregion
 
-        // normalize
+        #region normalize
         internal static void Normalize(ref double x, ref double y)
         {
             double t = x * x + y * y;
@@ -1496,8 +1516,9 @@ namespace OpenBve
                 z *= t;
             }
         }
+        #endregion
 
-        // create normals
+        #region create normals
         internal static void CreateNormals(ref Mesh Mesh)
         {
             for (int i = 0; i < Mesh.Faces.Length; i++)
@@ -1548,6 +1569,6 @@ namespace OpenBve
                 }
             }
         }
-
+        #endregion
     }
 }

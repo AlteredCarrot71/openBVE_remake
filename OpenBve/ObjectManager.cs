@@ -5,7 +5,6 @@ namespace OpenBve
 {
     internal static class ObjectManager
     {
-
         // unified objects
         internal abstract class UnifiedObject { }
 
@@ -2125,6 +2124,5 @@ namespace OpenBve
             }
             LastUpdatedTrackPosition = TrackPosition;
         }
-
     }
 }
