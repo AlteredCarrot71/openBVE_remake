@@ -1,4 +1,5 @@
-﻿using ReTao.OpenGl;
+﻿using OpenBve.Worlds;
+using ReTao.OpenGl;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -31,7 +32,7 @@ namespace OpenBve
             internal TextureLoadMode LoadMode;
             internal TextureWrapMode WrapModeX;
             internal TextureWrapMode WrapModeY;
-            internal World.ColorRGB TransparentColor;
+            internal Colors.ColorRGB TransparentColor;
             internal byte TransparentColorUsed;
             internal TextureTransparencyMode Transparency;
             internal int ClipLeft;
@@ -256,13 +257,13 @@ namespace OpenBve
         // register texture
         internal static int RegisterTexture(string FileName, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, bool DontAllowUnload)
         {
-            return RegisterTexture(FileName, new World.ColorRGB(0, 0, 0), 0, TextureLoadMode.Normal, WrapModeX, WrapModeY, DontAllowUnload, 0, 0, 0, 0);
+            return RegisterTexture(FileName, new Colors.ColorRGB(0, 0, 0), 0, TextureLoadMode.Normal, WrapModeX, WrapModeY, DontAllowUnload, 0, 0, 0, 0);
         }
-        internal static int RegisterTexture(string FileName, World.ColorRGB TransparentColor, byte TransparentColorUsed, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, bool DontAllowUnload)
+        internal static int RegisterTexture(string FileName, Colors.ColorRGB TransparentColor, byte TransparentColorUsed, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, bool DontAllowUnload)
         {
             return RegisterTexture(FileName, TransparentColor, TransparentColorUsed, TextureLoadMode.Normal, WrapModeX, WrapModeY, DontAllowUnload, 0, 0, 0, 0);
         }
-        internal static int RegisterTexture(string FileName, World.ColorRGB TransparentColor, byte TransparentColorUsed, TextureLoadMode LoadMode, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, bool DontAllowUnload, int ClipLeft, int ClipTop, int ClipWidth, int ClipHeight)
+        internal static int RegisterTexture(string FileName, Colors.ColorRGB TransparentColor, byte TransparentColorUsed, TextureLoadMode LoadMode, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, bool DontAllowUnload, int ClipLeft, int ClipTop, int ClipWidth, int ClipHeight)
         {
             int i = FindTexture(FileName, TransparentColor, TransparentColorUsed, LoadMode, WrapModeX, WrapModeY, ClipLeft, ClipTop, ClipWidth, ClipHeight);
             if (i >= 0)
@@ -322,14 +323,14 @@ namespace OpenBve
             Textures[i].Queried = false;
             Textures[i].OpenGlTextureIndex = a[0];
             Textures[i].Transparency = TextureTransparencyMode.None;
-            Textures[i].TransparentColor = new World.ColorRGB(0, 0, 0);
+            Textures[i].TransparentColor = new Colors.ColorRGB(0, 0, 0);
             Textures[i].TransparentColorUsed = 0;
             Textures[i].FileName = null;
             Textures[i].Loaded = true;
             Textures[i].DontAllowUnload = true;
             if (Alpha)
             {
-                LoadTextureRGBAforData(Bitmap, new World.ColorRGB(0, 0, 0), 0, i);
+                LoadTextureRGBAforData(Bitmap, new Colors.ColorRGB(0, 0, 0), 0, i);
                 LoadTextureRGBAforOpenGl(i);
             }
             else
@@ -358,7 +359,7 @@ namespace OpenBve
         }
 
         // find texture
-        private static int FindTexture(string FileName, World.ColorRGB TransparentColor, byte TransparentColorUsed, TextureLoadMode LoadMode, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, int ClipLeft, int ClipTop, int ClipWidth, int ClipHeight)
+        private static int FindTexture(string FileName, Colors.ColorRGB TransparentColor, byte TransparentColorUsed, TextureLoadMode LoadMode, TextureWrapMode WrapModeX, TextureWrapMode WrapModeY, int ClipLeft, int ClipTop, int ClipWidth, int ClipHeight)
         {
             for (int i = 1; i < Textures.Length; i++)
             {
@@ -518,7 +519,7 @@ namespace OpenBve
         }
 
         // load texture rgba
-        private static void LoadTextureRGBAforData(Bitmap Bitmap, World.ColorRGB TransparentColor, byte TransparentColorUsed, int TextureIndex)
+        private static void LoadTextureRGBAforData(Bitmap Bitmap, Colors.ColorRGB TransparentColor, byte TransparentColorUsed, int TextureIndex)
         {
             try
             {

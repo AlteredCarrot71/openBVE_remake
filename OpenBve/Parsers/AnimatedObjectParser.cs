@@ -1,3 +1,4 @@
+using OpenBve.Worlds;
 using System;
 
 namespace OpenBve.Parsers
@@ -49,7 +50,7 @@ namespace OpenBve.Parsers
                         case "[include]":
                             {
                                 i++;
-                                World.Vector3D position = new World.Vector3D(0.0, 0.0, 0.0);
+                                Vectors.Vector3D position = new Vectors.Vector3D(0.0, 0.0, 0.0);
                                 ObjectManager.UnifiedObject[] obj = new OpenBve.ObjectManager.UnifiedObject[4];
                                 int objCount = 0;
                                 while (i < Lines.Length && !(Lines[i].StartsWith("[", StringComparison.Ordinal) & Lines[i].EndsWith("]", StringComparison.Ordinal)))
@@ -83,7 +84,7 @@ namespace OpenBve.Parsers
                                                             }
                                                             else
                                                             {
-                                                                position = new World.Vector3D(x, y, z);
+                                                                position = new Vectors.Vector3D(x, y, z);
                                                             }
                                                         }
                                                         else
@@ -179,17 +180,17 @@ namespace OpenBve.Parsers
                                 Result.Objects[ObjectCount] = new ObjectManager.AnimatedObject();
                                 Result.Objects[ObjectCount].States = new ObjectManager.AnimatedObjectState[] { };
                                 Result.Objects[ObjectCount].CurrentState = -1;
-                                Result.Objects[ObjectCount].TranslateXDirection = new World.Vector3D(1.0, 0.0, 0.0);
-                                Result.Objects[ObjectCount].TranslateYDirection = new World.Vector3D(0.0, 1.0, 0.0);
-                                Result.Objects[ObjectCount].TranslateZDirection = new World.Vector3D(0.0, 0.0, 1.0);
-                                Result.Objects[ObjectCount].RotateXDirection = new World.Vector3D(1.0, 0.0, 0.0);
-                                Result.Objects[ObjectCount].RotateYDirection = new World.Vector3D(0.0, 1.0, 0.0);
-                                Result.Objects[ObjectCount].RotateZDirection = new World.Vector3D(0.0, 0.0, 1.0);
-                                Result.Objects[ObjectCount].TextureShiftXDirection = new World.Vector2D(1.0, 0.0);
-                                Result.Objects[ObjectCount].TextureShiftYDirection = new World.Vector2D(0.0, 1.0);
+                                Result.Objects[ObjectCount].TranslateXDirection = new Vectors.Vector3D(1.0, 0.0, 0.0);
+                                Result.Objects[ObjectCount].TranslateYDirection = new Vectors.Vector3D(0.0, 1.0, 0.0);
+                                Result.Objects[ObjectCount].TranslateZDirection = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                                Result.Objects[ObjectCount].RotateXDirection = new Vectors.Vector3D(1.0, 0.0, 0.0);
+                                Result.Objects[ObjectCount].RotateYDirection = new Vectors.Vector3D(0.0, 1.0, 0.0);
+                                Result.Objects[ObjectCount].RotateZDirection = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                                Result.Objects[ObjectCount].TextureShiftXDirection = new Vectors.Vector2D(1.0, 0.0);
+                                Result.Objects[ObjectCount].TextureShiftYDirection = new Vectors.Vector2D(0.0, 1.0);
                                 Result.Objects[ObjectCount].RefreshRate = 0.0;
                                 Result.Objects[ObjectCount].ObjectIndex = -1;
-                                World.Vector3D Position = new World.Vector3D(0.0, 0.0, 0.0);
+                                Vectors.Vector3D Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
                                 bool timetableUsed = false;
                                 string[] StateFiles = null;
                                 string StateFunctionRpn = null;
@@ -225,7 +226,7 @@ namespace OpenBve.Parsers
                                                             }
                                                             else
                                                             {
-                                                                Position = new World.Vector3D(x, y, z);
+                                                                Position = new Vectors.Vector3D(x, y, z);
                                                             }
                                                         }
                                                         else
@@ -314,13 +315,13 @@ namespace OpenBve.Parsers
                                                                 switch (a.ToLowerInvariant())
                                                                 {
                                                                     case "translatexdirection":
-                                                                        Result.Objects[ObjectCount].TranslateXDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].TranslateXDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                     case "translateydirection":
-                                                                        Result.Objects[ObjectCount].TranslateYDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].TranslateYDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                     case "translatezdirection":
-                                                                        Result.Objects[ObjectCount].TranslateZDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].TranslateZDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                 }
                                                             }
@@ -420,13 +421,13 @@ namespace OpenBve.Parsers
                                                                 switch (a.ToLowerInvariant())
                                                                 {
                                                                     case "rotatexdirection":
-                                                                        Result.Objects[ObjectCount].RotateXDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].RotateXDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                     case "rotateydirection":
-                                                                        Result.Objects[ObjectCount].RotateYDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].RotateYDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                     case "rotatezdirection":
-                                                                        Result.Objects[ObjectCount].RotateZDirection = new World.Vector3D(x, y, z);
+                                                                        Result.Objects[ObjectCount].RotateZDirection = new Vectors.Vector3D(x, y, z);
                                                                         break;
                                                                 }
                                                             }
@@ -563,10 +564,10 @@ namespace OpenBve.Parsers
                                                                 switch (a.ToLowerInvariant())
                                                                 {
                                                                     case "textureshiftxdirection":
-                                                                        Result.Objects[ObjectCount].TextureShiftXDirection = new World.Vector2D(x, y);
+                                                                        Result.Objects[ObjectCount].TextureShiftXDirection = new Vectors.Vector2D(x, y);
                                                                         break;
                                                                     case "textureshiftydirection":
-                                                                        Result.Objects[ObjectCount].TextureShiftYDirection = new World.Vector2D(x, y);
+                                                                        Result.Objects[ObjectCount].TextureShiftYDirection = new Vectors.Vector2D(x, y);
                                                                         break;
                                                                 }
                                                             }
@@ -697,7 +698,7 @@ namespace OpenBve.Parsers
                                         Result.Objects[ObjectCount].TextureShiftYFunction != null & Result.Objects[ObjectCount].TextureShiftYDirection.Y != 0.0;
                                     for (int k = 0; k < StateFiles.Length; k++)
                                     {
-                                        Result.Objects[ObjectCount].States[k].Position = new World.Vector3D(0.0, 0.0, 0.0);
+                                        Result.Objects[ObjectCount].States[k].Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
                                         if (StateFiles[k] != null)
                                         {
                                             Result.Objects[ObjectCount].States[k].Object = ObjectManager.LoadStaticObject(StateFiles[k], Encoding, LoadMode, false, ForceTextureRepeatX, ForceTextureRepeatY);

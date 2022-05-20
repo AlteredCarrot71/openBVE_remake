@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenBve.Worlds;
+using System;
 
 namespace OpenBve
 {
@@ -18,9 +19,9 @@ namespace OpenBve
         {
             internal float Start;
             internal float End;
-            internal World.ColorRGB Color;
+            internal Colors.ColorRGB Color;
             internal double TrackPosition;
-            internal Fog(float Start, float End, World.ColorRGB Color, double TrackPosition)
+            internal Fog(float Start, float End, Colors.ColorRGB Color, double TrackPosition)
             {
                 this.Start = Start;
                 this.End = End;
@@ -30,9 +31,9 @@ namespace OpenBve
         }
         internal static float NoFogStart = 800.0f; // must not be 600 or below
         internal static float NoFogEnd = 1600.0f;
-        internal static Fog PreviousFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 0.0);
-        internal static Fog CurrentFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 0.5);
-        internal static Fog NextFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 1.0);
+        internal static Fog PreviousFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 0.0);
+        internal static Fog CurrentFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 0.5);
+        internal static Fog NextFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 1.0);
 
         // route constants
         internal static string RouteComment = "";
@@ -301,9 +302,9 @@ namespace OpenBve
             TrainStart = TrainStartMode.EmergencyBrakesNoAts;
             NoFogStart = (float)Math.Max(1.33333333333333 * World.BackgroundImageDistance, 800.0);
             NoFogEnd = (float)Math.Max(2.66666666666667 * World.BackgroundImageDistance, 1600.0);
-            PreviousFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 0.0);
-            CurrentFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 0.5);
-            NextFog = new Fog(NoFogStart, NoFogEnd, new World.ColorRGB(128, 128, 128), 1.0);
+            PreviousFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 0.0);
+            CurrentFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 0.5);
+            NextFog = new Fog(NoFogStart, NoFogEnd, new Colors.ColorRGB(128, 128, 128), 1.0);
             InfoTotalTriangles = 0;
             InfoTotalTriangleStrip = 0;
             InfoTotalQuads = 0;
@@ -700,7 +701,7 @@ namespace OpenBve
             internal string Text;
             internal double Timeout;
             internal MessageColor Color;
-            internal World.Vector2D RendererPosition;
+            internal Vectors.Vector2D RendererPosition;
             internal double RendererAlpha;
         }
         internal struct ScoreLog
@@ -713,7 +714,7 @@ namespace OpenBve
         internal static ScoreLog[] ScoreLogs = new ScoreLog[64];
         internal static int ScoreLogCount = 0;
         internal static ScoreMessage[] ScoreMessages = new ScoreMessage[] { };
-        internal static World.Vector2D ScoreMessagesRendererSize = new World.Vector2D(16.0, 16.0);
+        internal static Vectors.Vector2D ScoreMessagesRendererSize = new Vectors.Vector2D(16.0, 16.0);
         internal static string LogRouteName = "";
         internal static string LogTrainName = "";
         internal static DateTime LogDateTime = DateTime.Now;
@@ -730,7 +731,7 @@ namespace OpenBve
                 ScoreMessages[n].Value = Value;
                 ScoreMessages[n].Text = Interface.GetScoreText(TextToken) + ": " + Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 ScoreMessages[n].Timeout = SecondsSinceMidnight + Duration;
-                ScoreMessages[n].RendererPosition = new World.Vector2D(0.0, 0.0);
+                ScoreMessages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
                 ScoreMessages[n].RendererAlpha = 0.0;
                 if (Value < 0.0)
                 {
@@ -767,7 +768,7 @@ namespace OpenBve
                 ScoreMessages[n].Value = 0;
                 ScoreMessages[n].Text = Text.Length != 0 ? Text : "══════════";
                 ScoreMessages[n].Timeout = SecondsSinceMidnight + Duration;
-                ScoreMessages[n].RendererPosition = new World.Vector2D(0.0, 0.0);
+                ScoreMessages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
                 ScoreMessages[n].RendererAlpha = 0.0;
                 ScoreMessages[n].Color = MessageColor.White;
             }
@@ -939,7 +940,7 @@ namespace OpenBve
             internal double DepartureTime;
             internal int DepartureSoundIndex;
             internal double StopTime;
-            internal World.Vector3D SoundOrigin;
+            internal Vectors.Vector3D SoundOrigin;
             internal StationStopMode StopMode;
             internal StationType StationType;
             internal bool ForceStopSignal;
@@ -2323,11 +2324,11 @@ namespace OpenBve
             internal MessageDependency Depencency;
             internal double Timeout;
             internal MessageColor Color;
-            internal World.Vector2D RendererPosition;
+            internal Vectors.Vector2D RendererPosition;
             internal double RendererAlpha;
         }
         internal static Message[] Messages = new Message[] { };
-        internal static World.Vector2D MessagesRendererSize = new World.Vector2D(16.0, 16.0);
+        internal static Vectors.Vector2D MessagesRendererSize = new Vectors.Vector2D(16.0, 16.0);
         internal static void AddMessage(string Text, MessageDependency Depencency, Interface.GameMode Mode, MessageColor Color, double Timeout)
         {
             if (Interface.CurrentOptions.GameMode <= Mode)
@@ -2346,7 +2347,7 @@ namespace OpenBve
                 Messages[n].Depencency = Depencency;
                 Messages[n].Timeout = Timeout;
                 Messages[n].Color = Color;
-                Messages[n].RendererPosition = new World.Vector2D(0.0, 0.0);
+                Messages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
                 Messages[n].RendererAlpha = 0.0;
             }
         }
@@ -2470,7 +2471,7 @@ namespace OpenBve
         internal struct PointOfInterest
         {
             internal double TrackPosition;
-            internal World.Vector3D TrackOffset;
+            internal Vectors.Vector3D TrackOffset;
             internal double TrackYaw;
             internal double TrackPitch;
             internal double TrackRoll;

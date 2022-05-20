@@ -1,4 +1,5 @@
-﻿using ReTao.OpenGl;
+﻿using OpenBve.Worlds;
+using ReTao.OpenGl;
 using System;
 
 namespace OpenBve
@@ -101,14 +102,14 @@ namespace OpenBve
             internal ObjectList List;
             internal int OpenGlDisplayList;
             internal bool OpenGlDisplayListAvailable;
-            internal World.Vector3D WorldPosition;
+            internal Vectors.Vector3D WorldPosition;
             internal bool Update;
             internal ObjectGroup()
             {
                 this.List = new ObjectList();
                 this.OpenGlDisplayList = 0;
                 this.OpenGlDisplayListAvailable = false;
-                this.WorldPosition = new World.Vector3D(0.0, 0.0, 0.0);
+                this.WorldPosition = new Vectors.Vector3D(0.0, 0.0, 0.0);
                 this.Update = true;
             }
         }
@@ -142,9 +143,9 @@ namespace OpenBve
 
         // options
         internal static bool OptionLighting = true;
-        internal static World.ColorRGB OptionAmbientColor = new World.ColorRGB(160, 160, 160);
-        internal static World.ColorRGB OptionDiffuseColor = new World.ColorRGB(160, 160, 160);
-        internal static World.Vector3Df OptionLightPosition = new World.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+        internal static Colors.ColorRGB OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
+        internal static Colors.ColorRGB OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
+        internal static Vectors.Vector3Df OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
         internal static float OptionLightingResultingAmount = 1.0f;
         internal static bool OptionNormals = false;
         internal static bool OptionWireframe = false;
@@ -180,9 +181,9 @@ namespace OpenBve
             OverlayOpaque = new ObjectList();
             OverlayAlpha = new ObjectList();
             OptionLighting = true;
-            OptionAmbientColor = new World.ColorRGB(160, 160, 160);
-            OptionDiffuseColor = new World.ColorRGB(160, 160, 160);
-            OptionLightPosition = new World.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+            OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
+            OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
+            OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
             OptionLightingResultingAmount = 1.0f;
             OptionClock = false;
             OptionBrakeSystems = false;
@@ -212,7 +213,7 @@ namespace OpenBve
             // hud
             Interface.LoadHUD();
             string Path = Program.FileSystem.GetDataFolder("In-game");
-            TextureLogo = TextureManager.RegisterTexture(Interface.GetCombinedFileName(Path, "logo.png"), new World.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+            TextureLogo = TextureManager.RegisterTexture(Interface.GetCombinedFileName(Path, "logo.png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
             TextureManager.ValidateTexture(ref TextureLogo);
             // opengl
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
@@ -1078,8 +1079,8 @@ namespace OpenBve
                         y1 = (float)(0.375 * World.BackgroundImageDistance);
                     }
                     const int n = 32;
-                    World.Vector3Df[] bottom = new World.Vector3Df[n];
-                    World.Vector3Df[] top = new World.Vector3Df[n];
+                    Vectors.Vector3Df[] bottom = new Vectors.Vector3Df[n];
+                    Vectors.Vector3Df[] top = new Vectors.Vector3Df[n];
                     double angleValue = 2.61799387799149 - 3.14159265358979 / (double)n;
                     double angleIncrement = 6.28318530717958 / (double)n;
                     /*
@@ -1091,8 +1092,8 @@ namespace OpenBve
                     {
                         float x = (float)(World.BackgroundImageDistance * Math.Cos(angleValue));
                         float z = (float)(World.BackgroundImageDistance * Math.Sin(angleValue));
-                        bottom[i] = new World.Vector3Df(scale * x, scale * y0, scale * z);
-                        top[i] = new World.Vector3Df(scale * x, scale * y1, scale * z);
+                        bottom[i] = new Vectors.Vector3Df(scale * x, scale * y0, scale * z);
+                        top[i] = new Vectors.Vector3Df(scale * x, scale * y1, scale * z);
                         angleValue += angleIncrement;
                     }
                     float textureStart = 0.5f * (float)Data.Repetition / (float)n;
@@ -3310,7 +3311,7 @@ namespace OpenBve
         }
 
         // get color
-        private static void CreateBackColor(World.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
+        private static void CreateBackColor(Colors.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
         {
             if (Original.R == 0 & Original.G == 0 & Original.B == 0)
             {
@@ -3353,7 +3354,7 @@ namespace OpenBve
             }
             A = inv255 * (float)Original.A;
         }
-        private static void CreateTextColor(World.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
+        private static void CreateTextColor(Colors.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
         {
             if (Original.R == 0 & Original.G == 0 & Original.B == 0)
             {

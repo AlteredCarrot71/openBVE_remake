@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenBve.Worlds;
+using System;
 using System.IO;
 using System.IO.Compression;
 
@@ -1403,9 +1404,9 @@ namespace OpenBve.Parsers
         // structures
         private struct Material
         {
-            internal World.ColorRGBA faceColor;
-            internal World.ColorRGB specularColor;
-            internal World.ColorRGB emissiveColor;
+            internal Colors.ColorRGBA faceColor;
+            internal Colors.ColorRGB specularColor;
+            internal Colors.ColorRGB emissiveColor;
             internal string TextureFilename;
         }
 
@@ -1512,11 +1513,11 @@ namespace OpenBve.Parsers
                                 double x = (double)vertices[j].Data[0];
                                 double y = (double)vertices[j].Data[1];
                                 double z = (double)vertices[j].Data[2];
-                                Vertices[j].Coordinates = new World.Vector3D(x, y, z);
+                                Vertices[j].Coordinates = new Vectors.Vector3D(x, y, z);
                             }
                             // collect faces
                             int[][] Faces = new int[nFaces][];
-                            World.Vector3Df[][] FaceNormals = new World.Vector3Df[nFaces][];
+                            Vectors.Vector3Df[][] FaceNormals = new Vectors.Vector3Df[nFaces][];
                             int[] FaceMaterials = new int[nFaces];
                             for (int j = 0; j < nFaces; j++)
                             {
@@ -1557,7 +1558,7 @@ namespace OpenBve.Parsers
                                     return false;
                                 }
                                 Faces[j] = new int[nFaceVertexIndices];
-                                FaceNormals[j] = new World.Vector3Df[nFaceVertexIndices];
+                                FaceNormals[j] = new Vectors.Vector3Df[nFaceVertexIndices];
                                 for (int k = 0; k < nFaceVertexIndices; k++)
                                 {
                                     if (faceVertexIndices[k] < 0 | faceVertexIndices[k] >= nVertices)
@@ -1566,7 +1567,7 @@ namespace OpenBve.Parsers
                                         return false;
                                     }
                                     Faces[j][k] = faceVertexIndices[k];
-                                    FaceNormals[j][k] = new World.Vector3Df(0.0f, 0.0f, 0.0f);
+                                    FaceNormals[j][k] = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
                                 }
                             }
                             // collect additional templates
@@ -1640,9 +1641,9 @@ namespace OpenBve.Parsers
                                             Array.Resize<Material>(ref Materials, mn + nMaterials);
                                             for (int k = 0; k < nMaterials; k++)
                                             {
-                                                Materials[mn + k].faceColor = new World.ColorRGBA(255, 255, 255, 255);
-                                                Materials[mn + k].specularColor = new World.ColorRGB(0, 0, 0);
-                                                Materials[mn + k].emissiveColor = new World.ColorRGB(0, 0, 0);
+                                                Materials[mn + k].faceColor = new Colors.ColorRGBA(255, 255, 255, 255);
+                                                Materials[mn + k].specularColor = new Colors.ColorRGB(0, 0, 0);
+                                                Materials[mn + k].emissiveColor = new Colors.ColorRGB(0, 0, 0);
                                                 Materials[mn + k].TextureFilename = null;
                                             }
                                             int MaterialIndex = mn;
@@ -1746,7 +1747,7 @@ namespace OpenBve.Parsers
                                                         Interface.AddMessage(Interface.MessageType.Error, false, "alpha is expected to be in the range from 0.0 to 1.0 in faceColor in Material in MeshMaterialList in Mesh in x object file " + FileName);
                                                         alpha = alpha < 0.5 ? 0.0 : 1.0;
                                                     }
-                                                    Materials[MaterialIndex].faceColor = new World.ColorRGBA((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue), (byte)Math.Round(255.0 * alpha));
+                                                    Materials[MaterialIndex].faceColor = new Colors.ColorRGBA((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue), (byte)Math.Round(255.0 * alpha));
                                                     // collect specular color
                                                     if (specularColor.Name != "ColorRGB")
                                                     {
@@ -1791,7 +1792,7 @@ namespace OpenBve.Parsers
                                                         Interface.AddMessage(Interface.MessageType.Error, false, "blue is expected to be in the range from 0.0 to 1.0 in specularColor in Material in MeshMaterialList in Mesh in x object file " + FileName);
                                                         blue = blue < 0.5 ? 0.0 : 1.0;
                                                     }
-                                                    Materials[MaterialIndex].specularColor = new World.ColorRGB((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue));
+                                                    Materials[MaterialIndex].specularColor = new Colors.ColorRGB((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue));
                                                     // collect emissive color
                                                     if (emissiveColor.Name != "ColorRGB")
                                                     {
@@ -1836,7 +1837,7 @@ namespace OpenBve.Parsers
                                                         Interface.AddMessage(Interface.MessageType.Error, false, "blue is expected to be in the range from 0.0 to 1.0 in emissiveColor in Material in MeshMaterialList in Mesh in x object file " + FileName);
                                                         blue = blue < 0.5 ? 0.0 : 1.0;
                                                     }
-                                                    Materials[MaterialIndex].emissiveColor = new World.ColorRGB((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue));
+                                                    Materials[MaterialIndex].emissiveColor = new Colors.ColorRGB((byte)Math.Round(255.0 * red), (byte)Math.Round(255.0 * green), (byte)Math.Round(255.0 * blue));
                                                     // collect additional templates
                                                     for (int l = 4; l < h.Data.Length; l++)
                                                     {
@@ -1961,7 +1962,7 @@ namespace OpenBve.Parsers
                                                 }
                                                 double u = (double)textureCoords[k].Data[0];
                                                 double v = (double)textureCoords[k].Data[1];
-                                                Vertices[k].TextureCoordinates = new World.Vector2Df((float)u, (float)v);
+                                                Vertices[k].TextureCoordinates = new Vectors.Vector2Df((float)u, (float)v);
                                             }
                                         }
                                         break;
@@ -2018,7 +2019,7 @@ namespace OpenBve.Parsers
                                                 return false;
                                             }
                                             // collect normals
-                                            World.Vector3Df[] Normals = new World.Vector3Df[nNormals];
+                                            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[nNormals];
                                             for (int k = 0; k < nNormals; k++)
                                             {
                                                 if (normals[k].Name != "Vector")
@@ -2050,7 +2051,7 @@ namespace OpenBve.Parsers
                                                 double y = (double)normals[k].Data[1];
                                                 double z = (double)normals[k].Data[2];
                                                 World.Normalize(ref x, ref y, ref z);
-                                                Normals[k] = new World.Vector3Df((float)x, (float)y, (float)z);
+                                                Normals[k] = new Vectors.Vector3Df((float)x, (float)y, (float)z);
                                             }
                                             // collect faces
                                             for (int k = 0; k < nFaceNormals; k++)
@@ -2110,9 +2111,9 @@ namespace OpenBve.Parsers
                             if (Materials.Length == 0)
                             {
                                 Materials = new Material[1];
-                                Materials[0].faceColor = new World.ColorRGBA(255, 255, 255, 255);
-                                Materials[0].emissiveColor = new World.ColorRGB(0, 0, 0);
-                                Materials[0].specularColor = new World.ColorRGB(0, 0, 0);
+                                Materials[0].faceColor = new Colors.ColorRGBA(255, 255, 255, 255);
+                                Materials[0].emissiveColor = new Colors.ColorRGB(0, 0, 0);
+                                Materials[0].specularColor = new Colors.ColorRGB(0, 0, 0);
                                 Materials[0].TextureFilename = null;
                                 for (int j = 0; j < nFaces; j++)
                                 {
@@ -2166,7 +2167,7 @@ namespace OpenBve.Parsers
                                             }
                                         }
                                     }
-                                    int tday = TextureManager.RegisterTexture(Materials[j].TextureFilename, new World.ColorRGB(0, 0, 0), 1, TextureManager.TextureLoadMode.Normal, WrapX, WrapY, LoadMode != ObjectManager.ObjectLoadMode.Normal, 0, 0, 0, 0);
+                                    int tday = TextureManager.RegisterTexture(Materials[j].TextureFilename, new Colors.ColorRGB(0, 0, 0), 1, TextureManager.TextureLoadMode.Normal, WrapX, WrapY, LoadMode != ObjectManager.ObjectLoadMode.Normal, 0, 0, 0, 0);
                                     Object.Mesh.Materials[mm + j].DaytimeTextureIndex = tday;
                                     transparent = true;
                                 }
@@ -2177,7 +2178,7 @@ namespace OpenBve.Parsers
                                 }
                                 Object.Mesh.Materials[mm + j].Flags = (byte)((transparent ? World.MeshMaterial.TransparentColorMask : 0) | (emissive ? World.MeshMaterial.EmissiveColorMask : 0));
                                 Object.Mesh.Materials[mm + j].Color = Materials[j].faceColor;
-                                Object.Mesh.Materials[mm + j].TransparentColor = new World.ColorRGB(0, 0, 0);
+                                Object.Mesh.Materials[mm + j].TransparentColor = new Colors.ColorRGB(0, 0, 0);
                                 Object.Mesh.Materials[mm + j].EmissiveColor = Materials[j].emissiveColor;
                                 Object.Mesh.Materials[mm + j].NighttimeTextureIndex = -1;
                                 Object.Mesh.Materials[mm + j].BlendMode = World.MeshMaterialBlendMode.Normal;
