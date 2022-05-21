@@ -900,7 +900,7 @@ namespace OpenBve.Parsers
                                         double cx = 0.25 * (x0 + x1 + x2 + x3);
                                         double cy = 0.25 * (y0 + y1 + y2 + y3);
                                         double cz = 0.25 * (z0 + z1 + z2 + z3);
-                                        World.Vertex[] vertices = new World.Vertex[11];
+                                        Vertex[] vertices = new Vertex[11];
                                         int[][] faces = new int[][] {
                                             new int[] { 0, 1, 2 },
                                             new int[] { 0, 3, 4 },
@@ -1231,15 +1231,15 @@ namespace OpenBve.Parsers
             v[1] = new Vectors.Vector3D(x0 - xm, y0 - ym, 0);
             v[2] = new Vectors.Vector3D(x1 - xm, y0 - ym, 0);
             v[3] = new Vectors.Vector3D(x1 - xm, y1 - ym, 0);
-            World.Vertex t0 = new World.Vertex(v[0], new Vectors.Vector2Df(0.0f, 1.0f));
-            World.Vertex t1 = new World.Vertex(v[1], new Vectors.Vector2Df(0.0f, 0.0f));
-            World.Vertex t2 = new World.Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
-            World.Vertex t3 = new World.Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
+            Vertex t0 = new Vertex(v[0], new Vectors.Vector2Df(0.0f, 1.0f));
+            Vertex t1 = new Vertex(v[1], new Vectors.Vector2Df(0.0f, 0.0f));
+            Vertex t2 = new Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
+            Vertex t3 = new Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
-            Object.Mesh.Vertices = new World.Vertex[] { t0, t1, t2, t3 };
+            Object.Mesh.Vertices = new Vertex[] { t0, t1, t2, t3 };
             Object.Mesh.Faces = new World.MeshFace[] { new World.MeshFace(new int[] { 0, 1, 2, 3 }) };
-            Object.Mesh.Materials = new World.MeshMaterial[1];
-            Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? World.MeshMaterial.TransparentColorMask : 0);
+            Object.Mesh.Materials = new Worlds.Mesh.Material[1];
+            Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? Worlds.Mesh.Material.TransparentColorMask : 0);
             Object.Mesh.Materials[0].Color = Color;
             Object.Mesh.Materials[0].TransparentColor = new Colors.ColorRGB(0, 0, 255);
             Object.Mesh.Materials[0].DaytimeTextureIndex = DaytimeTextureIndex;

@@ -43,7 +43,7 @@ namespace OpenBve.Worlds
             /// <param name="Y">The Y-coordinate.</param>
             public Vector3D(Vectors.Vector2D Vector, double Y)
             {
-                double t = 1.0 / Math.Sqrt(Vector.X * Vector.X + Vector.Y * Vector.Y + Y * Y);
+                double t = 1.0 / Math.Sqrt((Vector.X * Vector.X) + (Vector.Y * Vector.Y) + (Y * Y));
                 this.X = t * Vector.X;
                 this.Y = t * Y;
                 this.Z = t * Vector.Y;
@@ -82,13 +82,16 @@ namespace OpenBve.Worlds
 
         public static void Cross(double ax, double ay, double az, double bx, double by, double bz, out double cx, out double cy, out double cz)
         {
-            cx = ay * bz - az * by;
-            cy = az * bx - ax * bz;
-            cz = ax * by - ay * bx;
+            cx = (ay * bz) - (az * by);
+            cy = (az * bx) - (ax * bz);
+            cz = (ax * by) - (ay * bx);
         }
         public static Vector3D Cross(Vector3D A, Vector3D B)
         {
-            Vector3D C; Cross(A.X, A.Y, A.Z, B.X, B.Y, B.Z, out C.X, out C.Y, out C.Z);
+            Vector3D C; 
+            C.X = (A.Y * B.Z) - (A.Z * B.Y);
+            C.Y = (A.Z * B.X) - (A.X * B.Z);
+            C.Z = (A.X * B.Y) - (A.Y * B.X);
             return C;
         }
     }

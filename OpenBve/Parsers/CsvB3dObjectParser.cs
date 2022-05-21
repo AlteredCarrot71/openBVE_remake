@@ -16,8 +16,8 @@ namespace OpenBve.Parsers
             internal bool TransparentColorUsed;
             internal string DaytimeTexture;
             internal string NighttimeTexture;
-            internal World.MeshMaterialBlendMode BlendMode;
-            internal ushort GlowAttenuationData;
+            internal Worlds.Mesh.MaterialBlendMode BlendMode;
+            internal short GlowAttenuationData;
             internal Material()
             {
                 this.Color = new Colors.ColorRGBA(255, 255, 255, 255);
@@ -27,7 +27,7 @@ namespace OpenBve.Parsers
                 this.TransparentColorUsed = false;
                 this.DaytimeTexture = null;
                 this.NighttimeTexture = null;
-                this.BlendMode = World.MeshMaterialBlendMode.Normal;
+                this.BlendMode = Worlds.Mesh.MaterialBlendMode.Normal;
                 this.GlowAttenuationData = 0;
             }
             internal Material(Material Prototype)
@@ -45,12 +45,12 @@ namespace OpenBve.Parsers
         }
         private class MeshBuilder
         {
-            internal World.Vertex[] Vertices;
+            internal Vertex[] Vertices;
             internal World.MeshFace[] Faces;
             internal Material[] Materials;
             internal MeshBuilder()
             {
-                this.Vertices = new World.Vertex[] { };
+                this.Vertices = new Vertex[] { };
                 this.Faces = new World.MeshFace[] { };
                 this.Materials = new Material[] { new Material() };
             }
@@ -70,8 +70,8 @@ namespace OpenBve.Parsers
             // initialize object
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
             Object.Mesh.Faces = new World.MeshFace[] { };
-            Object.Mesh.Materials = new World.MeshMaterial[] { };
-            Object.Mesh.Vertices = new World.Vertex[] { };
+            Object.Mesh.Materials = new Worlds.Mesh.Material[] { };
+            Object.Mesh.Vertices = new Vertex[] { };
             // read lines
             string[] Lines = System.IO.File.ReadAllLines(FileName, Encoding);
             // parse lines
@@ -212,7 +212,7 @@ namespace OpenBve.Parsers
                                     nz = 0.0;
                                 }
                                 World.Normalize(ref nx, ref ny, ref nz);
-                                Array.Resize<World.Vertex>(ref Builder.Vertices, Builder.Vertices.Length + 1);
+                                Array.Resize<Vertex>(ref Builder.Vertices, Builder.Vertices.Length + 1);
                                 while (Builder.Vertices.Length >= Normals.Length)
                                 {
                                     Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
@@ -282,14 +282,14 @@ namespace OpenBve.Parsers
                                         int f = Builder.Faces.Length;
                                         Array.Resize<World.MeshFace>(ref Builder.Faces, f + 1);
                                         Builder.Faces[f] = new World.MeshFace();
-                                        Builder.Faces[f].Vertices = new World.MeshFaceVertex[Arguments.Length];
+                                        Builder.Faces[f].Vertices = new Worlds.Mesh.FaceVertex[Arguments.Length];
                                         while (Builder.Vertices.Length > Normals.Length)
                                         {
                                             Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
                                         }
                                         for (int j = 0; j < Arguments.Length; j++)
                                         {
-                                            Builder.Faces[f].Vertices[j].Index = (ushort)a[j];
+                                            Builder.Faces[f].Vertices[j].Index = (short)a[j];
                                             Builder.Faces[f].Vertices[j].Normal = Normals[a[j]];
                                         }
                                         if (cmd == "addface2" | cmd == "face2")
@@ -624,7 +624,7 @@ namespace OpenBve.Parsers
                                 }
                                 for (int j = 0; j < Builder.Faces.Length; j++)
                                 {
-                                    Builder.Faces[j].Material += (ushort)m;
+                                    Builder.Faces[j].Material += (short)m;
                                 }
                             }
                             break;
@@ -690,7 +690,7 @@ namespace OpenBve.Parsers
                                 }
                                 for (int j = 0; j < Builder.Faces.Length; j++)
                                 {
-                                    Builder.Faces[j].Material += (ushort)m;
+                                    Builder.Faces[j].Material += (short)m;
                                 }
                             }
                             break;
@@ -762,20 +762,20 @@ namespace OpenBve.Parsers
                                 {
                                     Interface.AddMessage(Interface.MessageType.Warning, false, "At most 3 arguments are expected in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
                                 }
-                                World.MeshMaterialBlendMode blendmode = World.MeshMaterialBlendMode.Normal;
+                                Worlds.Mesh.MaterialBlendMode blendmode = Worlds.Mesh.MaterialBlendMode.Normal;
                                 if (Arguments.Length >= 1 && Arguments[0].Length > 0)
                                 {
                                     switch (Arguments[0].ToLowerInvariant())
                                     {
                                         case "normal":
-                                            blendmode = World.MeshMaterialBlendMode.Normal;
+                                            blendmode = Worlds.Mesh.MaterialBlendMode.Normal;
                                             break;
                                         case "additive":
-                                            blendmode = World.MeshMaterialBlendMode.Additive;
+                                            blendmode = Worlds.Mesh.MaterialBlendMode.Additive;
                                             break;
                                         default:
                                             Interface.AddMessage(Interface.MessageType.Error, false, "The given BlendMode is not supported in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
-                                            blendmode = World.MeshMaterialBlendMode.Normal;
+                                            blendmode = Worlds.Mesh.MaterialBlendMode.Normal;
                                             break;
                                     }
                                 }
@@ -926,7 +926,7 @@ namespace OpenBve.Parsers
         private static void CreateCube(ref MeshBuilder Builder, double sx, double sy, double sz)
         {
             int v = Builder.Vertices.Length;
-            Array.Resize<World.Vertex>(ref Builder.Vertices, v + 8);
+            Array.Resize<Vertex>(ref Builder.Vertices, v + 8);
             Builder.Vertices[v + 0].Coordinates = new Vectors.Vector3D(sx, sy, -sz);
             Builder.Vertices[v + 1].Coordinates = new Vectors.Vector3D(sx, -sy, -sz);
             Builder.Vertices[v + 2].Coordinates = new Vectors.Vector3D(-sx, -sy, -sz);
@@ -937,12 +937,12 @@ namespace OpenBve.Parsers
             Builder.Vertices[v + 7].Coordinates = new Vectors.Vector3D(-sx, sy, sz);
             int f = Builder.Faces.Length;
             Array.Resize<World.MeshFace>(ref Builder.Faces, f + 6);
-            Builder.Faces[f + 0].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 0), new World.MeshFaceVertex(v + 1), new World.MeshFaceVertex(v + 2), new World.MeshFaceVertex(v + 3) };
-            Builder.Faces[f + 1].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 0), new World.MeshFaceVertex(v + 4), new World.MeshFaceVertex(v + 5), new World.MeshFaceVertex(v + 1) };
-            Builder.Faces[f + 2].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 0), new World.MeshFaceVertex(v + 3), new World.MeshFaceVertex(v + 7), new World.MeshFaceVertex(v + 4) };
-            Builder.Faces[f + 3].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 6), new World.MeshFaceVertex(v + 5), new World.MeshFaceVertex(v + 4), new World.MeshFaceVertex(v + 7) };
-            Builder.Faces[f + 4].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 6), new World.MeshFaceVertex(v + 7), new World.MeshFaceVertex(v + 3), new World.MeshFaceVertex(v + 2) };
-            Builder.Faces[f + 5].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + 6), new World.MeshFaceVertex(v + 2), new World.MeshFaceVertex(v + 1), new World.MeshFaceVertex(v + 5) };
+            Builder.Faces[f + 0].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 1), new Worlds.Mesh.FaceVertex(v + 2), new Worlds.Mesh.FaceVertex(v + 3) };
+            Builder.Faces[f + 1].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 4), new Worlds.Mesh.FaceVertex(v + 5), new Worlds.Mesh.FaceVertex(v + 1) };
+            Builder.Faces[f + 2].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 3), new Worlds.Mesh.FaceVertex(v + 7), new Worlds.Mesh.FaceVertex(v + 4) };
+            Builder.Faces[f + 3].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 6), new Worlds.Mesh.FaceVertex(v + 5), new Worlds.Mesh.FaceVertex(v + 4), new Worlds.Mesh.FaceVertex(v + 7) };
+            Builder.Faces[f + 4].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 6), new Worlds.Mesh.FaceVertex(v + 7), new Worlds.Mesh.FaceVertex(v + 3), new Worlds.Mesh.FaceVertex(v + 2) };
+            Builder.Faces[f + 5].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 6), new Worlds.Mesh.FaceVertex(v + 2), new Worlds.Mesh.FaceVertex(v + 1), new Worlds.Mesh.FaceVertex(v + 5) };
         }
 
         // create cylinder
@@ -957,7 +957,7 @@ namespace OpenBve.Parsers
             double ns = h >= 0.0 ? 1.0 : -1.0;
             // initialization
             int v = Builder.Vertices.Length;
-            Array.Resize<World.Vertex>(ref Builder.Vertices, v + 2 * n);
+            Array.Resize<Vertex>(ref Builder.Vertices, v + 2 * n);
             Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[2 * n];
             double d = 2.0 * Math.PI / (double)n;
             double g = 0.5 * h;
@@ -994,22 +994,22 @@ namespace OpenBve.Parsers
                 int i1 = (2 * i + 3) % (2 * n);
                 int i2 = 2 * i + 1;
                 int i3 = 2 * i;
-                Builder.Faces[f + i].Vertices = new World.MeshFaceVertex[] { new World.MeshFaceVertex(v + i0, Normals[i0]), new World.MeshFaceVertex(v + i1, Normals[i1]), new World.MeshFaceVertex(v + i2, Normals[i2]), new World.MeshFaceVertex(v + i3, Normals[i3]) };
+                Builder.Faces[f + i].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + i0, Normals[i0]), new Worlds.Mesh.FaceVertex(v + i1, Normals[i1]), new Worlds.Mesh.FaceVertex(v + i2, Normals[i2]), new Worlds.Mesh.FaceVertex(v + i3, Normals[i3]) };
             }
             for (int i = 0; i < m; i++)
             {
-                Builder.Faces[f + n + i].Vertices = new World.MeshFaceVertex[n];
+                Builder.Faces[f + n + i].Vertices = new Worlds.Mesh.FaceVertex[n];
                 for (int j = 0; j < n; j++)
                 {
                     if (i == 0 & lowercap)
                     {
                         // lower cap
-                        Builder.Faces[f + n + i].Vertices[j] = new World.MeshFaceVertex(v + 2 * j + 1);
+                        Builder.Faces[f + n + i].Vertices[j] = new Worlds.Mesh.FaceVertex(v + 2 * j + 1);
                     }
                     else
                     {
                         // upper cap
-                        Builder.Faces[f + n + i].Vertices[j] = new World.MeshFaceVertex(v + 2 * (n - j - 1));
+                        Builder.Faces[f + n + i].Vertices[j] = new Worlds.Mesh.FaceVertex(v + 2 * (n - j - 1));
                     }
                 }
             }
@@ -1223,8 +1223,8 @@ namespace OpenBve.Parsers
                 int mm = Object.Mesh.Materials.Length;
                 int mv = Object.Mesh.Vertices.Length;
                 Array.Resize<World.MeshFace>(ref Object.Mesh.Faces, mf + Builder.Faces.Length);
-                Array.Resize<World.MeshMaterial>(ref Object.Mesh.Materials, mm + Builder.Materials.Length);
-                Array.Resize<World.Vertex>(ref Object.Mesh.Vertices, mv + Builder.Vertices.Length);
+                Array.Resize<Worlds.Mesh.Material>(ref Object.Mesh.Materials, mm + Builder.Materials.Length);
+                Array.Resize<Vertex>(ref Object.Mesh.Vertices, mv + Builder.Vertices.Length);
                 for (int i = 0; i < Builder.Vertices.Length; i++)
                 {
                     Object.Mesh.Vertices[mv + i] = Builder.Vertices[i];
@@ -1234,13 +1234,13 @@ namespace OpenBve.Parsers
                     Object.Mesh.Faces[mf + i] = Builder.Faces[i];
                     for (int j = 0; j < Object.Mesh.Faces[mf + i].Vertices.Length; j++)
                     {
-                        Object.Mesh.Faces[mf + i].Vertices[j].Index += (ushort)mv;
+                        Object.Mesh.Faces[mf + i].Vertices[j].Index += (short)mv;
                     }
-                    Object.Mesh.Faces[mf + i].Material += (ushort)mm;
+                    Object.Mesh.Faces[mf + i].Material += (short)mm;
                 }
                 for (int i = 0; i < Builder.Materials.Length; i++)
                 {
-                    Object.Mesh.Materials[mm + i].Flags = (byte)((Builder.Materials[i].EmissiveColorUsed ? World.MeshMaterial.EmissiveColorMask : 0) | (Builder.Materials[i].TransparentColorUsed ? World.MeshMaterial.TransparentColorMask : 0));
+                    Object.Mesh.Materials[mm + i].Flags = (byte)((Builder.Materials[i].EmissiveColorUsed ? Worlds.Mesh.Material.EmissiveColorMask : 0) | (Builder.Materials[i].TransparentColorUsed ? Worlds.Mesh.Material.TransparentColorMask : 0));
                     Object.Mesh.Materials[mm + i].Color = Builder.Materials[i].Color;
                     Object.Mesh.Materials[mm + i].TransparentColor = Builder.Materials[i].TransparentColor;
                     TextureManager.TextureWrapMode WrapX, WrapY;

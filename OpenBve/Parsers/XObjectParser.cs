@@ -1416,8 +1416,8 @@ namespace OpenBve.Parsers
             System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
             Object = new ObjectManager.StaticObject();
             Object.Mesh.Faces = new World.MeshFace[] { };
-            Object.Mesh.Materials = new World.MeshMaterial[] { };
-            Object.Mesh.Vertices = new World.Vertex[] { };
+            Object.Mesh.Materials = new Worlds.Mesh.Material[] { };
+            Object.Mesh.Vertices = new Vertex[] { };
             // file
             for (int i = 0; i < Structure.Data.Length; i++)
             {
@@ -1482,7 +1482,7 @@ namespace OpenBve.Parsers
                                 return false;
                             }
                             // collect vertices
-                            World.Vertex[] Vertices = new World.Vertex[nVertices];
+                            Vertex[] Vertices = new Vertex[nVertices];
                             for (int j = 0; j < nVertices; j++)
                             {
                                 if (vertices[j].Name != "Vector")
@@ -2125,8 +2125,8 @@ namespace OpenBve.Parsers
                             int mm = Object.Mesh.Materials.Length;
                             int mv = Object.Mesh.Vertices.Length;
                             Array.Resize<World.MeshFace>(ref Object.Mesh.Faces, mf + nFaces);
-                            Array.Resize<World.MeshMaterial>(ref Object.Mesh.Materials, mm + Materials.Length);
-                            Array.Resize<World.Vertex>(ref Object.Mesh.Vertices, mv + Vertices.Length);
+                            Array.Resize<Worlds.Mesh.Material>(ref Object.Mesh.Materials, mm + Materials.Length);
+                            Array.Resize<Vertex>(ref Object.Mesh.Vertices, mv + Vertices.Length);
                             for (int j = 0; j < Materials.Length; j++)
                             {
                                 bool emissive = Materials[j].emissiveColor.R != 0 | Materials[j].emissiveColor.G != 0 | Materials[j].emissiveColor.B != 0;
@@ -2176,21 +2176,21 @@ namespace OpenBve.Parsers
                                     Object.Mesh.Materials[mm + j].DaytimeTextureIndex = -1;
                                     transparent = false;
                                 }
-                                Object.Mesh.Materials[mm + j].Flags = (byte)((transparent ? World.MeshMaterial.TransparentColorMask : 0) | (emissive ? World.MeshMaterial.EmissiveColorMask : 0));
+                                Object.Mesh.Materials[mm + j].Flags = (byte)((transparent ? Worlds.Mesh.Material.TransparentColorMask : 0) | (emissive ? Worlds.Mesh.Material.EmissiveColorMask : 0));
                                 Object.Mesh.Materials[mm + j].Color = Materials[j].faceColor;
                                 Object.Mesh.Materials[mm + j].TransparentColor = new Colors.ColorRGB(0, 0, 0);
                                 Object.Mesh.Materials[mm + j].EmissiveColor = Materials[j].emissiveColor;
                                 Object.Mesh.Materials[mm + j].NighttimeTextureIndex = -1;
-                                Object.Mesh.Materials[mm + j].BlendMode = World.MeshMaterialBlendMode.Normal;
+                                Object.Mesh.Materials[mm + j].BlendMode = Worlds.Mesh.MaterialBlendMode.Normal;
                                 Object.Mesh.Materials[mm + j].GlowAttenuationData = 0;
                             }
                             for (int j = 0; j < nFaces; j++)
                             {
-                                Object.Mesh.Faces[mf + j].Material = (ushort)FaceMaterials[j];
-                                Object.Mesh.Faces[mf + j].Vertices = new World.MeshFaceVertex[Faces[j].Length];
+                                Object.Mesh.Faces[mf + j].Material = (short)FaceMaterials[j];
+                                Object.Mesh.Faces[mf + j].Vertices = new Worlds.Mesh.FaceVertex[Faces[j].Length];
                                 for (int k = 0; k < Faces[j].Length; k++)
                                 {
-                                    Object.Mesh.Faces[mf + j].Vertices[mv + k] = new World.MeshFaceVertex(mv + Faces[j][k], FaceNormals[j][k]);
+                                    Object.Mesh.Faces[mf + j].Vertices[mv + k] = new Worlds.Mesh.FaceVertex(mv + Faces[j][k], FaceNormals[j][k]);
                                 }
                             }
                             for (int j = 0; j < Vertices.Length; j++)

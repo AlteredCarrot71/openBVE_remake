@@ -513,7 +513,7 @@ namespace OpenBve
                 for (int i = 0; i < DynamicAlpha.FaceCount; i++)
                 {
                     int r = (int)ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Faces[DynamicAlpha.Faces[i].FaceIndex].Material;
-                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Normal & ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
+                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Normal & ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
                     {
                         if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].Color.A == 255)
                         {
@@ -528,7 +528,7 @@ namespace OpenBve
                 for (int i = 0; i < DynamicAlpha.FaceCount; i++)
                 {
                     int r = (int)ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Faces[DynamicAlpha.Faces[i].FaceIndex].Material;
-                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Additive)
+                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
                     {
                         if (!additive)
                         {
@@ -608,7 +608,7 @@ namespace OpenBve
                     for (int i = 0; i < OverlayAlpha.FaceCount; i++)
                     {
                         int r = (int)ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Faces[OverlayAlpha.Faces[i].FaceIndex].Material;
-                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Normal & ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
+                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Normal & ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
                         {
                             if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].Color.A == 255)
                             {
@@ -623,7 +623,7 @@ namespace OpenBve
                     for (int i = 0; i < OverlayAlpha.FaceCount; i++)
                     {
                         int r = (int)ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Faces[OverlayAlpha.Faces[i].FaceIndex].Material;
-                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Additive)
+                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
                         {
                             if (!additive)
                             {
@@ -737,7 +737,7 @@ namespace OpenBve
             int r = (int)ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Material;
             RenderFace(ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Materials[r], ObjectManager.Objects[Face.ObjectIndex].Mesh.Vertices, ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex], CameraX, CameraY, CameraZ);
         }
-        private static void RenderFace(ref World.MeshMaterial Material, World.Vertex[] Vertices, ref World.MeshFace Face, double CameraX, double CameraY, double CameraZ)
+        private static void RenderFace(ref Worlds.Mesh.Material Material, Vertex[] Vertices, ref World.MeshFace Face, double CameraX, double CameraY, double CameraZ)
         {
             // texture
             int OpenGlDaytimeTextureIndex = Material.DaytimeTextureIndex >= 0 ? TextureManager.UseTexture(Material.DaytimeTextureIndex, TextureManager.UseMode.Normal) : 0;
@@ -766,7 +766,7 @@ namespace OpenBve
             }
             // blend mode
             float factor;
-            if (Material.BlendMode == World.MeshMaterialBlendMode.Additive)
+            if (Material.BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
             {
                 factor = 1.0f;
                 if (!BlendEnabled) Gl.glEnable(Gl.GL_BLEND);
@@ -831,7 +831,7 @@ namespace OpenBve
             {
                 Gl.glColor4f(inv255 * (float)Material.Color.R * factor, inv255 * Material.Color.G * factor, inv255 * (float)Material.Color.B * factor, inv255 * (float)Material.Color.A);
             }
-            if ((Material.Flags & World.MeshMaterial.EmissiveColorMask) != 0)
+            if ((Material.Flags & Worlds.Mesh.Material.EmissiveColorMask) != 0)
             {
                 Gl.glMaterialfv(Gl.GL_FRONT_AND_BACK, Gl.GL_EMISSION, new float[] { inv255 * (float)Material.EmissiveColor.R, inv255 * (float)Material.EmissiveColor.G, inv255 * (float)Material.EmissiveColor.B, 1.0f });
                 EmissiveEnabled = true;
@@ -928,7 +928,7 @@ namespace OpenBve
                     if (alphafactor > 1.0f) alphafactor = 1.0f;
                 }
                 Gl.glColor4f(inv255 * (float)Material.Color.R * factor, inv255 * Material.Color.G * factor, inv255 * (float)Material.Color.B * factor, inv255 * (float)Material.Color.A * alphafactor);
-                if ((Material.Flags & World.MeshMaterial.EmissiveColorMask) != 0)
+                if ((Material.Flags & Worlds.Mesh.Material.EmissiveColorMask) != 0)
                 {
                     Gl.glMaterialfv(Gl.GL_FRONT_AND_BACK, Gl.GL_EMISSION, new float[] { inv255 * (float)Material.EmissiveColor.R, inv255 * (float)Material.EmissiveColor.G, inv255 * (float)Material.EmissiveColor.B, 1.0f });
                     EmissiveEnabled = true;
@@ -968,7 +968,7 @@ namespace OpenBve
                 }
             }
             // finalize
-            if (Material.BlendMode == World.MeshMaterialBlendMode.Additive)
+            if (Material.BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
             {
                 Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
                 if (!BlendEnabled) Gl.glDisable(Gl.GL_BLEND);
@@ -3578,7 +3578,7 @@ namespace OpenBve
                         {
                             alpha = true;
                         }
-                        else if (ObjectManager.Objects[ObjectIndex].Mesh.Materials[k].BlendMode == World.MeshMaterialBlendMode.Additive)
+                        else if (ObjectManager.Objects[ObjectIndex].Mesh.Materials[k].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
                         {
                             alpha = true;
                         }
@@ -3907,7 +3907,7 @@ namespace OpenBve
         }
 
         // get distance factor
-        private static double GetDistanceFactor(World.Vertex[] Vertices, ref World.MeshFace Face, ushort GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
+        private static double GetDistanceFactor(Vertex[] Vertices, ref World.MeshFace Face, short GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
         {
             if (Face.Vertices.Length != 0)
             {

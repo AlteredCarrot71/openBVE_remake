@@ -5,142 +5,21 @@ namespace OpenBve
 {
     internal static class World
     {
-        #region vertices
-        /// <summary>Represents a vertex consisting of 3D coordinates and 2D texture coordinates.</summary>
-        internal struct Vertex
-        {
-            internal Vectors.Vector3D Coordinates;
-            internal Vectors.Vector2Df TextureCoordinates;
-            internal Vertex(double X, double Y, double Z)
-            {
-                this.Coordinates = new Vectors.Vector3D(X, Y, Z);
-                this.TextureCoordinates = new Vectors.Vector2Df(0.0f, 0.0f);
-            }
-            internal Vertex(Vectors.Vector3D Coordinates, Vectors.Vector2Df TextureCoordinates)
-            {
-                this.Coordinates = Coordinates;
-                this.TextureCoordinates = TextureCoordinates;
-            }
-            // operators
-            public static bool operator ==(Vertex A, Vertex B)
-            {
-                if (A.Coordinates.X != B.Coordinates.X | A.Coordinates.Y != B.Coordinates.Y | A.Coordinates.Z != B.Coordinates.Z) return false;
-                if (A.TextureCoordinates.X != B.TextureCoordinates.X | A.TextureCoordinates.Y != B.TextureCoordinates.Y) return false;
-                return true;
-            }
-            public static bool operator !=(Vertex A, Vertex B)
-            {
-                if (A.Coordinates.X != B.Coordinates.X | A.Coordinates.Y != B.Coordinates.Y | A.Coordinates.Z != B.Coordinates.Z) return true;
-                if (A.TextureCoordinates.X != B.TextureCoordinates.X | A.TextureCoordinates.Y != B.TextureCoordinates.Y) return true;
-                return false;
-            }
-        }
-        #endregion
-
-        #region mesh material
-        /// <summary>Represents material properties.</summary>
-        internal struct MeshMaterial
-        {
-            /// <summary>A bit mask combining constants of the MeshMaterial structure.</summary>
-            internal byte Flags;
-            internal Colors.ColorRGBA Color;
-            internal Colors.ColorRGB TransparentColor;
-            internal Colors.ColorRGB EmissiveColor;
-            internal int DaytimeTextureIndex;
-            internal int NighttimeTextureIndex;
-            /// <summary>A value between 0 (daytime) and 255 (nighttime).</summary>
-            internal byte DaytimeNighttimeBlend;
-            internal MeshMaterialBlendMode BlendMode;
-            /// <summary>A bit mask specifying the glow properties. Use GetGlowAttenuationData to create valid data for this field.</summary>
-            internal ushort GlowAttenuationData;
-            internal const int EmissiveColorMask = 1;
-            internal const int TransparentColorMask = 2;
-            // operators
-            public static bool operator ==(MeshMaterial A, MeshMaterial B)
-            {
-                if (A.Flags != B.Flags) return false;
-                if (A.Color.R != B.Color.R | A.Color.G != B.Color.G | A.Color.B != B.Color.B | A.Color.A != B.Color.A) return false;
-                if (A.TransparentColor.R != B.TransparentColor.R | A.TransparentColor.G != B.TransparentColor.G | A.TransparentColor.B != B.TransparentColor.B) return false;
-                if (A.EmissiveColor.R != B.EmissiveColor.R | A.EmissiveColor.G != B.EmissiveColor.G | A.EmissiveColor.B != B.EmissiveColor.B) return false;
-                if (A.DaytimeTextureIndex != B.DaytimeTextureIndex) return false;
-                if (A.NighttimeTextureIndex != B.NighttimeTextureIndex) return false;
-                if (A.BlendMode != B.BlendMode) return false;
-                if (A.GlowAttenuationData != B.GlowAttenuationData) return false;
-                return true;
-            }
-            public static bool operator !=(MeshMaterial A, MeshMaterial B)
-            {
-                if (A.Flags != B.Flags) return true;
-                if (A.Color.R != B.Color.R | A.Color.G != B.Color.G | A.Color.B != B.Color.B | A.Color.A != B.Color.A) return true;
-                if (A.TransparentColor.R != B.TransparentColor.R | A.TransparentColor.G != B.TransparentColor.G | A.TransparentColor.B != B.TransparentColor.B) return true;
-                if (A.EmissiveColor.R != B.EmissiveColor.R | A.EmissiveColor.G != B.EmissiveColor.G | A.EmissiveColor.B != B.EmissiveColor.B) return true;
-                if (A.DaytimeTextureIndex != B.DaytimeTextureIndex) return true;
-                if (A.NighttimeTextureIndex != B.NighttimeTextureIndex) return true;
-                if (A.BlendMode != B.BlendMode) return true;
-                if (A.GlowAttenuationData != B.GlowAttenuationData) return true;
-                return false;
-            }
-        }
-        internal enum MeshMaterialBlendMode : byte
-        {
-            Normal = 0,
-            Additive = 1
-        }
-        #endregion
-
-        #region mesh face vertex
-        /// <summary>Represents a reference to a vertex and the normal to be used for that vertex.</summary>
-        internal struct MeshFaceVertex
-        {
-            /// <summary>A reference to an element in the Vertex array of the contained Mesh structure.</summary>
-            internal ushort Index;
-            /// <summary>The normal to be used at the vertex.</summary>
-            internal Vectors.Vector3Df Normal;
-            internal MeshFaceVertex(int Index)
-            {
-                this.Index = (ushort)Index;
-                this.Normal = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
-            }
-            internal MeshFaceVertex(int Index, Vectors.Vector3Df Normal)
-            {
-                this.Index = (ushort)Index;
-                this.Normal = Normal;
-            }
-            // operators
-            public static bool operator ==(MeshFaceVertex A, MeshFaceVertex B)
-            {
-                if (A.Index != B.Index) return false;
-                if (A.Normal.X != B.Normal.X) return false;
-                if (A.Normal.Y != B.Normal.Y) return false;
-                if (A.Normal.Z != B.Normal.Z) return false;
-                return true;
-            }
-            public static bool operator !=(MeshFaceVertex A, MeshFaceVertex B)
-            {
-                if (A.Index != B.Index) return true;
-                if (A.Normal.X != B.Normal.X) return true;
-                if (A.Normal.Y != B.Normal.Y) return true;
-                if (A.Normal.Z != B.Normal.Z) return true;
-                return false;
-            }
-        }
-        #endregion
-
         #region mesh face
         /// <summary>Represents a face consisting of vertices and material attributes.</summary>
         internal struct MeshFace
         {
-            internal MeshFaceVertex[] Vertices;
+            internal Worlds.Mesh.FaceVertex[] Vertices;
             /// <summary>A reference to an element in the Material array of the containing Mesh structure.</summary>
-            internal ushort Material;
+            internal short Material;
             /// <summary>A bit mask combining constants of the MeshFace structure.</summary>
             internal byte Flags;
             internal MeshFace(int[] Vertices)
             {
-                this.Vertices = new MeshFaceVertex[Vertices.Length];
+                this.Vertices = new Worlds.Mesh.FaceVertex[Vertices.Length];
                 for (int i = 0; i < Vertices.Length; i++)
                 {
-                    this.Vertices[i] = new MeshFaceVertex(Vertices[i]);
+                    this.Vertices[i] = new Worlds.Mesh.FaceVertex(Vertices[i]);
                 }
                 this.Material = 0;
                 this.Flags = 0;
@@ -151,7 +30,7 @@ namespace OpenBve
                 {
                     for (int i = 0; i < this.Vertices.Length; i += 2)
                     {
-                        MeshFaceVertex x = this.Vertices[i];
+                        Worlds.Mesh.FaceVertex x = this.Vertices[i];
                         this.Vertices[i] = this.Vertices[i + 1];
                         this.Vertices[i + 1] = x;
                     }
@@ -161,7 +40,7 @@ namespace OpenBve
                     int n = this.Vertices.Length;
                     for (int i = 0; i < (n >> 1); i++)
                     {
-                        MeshFaceVertex x = this.Vertices[i];
+                        Worlds.Mesh.FaceVertex x = this.Vertices[i];
                         this.Vertices[i] = this.Vertices[n - i - 1];
                         this.Vertices[n - i - 1] = x;
                     }
@@ -182,7 +61,7 @@ namespace OpenBve
         internal struct Mesh
         {
             internal Vertex[] Vertices;
-            internal MeshMaterial[] Materials;
+            internal Worlds.Mesh.Material[] Materials;
             internal MeshFace[] Faces;
             /// <summary>Creates a mesh consisting of one face, which is represented by individual vertices, and a color.</summary>
             /// <param name="Vertices">The vertices that make up one face.</param>
@@ -190,16 +69,16 @@ namespace OpenBve
             internal Mesh(Vertex[] Vertices, Colors.ColorRGBA Color)
             {
                 this.Vertices = Vertices;
-                this.Materials = new MeshMaterial[1];
+                this.Materials = new Worlds.Mesh.Material[1];
                 this.Materials[0].Color = Color;
                 this.Materials[0].DaytimeTextureIndex = -1;
                 this.Materials[0].NighttimeTextureIndex = -1;
                 this.Faces = new MeshFace[1];
                 this.Faces[0].Material = 0;
-                this.Faces[0].Vertices = new MeshFaceVertex[Vertices.Length];
+                this.Faces[0].Vertices = new Worlds.Mesh.FaceVertex[Vertices.Length];
                 for (int i = 0; i < Vertices.Length; i++)
                 {
-                    this.Faces[0].Vertices[i].Index = (ushort)i;
+                    this.Faces[0].Vertices[i].Index = (short)i;
                 }
             }
             /// <summary>Creates a mesh consisting of the specified vertices, faces and color.</summary>
@@ -209,7 +88,7 @@ namespace OpenBve
             internal Mesh(Vertex[] Vertices, int[][] FaceVertices, Colors.ColorRGBA Color)
             {
                 this.Vertices = Vertices;
-                this.Materials = new MeshMaterial[1];
+                this.Materials = new Worlds.Mesh.Material[1];
                 this.Materials[0].Color = Color;
                 this.Materials[0].DaytimeTextureIndex = -1;
                 this.Materials[0].NighttimeTextureIndex = -1;
@@ -233,7 +112,7 @@ namespace OpenBve
         /// <param name="HalfDistance">The distance at which the glow is at 50% of its full intensity. The value is clamped to the integer range from 1 to 4096. Values less than or equal to 0 disable glow attenuation.</param>
         /// <param name="Mode">The glow attenuation mode.</param>
         /// <returns>A System.UInt16 packed with the information about the half distance and glow attenuation mode.</returns>
-        internal static ushort GetGlowAttenuationData(double HalfDistance, GlowAttenuationMode Mode)
+        internal static short GetGlowAttenuationData(double HalfDistance, GlowAttenuationMode Mode)
         {
             if (HalfDistance <= 0.0 | Mode == GlowAttenuationMode.None) return 0;
             if (HalfDistance < 1.0)
@@ -244,13 +123,13 @@ namespace OpenBve
             {
                 HalfDistance = 4095.0;
             }
-            return (ushort)((int)Math.Round(HalfDistance) | ((int)Mode << 12));
+            return (short)((int)Math.Round(HalfDistance) | ((int)Mode << 12));
         }
         /// <summary>Recreates the half distance and the glow attenuation mode from a packed System.UInt16 that was created by GetGlowAttenuationData.</summary>
         /// <param name="Data">The data returned by GetGlowAttenuationData.</param>
         /// <param name="Mode">The mode of glow attenuation.</param>
         /// <param name="HalfDistance">The half distance of glow attenuation.</param>
-        internal static void SplitGlowAttenuationData(ushort Data, out GlowAttenuationMode Mode, out double HalfDistance)
+        internal static void SplitGlowAttenuationData(short Data, out GlowAttenuationMode Mode, out double HalfDistance)
         {
             Mode = (GlowAttenuationMode)(Data >> 12);
             HalfDistance = (double)(Data & 4095);

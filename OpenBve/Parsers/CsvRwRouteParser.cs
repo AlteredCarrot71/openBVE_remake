@@ -3359,7 +3359,7 @@ namespace OpenBve.Parsers
                                                                     {
                                                                         for (int p = 0; p < Signal.GlowObject.Mesh.Materials.Length; p++)
                                                                         {
-                                                                            Signal.GlowObject.Mesh.Materials[p].BlendMode = World.MeshMaterialBlendMode.Additive;
+                                                                            Signal.GlowObject.Mesh.Materials[p].BlendMode = Worlds.Mesh.MaterialBlendMode.Additive;
                                                                             Signal.GlowObject.Mesh.Materials[p].GlowAttenuationData = World.GetGlowAttenuationData(200.0, World.GlowAttenuationMode.DivisionExponent4);
                                                                         }
                                                                     }
