@@ -483,7 +483,7 @@ namespace OpenBve.Parsers
                                                 new int[] { 0, 7, 8 },
                                                 new int[] { 0, 9, 10 }
                                             };
-                                            Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new World.Mesh(vertices, faces, NeedleColor[1]);
+                                            Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new Worlds.Mesh.Mesh(vertices, faces, NeedleColor[1]);
                                             Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDClockwiseWinding = true;
                                             Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDInitialAngle = Angle - 2.0 * Math.PI;
                                             Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDLastAngle = 2.0 * Math.PI - Angle;
@@ -787,7 +787,7 @@ namespace OpenBve.Parsers
                                             new int[] { 0, 7, 8 },
                                             new int[] { 0, 9, 10 }
                                         };
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new World.Mesh(vertices, faces, Needle);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new Worlds.Mesh.Mesh(vertices, faces, Needle);
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDClockwiseWinding = true;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDInitialAngle = Angle - 2.0 * Math.PI;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDLastAngle = 2.0 * Math.PI - Angle;
@@ -1371,7 +1371,7 @@ namespace OpenBve.Parsers
             Vertex t2 = new Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
             Vertex t3 = new Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
             Object.Mesh.Vertices = new Vertex[] { t0, t1, t2, t3 };
-            Object.Mesh.Faces = new World.MeshFace[] { new World.MeshFace(new int[] { 0, 1, 2, 3 }) };
+            Object.Mesh.Faces = new Worlds.Mesh.Face[] { new Worlds.Mesh.Face(new int[] { 0, 1, 2, 3 }) };
             Object.Mesh.Materials = new Worlds.Mesh.Material[1];
             Object.Mesh.Materials[0].Flags = TextureIndex >= 0 ? (byte)Worlds.Mesh.Material.TransparentColorMask : (byte)0;
             Object.Mesh.Materials[0].Color = Color;

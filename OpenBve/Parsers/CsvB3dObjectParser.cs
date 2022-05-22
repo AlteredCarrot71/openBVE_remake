@@ -46,12 +46,12 @@ namespace OpenBve.Parsers
         private class MeshBuilder
         {
             internal Vertex[] Vertices;
-            internal World.MeshFace[] Faces;
+            internal Worlds.Mesh.Face[] Faces;
             internal Material[] Materials;
             internal MeshBuilder()
             {
                 this.Vertices = new Vertex[] { };
-                this.Faces = new World.MeshFace[] { };
+                this.Faces = new Worlds.Mesh.Face[] { };
                 this.Materials = new Material[] { new Material() };
             }
         }
@@ -69,7 +69,7 @@ namespace OpenBve.Parsers
             bool IsB3D = string.Equals(System.IO.Path.GetExtension(FileName), ".b3d", StringComparison.OrdinalIgnoreCase);
             // initialize object
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
-            Object.Mesh.Faces = new World.MeshFace[] { };
+            Object.Mesh.Faces = new Worlds.Mesh.Face[] { };
             Object.Mesh.Materials = new Worlds.Mesh.Material[] { };
             Object.Mesh.Vertices = new Vertex[] { };
             // read lines
@@ -280,8 +280,8 @@ namespace OpenBve.Parsers
                                     if (q)
                                     {
                                         int f = Builder.Faces.Length;
-                                        Array.Resize<World.MeshFace>(ref Builder.Faces, f + 1);
-                                        Builder.Faces[f] = new World.MeshFace();
+                                        Array.Resize<Worlds.Mesh.Face>(ref Builder.Faces, f + 1);
+                                        Builder.Faces[f] = new Worlds.Mesh.Face();
                                         Builder.Faces[f].Vertices = new Worlds.Mesh.FaceVertex[Arguments.Length];
                                         while (Builder.Vertices.Length > Normals.Length)
                                         {
@@ -294,7 +294,7 @@ namespace OpenBve.Parsers
                                         }
                                         if (cmd == "addface2" | cmd == "face2")
                                         {
-                                            Builder.Faces[f].Flags = (byte)World.MeshFace.Face2Mask;
+                                            Builder.Faces[f].Flags = (byte)Worlds.Mesh.Face.Face2Mask;
                                         }
                                     }
                                 }
@@ -936,7 +936,7 @@ namespace OpenBve.Parsers
             Builder.Vertices[v + 6].Coordinates = new Vectors.Vector3D(-sx, -sy, sz);
             Builder.Vertices[v + 7].Coordinates = new Vectors.Vector3D(-sx, sy, sz);
             int f = Builder.Faces.Length;
-            Array.Resize<World.MeshFace>(ref Builder.Faces, f + 6);
+            Array.Resize<Worlds.Mesh.Face>(ref Builder.Faces, f + 6);
             Builder.Faces[f + 0].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 1), new Worlds.Mesh.FaceVertex(v + 2), new Worlds.Mesh.FaceVertex(v + 3) };
             Builder.Faces[f + 1].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 4), new Worlds.Mesh.FaceVertex(v + 5), new Worlds.Mesh.FaceVertex(v + 1) };
             Builder.Faces[f + 2].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 3), new Worlds.Mesh.FaceVertex(v + 7), new Worlds.Mesh.FaceVertex(v + 4) };
@@ -986,7 +986,7 @@ namespace OpenBve.Parsers
             }
             // faces
             int f = Builder.Faces.Length;
-            Array.Resize<World.MeshFace>(ref Builder.Faces, f + n + m);
+            Array.Resize<Worlds.Mesh.Face>(ref Builder.Faces, f + n + m);
             for (int i = 0; i < n; i++)
             {
                 Builder.Faces[f + i].Flags = 0;
@@ -1222,7 +1222,7 @@ namespace OpenBve.Parsers
                 int mf = Object.Mesh.Faces.Length;
                 int mm = Object.Mesh.Materials.Length;
                 int mv = Object.Mesh.Vertices.Length;
-                Array.Resize<World.MeshFace>(ref Object.Mesh.Faces, mf + Builder.Faces.Length);
+                Array.Resize<Worlds.Mesh.Face>(ref Object.Mesh.Faces, mf + Builder.Faces.Length);
                 Array.Resize<Worlds.Mesh.Material>(ref Object.Mesh.Materials, mm + Builder.Materials.Length);
                 Array.Resize<Vertex>(ref Object.Mesh.Vertices, mv + Builder.Vertices.Length);
                 for (int i = 0; i < Builder.Vertices.Length; i++)

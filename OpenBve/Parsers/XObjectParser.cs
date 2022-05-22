@@ -1415,7 +1415,7 @@ namespace OpenBve.Parsers
         {
             System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
             Object = new ObjectManager.StaticObject();
-            Object.Mesh.Faces = new World.MeshFace[] { };
+            Object.Mesh.Faces = new Worlds.Mesh.Face[] { };
             Object.Mesh.Materials = new Worlds.Mesh.Material[] { };
             Object.Mesh.Vertices = new Vertex[] { };
             // file
@@ -2124,7 +2124,7 @@ namespace OpenBve.Parsers
                             int mf = Object.Mesh.Faces.Length;
                             int mm = Object.Mesh.Materials.Length;
                             int mv = Object.Mesh.Vertices.Length;
-                            Array.Resize<World.MeshFace>(ref Object.Mesh.Faces, mf + nFaces);
+                            Array.Resize<Worlds.Mesh.Face>(ref Object.Mesh.Faces, mf + nFaces);
                             Array.Resize<Worlds.Mesh.Material>(ref Object.Mesh.Materials, mm + Materials.Length);
                             Array.Resize<Vertex>(ref Object.Mesh.Vertices, mv + Vertices.Length);
                             for (int j = 0; j < Materials.Length; j++)

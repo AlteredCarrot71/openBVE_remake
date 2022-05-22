@@ -720,7 +720,7 @@ namespace OpenBve
         {
             if (CullEnabled)
             {
-                if (!OptionBackfaceCulling || (ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & World.MeshFace.Face2Mask) != 0)
+                if (!OptionBackfaceCulling || (ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & Worlds.Mesh.Face.Face2Mask) != 0)
                 {
                     Gl.glDisable(Gl.GL_CULL_FACE);
                     CullEnabled = false;
@@ -728,7 +728,7 @@ namespace OpenBve
             }
             else if (OptionBackfaceCulling)
             {
-                if ((ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & World.MeshFace.Face2Mask) == 0)
+                if ((ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & Worlds.Mesh.Face.Face2Mask) == 0)
                 {
                     Gl.glEnable(Gl.GL_CULL_FACE);
                     CullEnabled = true;
@@ -737,7 +737,7 @@ namespace OpenBve
             int r = (int)ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Material;
             RenderFace(ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Materials[r], ObjectManager.Objects[Face.ObjectIndex].Mesh.Vertices, ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex], CameraX, CameraY, CameraZ);
         }
-        private static void RenderFace(ref Worlds.Mesh.Material Material, Vertex[] Vertices, ref World.MeshFace Face, double CameraX, double CameraY, double CameraZ)
+        private static void RenderFace(ref Worlds.Mesh.Material Material, Vertex[] Vertices, ref Worlds.Mesh.Face Face, double CameraX, double CameraY, double CameraZ)
         {
             // texture
             int OpenGlDaytimeTextureIndex = Material.DaytimeTextureIndex >= 0 ? TextureManager.UseTexture(Material.DaytimeTextureIndex, TextureManager.UseMode.Normal) : 0;
@@ -803,19 +803,19 @@ namespace OpenBve
                 }
             }
             // render daytime polygon
-            int FaceType = Face.Flags & World.MeshFace.FaceTypeMask;
+            int FaceType = Face.Flags & Worlds.Mesh.Face.FaceTypeMask;
             switch (FaceType)
             {
-                case World.MeshFace.FaceTypeTriangles:
+                case Worlds.Mesh.Face.FaceTypeTriangles:
                     Gl.glBegin(Gl.GL_TRIANGLES);
                     break;
-                case World.MeshFace.FaceTypeTriangleStrip:
+                case Worlds.Mesh.Face.FaceTypeTriangleStrip:
                     Gl.glBegin(Gl.GL_TRIANGLE_STRIP);
                     break;
-                case World.MeshFace.FaceTypeQuads:
+                case Worlds.Mesh.Face.FaceTypeQuads:
                     Gl.glBegin(Gl.GL_QUADS);
                     break;
-                case World.MeshFace.FaceTypeQuadStrip:
+                case Worlds.Mesh.Face.FaceTypeQuadStrip:
                     Gl.glBegin(Gl.GL_QUAD_STRIP);
                     break;
                 default:
@@ -898,16 +898,16 @@ namespace OpenBve
                 Gl.glEnable(Gl.GL_ALPHA_TEST);
                 switch (FaceType)
                 {
-                    case World.MeshFace.FaceTypeTriangles:
+                    case Worlds.Mesh.Face.FaceTypeTriangles:
                         Gl.glBegin(Gl.GL_TRIANGLES);
                         break;
-                    case World.MeshFace.FaceTypeTriangleStrip:
+                    case Worlds.Mesh.Face.FaceTypeTriangleStrip:
                         Gl.glBegin(Gl.GL_TRIANGLE_STRIP);
                         break;
-                    case World.MeshFace.FaceTypeQuads:
+                    case Worlds.Mesh.Face.FaceTypeQuads:
                         Gl.glBegin(Gl.GL_QUADS);
                         break;
-                    case World.MeshFace.FaceTypeQuadStrip:
+                    case Worlds.Mesh.Face.FaceTypeQuadStrip:
                         Gl.glBegin(Gl.GL_QUAD_STRIP);
                         break;
                     default:
@@ -3907,7 +3907,7 @@ namespace OpenBve
         }
 
         // get distance factor
-        private static double GetDistanceFactor(Vertex[] Vertices, ref World.MeshFace Face, short GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
+        private static double GetDistanceFactor(Vertex[] Vertices, ref Worlds.Mesh.Face Face, short GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
         {
             if (Face.Vertices.Length != 0)
             {

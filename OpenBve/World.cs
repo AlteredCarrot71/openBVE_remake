@@ -5,102 +5,6 @@ namespace OpenBve
 {
     internal static class World
     {
-        #region mesh face
-        /// <summary>Represents a face consisting of vertices and material attributes.</summary>
-        internal struct MeshFace
-        {
-            internal Worlds.Mesh.FaceVertex[] Vertices;
-            /// <summary>A reference to an element in the Material array of the containing Mesh structure.</summary>
-            internal short Material;
-            /// <summary>A bit mask combining constants of the MeshFace structure.</summary>
-            internal byte Flags;
-            internal MeshFace(int[] Vertices)
-            {
-                this.Vertices = new Worlds.Mesh.FaceVertex[Vertices.Length];
-                for (int i = 0; i < Vertices.Length; i++)
-                {
-                    this.Vertices[i] = new Worlds.Mesh.FaceVertex(Vertices[i]);
-                }
-                this.Material = 0;
-                this.Flags = 0;
-            }
-            internal void Flip()
-            {
-                if ((this.Flags & FaceTypeMask) == FaceTypeQuadStrip)
-                {
-                    for (int i = 0; i < this.Vertices.Length; i += 2)
-                    {
-                        Worlds.Mesh.FaceVertex x = this.Vertices[i];
-                        this.Vertices[i] = this.Vertices[i + 1];
-                        this.Vertices[i + 1] = x;
-                    }
-                }
-                else
-                {
-                    int n = this.Vertices.Length;
-                    for (int i = 0; i < (n >> 1); i++)
-                    {
-                        Worlds.Mesh.FaceVertex x = this.Vertices[i];
-                        this.Vertices[i] = this.Vertices[n - i - 1];
-                        this.Vertices[n - i - 1] = x;
-                    }
-                }
-            }
-            internal const int FaceTypeMask = 7;
-            internal const int FaceTypePolygon = 0;
-            internal const int FaceTypeTriangles = 1;
-            internal const int FaceTypeTriangleStrip = 2;
-            internal const int FaceTypeQuads = 3;
-            internal const int FaceTypeQuadStrip = 4;
-            internal const int Face2Mask = 8;
-        }
-        #endregion
-
-        #region mesh
-        /// <summary>Represents a mesh consisting of a series of vertices, faces and material properties.</summary>
-        internal struct Mesh
-        {
-            internal Vertex[] Vertices;
-            internal Worlds.Mesh.Material[] Materials;
-            internal MeshFace[] Faces;
-            /// <summary>Creates a mesh consisting of one face, which is represented by individual vertices, and a color.</summary>
-            /// <param name="Vertices">The vertices that make up one face.</param>
-            /// <param name="Color">The color to be applied on the face.</param>
-            internal Mesh(Vertex[] Vertices, Colors.ColorRGBA Color)
-            {
-                this.Vertices = Vertices;
-                this.Materials = new Worlds.Mesh.Material[1];
-                this.Materials[0].Color = Color;
-                this.Materials[0].DaytimeTextureIndex = -1;
-                this.Materials[0].NighttimeTextureIndex = -1;
-                this.Faces = new MeshFace[1];
-                this.Faces[0].Material = 0;
-                this.Faces[0].Vertices = new Worlds.Mesh.FaceVertex[Vertices.Length];
-                for (int i = 0; i < Vertices.Length; i++)
-                {
-                    this.Faces[0].Vertices[i].Index = (short)i;
-                }
-            }
-            /// <summary>Creates a mesh consisting of the specified vertices, faces and color.</summary>
-            /// <param name="Vertices">The vertices used.</param>
-            /// <param name="FaceVertices">A list of faces represented by a list of references to vertices.</param>
-            /// <param name="Color">The color to be applied on all of the faces.</param>
-            internal Mesh(Vertex[] Vertices, int[][] FaceVertices, Colors.ColorRGBA Color)
-            {
-                this.Vertices = Vertices;
-                this.Materials = new Worlds.Mesh.Material[1];
-                this.Materials[0].Color = Color;
-                this.Materials[0].DaytimeTextureIndex = -1;
-                this.Materials[0].NighttimeTextureIndex = -1;
-                this.Faces = new MeshFace[FaceVertices.Length];
-                for (int i = 0; i < FaceVertices.Length; i++)
-                {
-                    this.Faces[i] = new MeshFace(FaceVertices[i]);
-                }
-            }
-        }
-        #endregion
-
         #region glow
         internal enum GlowAttenuationMode
         {
@@ -1275,14 +1179,14 @@ namespace OpenBve
         #endregion
 
         #region mesh create normals
-        internal static void CreateNormals(ref Mesh Mesh)
+        internal static void CreateNormals(ref Worlds.Mesh.Mesh Mesh)
         {
             for (int i = 0; i < Mesh.Faces.Length; i++)
             {
                 CreateNormals(ref Mesh, i);
             }
         }
-        internal static void CreateNormals(ref Mesh Mesh, int FaceIndex)
+        internal static void CreateNormals(ref Worlds.Mesh.Mesh Mesh, int FaceIndex)
         {
             if (Mesh.Faces[FaceIndex].Vertices.Length >= 3)
             {

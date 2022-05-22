@@ -908,7 +908,7 @@ namespace OpenBve.Parsers
                                             new int[] { 0, 7, 8 },
                                             new int[] { 0, 9, 10 }
                                         };
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new World.Mesh(vertices, faces, Color);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new Worlds.Mesh.Mesh(vertices, faces, Color);
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDClockwiseWinding = InitialAngle <= LastAngle;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDInitialAngle = InitialAngle;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDLastAngle = LastAngle;
@@ -1237,7 +1237,7 @@ namespace OpenBve.Parsers
             Vertex t3 = new Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
             Object.Mesh.Vertices = new Vertex[] { t0, t1, t2, t3 };
-            Object.Mesh.Faces = new World.MeshFace[] { new World.MeshFace(new int[] { 0, 1, 2, 3 }) };
+            Object.Mesh.Faces = new Worlds.Mesh.Face[] { new Worlds.Mesh.Face(new int[] { 0, 1, 2, 3 }) };
             Object.Mesh.Materials = new Worlds.Mesh.Material[1];
             Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? Worlds.Mesh.Material.TransparentColorMask : 0);
             Object.Mesh.Materials[0].Color = Color;

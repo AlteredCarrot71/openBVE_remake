@@ -37,8 +37,8 @@ namespace OpenBve.Worlds
         public override int GetHashCode()
         {
             int hashCode = -1543404925;
-            hashCode = hashCode * -1521134295 + Coordinates.GetHashCode();
-            hashCode = hashCode * -1521134295 + TextureCoordinates.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Coordinates.GetHashCode();
+            hashCode = (hashCode * -1521134295) + TextureCoordinates.GetHashCode();
             return hashCode;
         }
     }

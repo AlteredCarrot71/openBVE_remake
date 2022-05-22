@@ -48,8 +48,8 @@ namespace OpenBve.Worlds.Mesh
         public override int GetHashCode()
         {
             int hashCode = -643893131;
-            hashCode = hashCode * -1521134295 + Index.GetHashCode();
-            hashCode = hashCode * -1521134295 + Normal.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Index.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Normal.GetHashCode();
             return hashCode;
         }
     }

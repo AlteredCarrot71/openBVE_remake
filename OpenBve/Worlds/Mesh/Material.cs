@@ -13,7 +13,7 @@ namespace OpenBve.Worlds.Mesh
         internal int NighttimeTextureIndex;
         /// <summary>A value between 0 (daytime) and 255 (nighttime).</summary>
         internal byte DaytimeNighttimeBlend;
-        internal Mesh.MaterialBlendMode BlendMode;
+        internal MaterialBlendMode BlendMode;
         /// <summary>A bit mask specifying the glow properties. Use GetGlowAttenuationData to create valid data for this field.</summary>
         internal short GlowAttenuationData;
         internal const int EmissiveColorMask = 1;
@@ -76,15 +76,15 @@ namespace OpenBve.Worlds.Mesh
         public override int GetHashCode()
         {
             int hashCode = -672346328;
-            hashCode = hashCode * -1521134295 + Flags.GetHashCode();
-            hashCode = hashCode * -1521134295 + Color.GetHashCode();
-            hashCode = hashCode * -1521134295 + TransparentColor.GetHashCode();
-            hashCode = hashCode * -1521134295 + EmissiveColor.GetHashCode();
-            hashCode = hashCode * -1521134295 + DaytimeTextureIndex.GetHashCode();
-            hashCode = hashCode * -1521134295 + NighttimeTextureIndex.GetHashCode();
-            hashCode = hashCode * -1521134295 + DaytimeNighttimeBlend.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<MaterialBlendMode>.Default.GetHashCode(BlendMode);
-            hashCode = hashCode * -1521134295 + GlowAttenuationData.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Flags.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Color.GetHashCode();
+            hashCode = (hashCode * -1521134295) + TransparentColor.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EmissiveColor.GetHashCode();
+            hashCode = (hashCode * -1521134295) + DaytimeTextureIndex.GetHashCode();
+            hashCode = (hashCode * -1521134295) + NighttimeTextureIndex.GetHashCode();
+            hashCode = (hashCode * -1521134295) + DaytimeNighttimeBlend.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EqualityComparer<MaterialBlendMode>.Default.GetHashCode(BlendMode);
+            hashCode = (hashCode * -1521134295) + GlowAttenuationData.GetHashCode();
             return hashCode;
         }
     }
