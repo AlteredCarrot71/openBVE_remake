@@ -24,9 +24,7 @@
             {
                 for (int i = 0; i < this.Vertices.Length; i += 2)
                 {
-                    FaceVertex x = this.Vertices[i];
-                    this.Vertices[i] = this.Vertices[i + 1];
-                    this.Vertices[i + 1] = x;
+                    (this.Vertices[i + 1], this.Vertices[i]) = (this.Vertices[i], this.Vertices[i + 1]);
                 }
             }
             else
@@ -34,9 +32,7 @@
                 int n = this.Vertices.Length;
                 for (int i = 0; i < (n >> 1); i++)
                 {
-                    FaceVertex x = this.Vertices[i];
-                    this.Vertices[i] = this.Vertices[n - i - 1];
-                    this.Vertices[n - i - 1] = x;
+                    (this.Vertices[n - i - 1], this.Vertices[i]) = (this.Vertices[i], this.Vertices[n - i - 1]);
                 }
             }
         }

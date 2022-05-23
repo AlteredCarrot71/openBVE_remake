@@ -911,8 +911,8 @@ namespace OpenBve
                 double a = -Train.Cars[CarIndex].Specs.CurrentRollDueToTopplingAngle - Train.Cars[CarIndex].Specs.CurrentRollDueToCantAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
-                World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
                 Train.Cars[CarIndex].Up.X = ux;
                 Train.Cars[CarIndex].Up.Y = uy;
                 Train.Cars[CarIndex].Up.Z = uz;
@@ -923,8 +923,8 @@ namespace OpenBve
                 double a = Train.Cars[CarIndex].Specs.CurrentPitchDueToAccelerationAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                 double cx = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X);
                 double cy = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y);
                 double cz = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z);
@@ -934,8 +934,8 @@ namespace OpenBve
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X -= cx;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y -= cy;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z -= cz;
-                World.Rotate(ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
-                World.Rotate(ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
+                Vectors.Rotate(ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
+                Vectors.Rotate(ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X += cx;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y += cy;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z += cz;
@@ -987,7 +987,7 @@ namespace OpenBve
 				 * line is to the rails, the more flange noise there will be.
 				 * */
                 Vectors.Vector3D d = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition);
-                World.Normalize(ref d.X, ref d.Y, ref d.Z);
+                Vectors.Normalize(ref d.X, ref d.Y, ref d.Z);
                 double b0 = d.X * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Z;
                 double b1 = d.X * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Z;
                 double spd = Math.Abs(Train.Cars[CarIndex].Specs.CurrentSpeed);

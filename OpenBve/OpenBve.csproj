@@ -163,6 +163,7 @@
     <Compile Include="Worlds\Mesh\Material.cs" />
     <Compile Include="Worlds\Mesh\MaterialBlendMode.cs" />
     <Compile Include="Worlds\Mesh\Mesh.cs" />
+    <Compile Include="Worlds\Transformation.cs" />
     <Compile Include="Worlds\Vectors.cs" />
     <Compile Include="Worlds\Vertex.cs" />
     <EmbeddedResource Include="formImage.resx">

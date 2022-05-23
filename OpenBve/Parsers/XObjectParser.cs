@@ -2050,7 +2050,7 @@ namespace OpenBve.Parsers
                                                 double x = (double)normals[k].Data[0];
                                                 double y = (double)normals[k].Data[1];
                                                 double z = (double)normals[k].Data[2];
-                                                World.Normalize(ref x, ref y, ref z);
+                                                Vectors.Normalize(ref x, ref y, ref z);
                                                 Normals[k] = new Vectors.Vector3Df((float)x, (float)y, (float)z);
                                             }
                                             // collect faces
@@ -2208,7 +2208,7 @@ namespace OpenBve.Parsers
                 }
             }
             // return
-            World.CreateNormals(ref Object.Mesh);
+            Worlds.Mesh.Mesh.CreateNormals(ref Object.Mesh);
             return true;
         }
 
