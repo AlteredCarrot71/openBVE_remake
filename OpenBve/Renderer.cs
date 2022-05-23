@@ -406,7 +406,7 @@ namespace OpenBve
                 {
                     Gl.glEnable(Gl.GL_LIGHTING); LightingEnabled = true;
                 }
-                if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
+                if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
                 {
                     Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, new float[] { inv255 * (float)OptionAmbientColor.R, inv255 * (float)OptionAmbientColor.G, inv255 * (float)OptionAmbientColor.B, 1.0f });
                     Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_DIFFUSE, new float[] { inv255 * (float)OptionDiffuseColor.R, inv255 * (float)OptionDiffuseColor.G, inv255 * (float)OptionDiffuseColor.B, 1.0f });
@@ -569,7 +569,7 @@ namespace OpenBve
             Gl.glLoadIdentity();
             MainLoop.UpdateViewport(MainLoop.ViewPortChangeMode.ChangeToCab);
             Glu.gluLookAt(0.0, 0.0, 0.0, dx, dy, dz, ux, uy, uz);
-            if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
+            if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
             {
                 // 3d cab
                 Gl.glDepthMask(Gl.GL_TRUE);
@@ -3567,7 +3567,7 @@ namespace OpenBve
                 for (int i = 0; i < f; i++)
                 {
                     bool alpha = false;
-                    if (Type == ObjectType.Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
+                    if (Type == ObjectType.Overlay & World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
                     {
                         alpha = true;
                     }
@@ -3911,7 +3911,8 @@ namespace OpenBve
         {
             if (Face.Vertices.Length != 0)
             {
-                World.GlowAttenuationMode mode; double halfdistance;
+                Worlds.GlowAttenuationMode mode; 
+                double halfdistance;
                 World.SplitGlowAttenuationData(GlowAttenuationData, out mode, out halfdistance);
                 int i = (int)Face.Vertices[0].Index;
                 double dx = Vertices[i].Coordinates.X - CameraX;
@@ -3919,12 +3920,12 @@ namespace OpenBve
                 double dz = Vertices[i].Coordinates.Z - CameraZ;
                 switch (mode)
                 {
-                    case World.GlowAttenuationMode.DivisionExponent2:
+                    case Worlds.GlowAttenuationMode.DivisionExponent2:
                         {
                             double t = dx * dx + dy * dy + dz * dz;
                             return t / (t + halfdistance * halfdistance);
                         }
-                    case World.GlowAttenuationMode.DivisionExponent4:
+                    case Worlds.GlowAttenuationMode.DivisionExponent4:
                         {
                             double t = dx * dx + dy * dy + dz * dz;
                             t *= t; halfdistance *= halfdistance;

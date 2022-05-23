@@ -4,28 +4,6 @@ namespace OpenBve.Worlds
 {
     public class Vectors
     {
-        /// <summary>Represents a 2D vector of System.Double coordinates.</summary>
-        public struct Vector2D
-        {
-            internal double X;
-            internal double Y;
-            public Vector2D(double X, double Y)
-            {
-                this.X = X;
-                this.Y = Y;
-            }
-        }
-        /// <summary>Represents a 2D vector of System.Single coordinates.</summary>
-        public struct Vector2Df
-        {
-            internal float X;
-            internal float Y;
-            public Vector2Df(float X, float Y)
-            {
-                this.X = X;
-                this.Y = Y;
-            }
-        }
         /// <summary>Represents a 3D vector of System.Double coordinates.</summary>
         public struct Vector3D
         {
@@ -41,7 +19,7 @@ namespace OpenBve.Worlds
             /// <summary>Returns a normalized vector based on a 2D vector in the XZ plane and an additional Y-coordinate.</summary>
             /// <param name="Vector">The vector in the XZ-plane. The X and Y components in Vector represent the X- and Z-coordinates, respectively.</param>
             /// <param name="Y">The Y-coordinate.</param>
-            public Vector3D(Vectors.Vector2D Vector, double Y)
+            public Vector3D(Vector.Vector2D Vector, double Y)
             {
                 double t = 1.0 / Math.Sqrt((Vector.X * Vector.X) + (Vector.Y * Vector.Y) + (Y * Y));
                 this.X = t * Vector.X;
@@ -123,19 +101,12 @@ namespace OpenBve.Worlds
             py = (float)y; 
             pz = (float)z;
         }
-        public static void Rotate(ref Vectors.Vector2D Vector, double cosa, double sina)
-        {
-            double u = (Vector.X * cosa) - (Vector.Y * sina);
-            double v = (Vector.X * sina) + (Vector.Y * cosa);
-            Vector.X = u;
-            Vector.Y = v;
-        }
         public static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
         {
             double x, y, z;
-            x = sx * (double)px + (ux * (double)py) + (dx * (double)pz);
-            y = sy * (double)px + (uy * (double)py) + (dy * (double)pz);
-            z = sz * (double)px + (uz * (double)py) + (dz * (double)pz);
+            x = (sx * (double)px) + (ux * (double)py) + (dx * (double)pz);
+            y = (sy * (double)px) + (uy * (double)py) + (dy * (double)pz);
+            z = (sz * (double)px) + (uz * (double)py) + (dz * (double)pz);
             px = (float)x; 
             py = (float)y; 
             pz = (float)z;
@@ -184,7 +155,7 @@ namespace OpenBve.Worlds
             Vector.X = (float)u;
             Vector.Z = (float)v;
         }
-        public static void RotateUpDown(ref Vectors.Vector3D Vector, Vectors.Vector2D Direction, double cosa, double sina)
+        public static void RotateUpDown(ref Vectors.Vector3D Vector, Vector.Vector2D Direction, double cosa, double sina)
         {
             double dx = Direction.X, dy = Direction.Y;
             double x = Vector.X, y = Vector.Y, z = Vector.Z;

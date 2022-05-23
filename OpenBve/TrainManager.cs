@@ -522,7 +522,7 @@ namespace OpenBve
                     a.Objects[i].ObjectIndex = ObjectManager.CreateDynamicObject();
                 }
                 Train.Cars[Train.DriverCar].CarSections[0].Elements = a.Objects;
-                World.CameraRestriction = World.CameraRestrictionMode.NotAvailable;
+                World.CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
             }
             else
             {
@@ -530,7 +530,7 @@ namespace OpenBve
                 if (System.IO.File.Exists(File))
                 {
                     Panel2CfgParser.ParsePanel2Config(TrainPath, Encoding, Train);
-                    World.CameraRestriction = World.CameraRestrictionMode.On;
+                    World.CameraRestriction = Worlds.CameraRestrictionMode.On;
                 }
                 else
                 {
@@ -538,11 +538,11 @@ namespace OpenBve
                     if (System.IO.File.Exists(File))
                     {
                         PanelCfgParser.ParsePanelConfig(TrainPath, Encoding, Train);
-                        World.CameraRestriction = World.CameraRestrictionMode.On;
+                        World.CameraRestriction = Worlds.CameraRestrictionMode.On;
                     }
                     else
                     {
-                        World.CameraRestriction = World.CameraRestrictionMode.NotAvailable;
+                        World.CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
                     }
                 }
             }
@@ -1290,7 +1290,7 @@ namespace OpenBve
         private static void UpdateCarSectionElement(Train Train, int CarIndex, int SectionIndex, int ElementIndex, Vectors.Vector3D Position, Vectors.Vector3D Direction, Vectors.Vector3D Up, Vectors.Vector3D Side, bool Show, double TimeElapsed, bool ForceUpdate)
         {
             Vectors.Vector3D p;
-            if (Train.Cars[CarIndex].CarSections[SectionIndex].Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
+            if (Train.Cars[CarIndex].CarSections[SectionIndex].Overlay & World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
             {
                 p = new Vectors.Vector3D(Train.Cars[CarIndex].DriverX, Train.Cars[CarIndex].DriverY, Train.Cars[CarIndex].DriverZ);
             }

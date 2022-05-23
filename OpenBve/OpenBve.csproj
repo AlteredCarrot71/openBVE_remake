@@ -157,7 +157,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Worlds\CameraRestrictionMode.cs" />
     <Compile Include="Worlds\Colors.cs" />
+    <Compile Include="Worlds\DriverBody.cs" />
+    <Compile Include="Worlds\GlowAttenuationMode.cs" />
     <Compile Include="Worlds\Mesh\Face.cs" />
     <Compile Include="Worlds\Mesh\FaceVertex.cs" />
     <Compile Include="Worlds\Mesh\Material.cs" />
@@ -165,6 +168,8 @@
     <Compile Include="Worlds\Mesh\Mesh.cs" />
     <Compile Include="Worlds\Transformation.cs" />
     <Compile Include="Worlds\Vectors.cs" />
+    <Compile Include="Worlds\Vector\Vector2D.cs" />
+    <Compile Include="Worlds\Vector\Vector2Df.cs" />
     <Compile Include="Worlds\Vertex.cs" />
     <EmbeddedResource Include="formImage.resx">
       <SubType>Designer</SubType>

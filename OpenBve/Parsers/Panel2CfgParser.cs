@@ -1231,10 +1231,10 @@ namespace OpenBve.Parsers
             v[1] = new Vectors.Vector3D(x0 - xm, y0 - ym, 0);
             v[2] = new Vectors.Vector3D(x1 - xm, y0 - ym, 0);
             v[3] = new Vectors.Vector3D(x1 - xm, y1 - ym, 0);
-            Vertex t0 = new Vertex(v[0], new Vectors.Vector2Df(0.0f, 1.0f));
-            Vertex t1 = new Vertex(v[1], new Vectors.Vector2Df(0.0f, 0.0f));
-            Vertex t2 = new Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
-            Vertex t3 = new Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
+            Vertex t0 = new Vertex(v[0], new Worlds.Vector.Vector2Df(0.0f, 1.0f));
+            Vertex t1 = new Vertex(v[1], new Worlds.Vector.Vector2Df(0.0f, 0.0f));
+            Vertex t2 = new Vertex(v[2], new Worlds.Vector.Vector2Df(1.0f, 0.0f));
+            Vertex t3 = new Vertex(v[3], new Worlds.Vector.Vector2Df(1.0f, 1.0f));
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
             Object.Mesh.Vertices = new Vertex[] { t0, t1, t2, t3 };
             Object.Mesh.Faces = new Worlds.Mesh.Face[] { new Worlds.Mesh.Face(new int[] { 0, 1, 2, 3 }) };

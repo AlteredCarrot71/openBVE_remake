@@ -6,12 +6,6 @@ namespace OpenBve
     internal static class World
     {
         #region glow
-        internal enum GlowAttenuationMode
-        {
-            None = 0,
-            DivisionExponent2 = 1,
-            DivisionExponent4 = 2,
-        }
         /// <summary>Creates glow attenuation data from a half distance and a mode. The resulting value can be later passed to SplitGlowAttenuationData in order to reconstruct the parameters.</summary>
         /// <param name="HalfDistance">The distance at which the glow is at 50% of its full intensity. The value is clamped to the integer range from 1 to 4096. Values less than or equal to 0 disable glow attenuation.</param>
         /// <param name="Mode">The glow attenuation mode.</param>
@@ -41,8 +35,8 @@ namespace OpenBve
         #endregion
 
         #region display
-        internal static double HorizontalViewingAngle;
-        internal static double VerticalViewingAngle;
+        internal static double HorizontalViewingAngle = 0;
+        internal static double VerticalViewingAngle = 0;
         internal static double OriginalVerticalViewingAngle;
         internal static double AspectRatio;
         /// <summary>The current viewing distance in the forward direction.</summary>
@@ -72,17 +66,6 @@ namespace OpenBve
         #endregion
 
         #region driver body
-        internal struct DriverBody
-        {
-            internal double SlowX;
-            internal double FastX;
-            internal double Roll;
-            internal ObjectManager.Damping RollDamping;
-            internal double SlowY;
-            internal double FastY;
-            internal double Pitch;
-            internal ObjectManager.Damping PitchDamping;
-        }
         internal static DriverBody CurrentDriverBody;
         internal static void UpdateDriverBody(double TimeElapsed)
         {
@@ -227,7 +210,7 @@ namespace OpenBve
         #region mouse grab
         internal static bool MouseGrabEnabled = false;
         internal static bool MouseGrabIgnoreOnce = false;
-        internal static Vectors.Vector2D MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+        internal static Worlds.Vector.Vector2D MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
         internal static void UpdateMouseGrab(double TimeElapsed)
         {
             if (MouseGrabEnabled)
@@ -243,7 +226,7 @@ namespace OpenBve
                 }
                 CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
                 CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
-                MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+                MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
             }
         }
         #endregion
@@ -290,16 +273,7 @@ namespace OpenBve
         #region camera restriction
         internal static Vectors.Vector3D CameraRestrictionBottomLeft = new Vectors.Vector3D(-1.0, -1.0, 1.0);
         internal static Vectors.Vector3D CameraRestrictionTopRight = new Vectors.Vector3D(1.0, 1.0, 1.0);
-        internal enum CameraRestrictionMode
-        {
-            /// <summary>Represents a 3D cab.</summary>
-            NotAvailable = -1,
-            /// <summary>Represents a 2D cab with camera restriction disabled.</summary>
-            Off = 0,
-            /// <summary>Represents a 2D cab with camera restriction enabled.</summary>
-            On = 1
-        }
-        internal static CameraRestrictionMode CameraRestriction = CameraRestrictionMode.NotAvailable;
+        internal static CameraRestrictionMode CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
         #endregion
 
         #region absolute camera
@@ -405,7 +379,7 @@ namespace OpenBve
             if (World.CameraRestriction == CameraRestrictionMode.On)
             {
                 Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
-                Vectors.Vector2D[] r = new Vectors.Vector2D[2];
+                Worlds.Vector.Vector2D[] r = new Worlds.Vector.Vector2D[2];
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates

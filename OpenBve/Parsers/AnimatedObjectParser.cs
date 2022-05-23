@@ -186,8 +186,8 @@ namespace OpenBve.Parsers
                                 Result.Objects[ObjectCount].RotateXDirection = new Vectors.Vector3D(1.0, 0.0, 0.0);
                                 Result.Objects[ObjectCount].RotateYDirection = new Vectors.Vector3D(0.0, 1.0, 0.0);
                                 Result.Objects[ObjectCount].RotateZDirection = new Vectors.Vector3D(0.0, 0.0, 1.0);
-                                Result.Objects[ObjectCount].TextureShiftXDirection = new Vectors.Vector2D(1.0, 0.0);
-                                Result.Objects[ObjectCount].TextureShiftYDirection = new Vectors.Vector2D(0.0, 1.0);
+                                Result.Objects[ObjectCount].TextureShiftXDirection = new Worlds.Vector.Vector2D(1.0, 0.0);
+                                Result.Objects[ObjectCount].TextureShiftYDirection = new Worlds.Vector.Vector2D(0.0, 1.0);
                                 Result.Objects[ObjectCount].RefreshRate = 0.0;
                                 Result.Objects[ObjectCount].ObjectIndex = -1;
                                 Vectors.Vector3D Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
@@ -564,10 +564,10 @@ namespace OpenBve.Parsers
                                                                 switch (a.ToLowerInvariant())
                                                                 {
                                                                     case "textureshiftxdirection":
-                                                                        Result.Objects[ObjectCount].TextureShiftXDirection = new Vectors.Vector2D(x, y);
+                                                                        Result.Objects[ObjectCount].TextureShiftXDirection = new Worlds.Vector.Vector2D(x, y);
                                                                         break;
                                                                     case "textureshiftydirection":
-                                                                        Result.Objects[ObjectCount].TextureShiftYDirection = new Vectors.Vector2D(x, y);
+                                                                        Result.Objects[ObjectCount].TextureShiftYDirection = new Worlds.Vector.Vector2D(x, y);
                                                                         break;
                                                                 }
                                                             }

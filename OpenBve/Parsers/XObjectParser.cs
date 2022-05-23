@@ -1962,7 +1962,7 @@ namespace OpenBve.Parsers
                                                 }
                                                 double u = (double)textureCoords[k].Data[0];
                                                 double v = (double)textureCoords[k].Data[1];
-                                                Vertices[k].TextureCoordinates = new Vectors.Vector2Df((float)u, (float)v);
+                                                Vertices[k].TextureCoordinates = new Worlds.Vector.Vector2Df((float)u, (float)v);
                                             }
                                         }
                                         break;

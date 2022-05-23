@@ -6,8 +6,8 @@ namespace OpenBve.Worlds
     public struct Vertex
     {
         internal Vectors.Vector3D Coordinates;
-        internal Vectors.Vector2Df TextureCoordinates;
-        public Vertex(Vectors.Vector3D Coordinates, Vectors.Vector2Df TextureCoordinates)
+        internal Vector.Vector2Df TextureCoordinates;
+        public Vertex(Vectors.Vector3D Coordinates, Vector.Vector2Df TextureCoordinates)
         {
             this.Coordinates = Coordinates;
             this.TextureCoordinates = TextureCoordinates;
@@ -31,7 +31,7 @@ namespace OpenBve.Worlds
         {
             return obj is Vertex vertex &&
                    EqualityComparer<Vectors.Vector3D>.Default.Equals(Coordinates, vertex.Coordinates) &&
-                   EqualityComparer<Vectors.Vector2Df>.Default.Equals(TextureCoordinates, vertex.TextureCoordinates);
+                   EqualityComparer<Vector.Vector2Df>.Default.Equals(TextureCoordinates, vertex.TextureCoordinates);
         }
 
         public override int GetHashCode()

@@ -111,8 +111,8 @@ namespace OpenBve
             internal Damping RotateXDamping;
             internal Damping RotateYDamping;
             internal Damping RotateZDamping;
-            internal Vectors.Vector2D TextureShiftXDirection;
-            internal Vectors.Vector2D TextureShiftYDirection;
+            internal Worlds.Vector.Vector2D TextureShiftXDirection;
+            internal Worlds.Vector.Vector2D TextureShiftYDirection;
             internal FunctionScripts.FunctionScript TextureShiftXFunction;
             internal FunctionScripts.FunctionScript TextureShiftYFunction;
             internal bool LEDClockwiseWinding;
@@ -680,7 +680,7 @@ namespace OpenBve
                     Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateZDirection.X, Object.RotateZDirection.Y, Object.RotateZDirection.Z, cosZ, sinZ);
                 }
                 // translate
-                if (Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
+                if (Overlay & World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
                 {
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X += Object.States[s].Position.X - Position.X;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y += Object.States[s].Position.Y - Position.Y;

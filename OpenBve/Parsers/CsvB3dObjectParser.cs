@@ -785,13 +785,13 @@ namespace OpenBve.Parsers
                                     Interface.AddMessage(Interface.MessageType.Error, false, "Invalid argument GlowHalfDistance in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
                                     glowhalfdistance = 0;
                                 }
-                                World.GlowAttenuationMode glowmode = World.GlowAttenuationMode.DivisionExponent4;
+                                Worlds.GlowAttenuationMode glowmode = Worlds.GlowAttenuationMode.DivisionExponent4;
                                 if (Arguments.Length >= 3 && Arguments[2].Length > 0)
                                 {
                                     switch (Arguments[2].ToLowerInvariant())
                                     {
-                                        case "divideexponent2": glowmode = World.GlowAttenuationMode.DivisionExponent2; break;
-                                        case "divideexponent4": glowmode = World.GlowAttenuationMode.DivisionExponent4; break;
+                                        case "divideexponent2": glowmode = Worlds.GlowAttenuationMode.DivisionExponent2; break;
+                                        case "divideexponent4": glowmode = Worlds.GlowAttenuationMode.DivisionExponent4; break;
                                         default:
                                             Interface.AddMessage(Interface.MessageType.Error, false, "The given GlowAttenuationMode is not supported in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
                                             break;
@@ -899,7 +899,7 @@ namespace OpenBve.Parsers
                                 }
                                 if (j >= 0 & j < Builder.Vertices.Length)
                                 {
-                                    Builder.Vertices[j].TextureCoordinates = new Vectors.Vector2Df(x, y);
+                                    Builder.Vertices[j].TextureCoordinates = new Worlds.Vector.Vector2Df(x, y);
                                 }
                                 else
                                 {
