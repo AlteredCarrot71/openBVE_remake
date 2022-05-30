@@ -217,14 +217,14 @@ namespace OpenBve
         {
             internal int SoundBufferIndex;
             internal int SoundSourceIndex;
-            internal Worlds.Vector.Vector3D Position;
-            private CarSound(int buffer, int source, Worlds.Vector.Vector3D position)
+            internal Vectors.Vector3D Position;
+            private CarSound(int buffer, int source, Vectors.Vector3D position)
             {
                 this.SoundBufferIndex = buffer;
                 this.SoundSourceIndex = source;
                 this.Position = position;
             }
-            internal static readonly CarSound Empty = new CarSound(-1, -1, new Worlds.Vector.Vector3D(0.0, 0.0, 0.0));
+            internal static readonly CarSound Empty = new CarSound(-1, -1, new Vectors.Vector3D(0.0, 0.0, 0.0));
         }
         internal struct MotorSoundTableEntry
         {
@@ -241,7 +241,7 @@ namespace OpenBve
         internal struct MotorSound
         {
             internal MotorSoundTable[] Tables;
-            internal Worlds.Vector.Vector3D Position;
+            internal Vectors.Vector3D Position;
             internal double SpeedConversionFactor;
             internal int CurrentAccelerationDirection;
             internal const int MotorP1 = 0;
@@ -312,7 +312,7 @@ namespace OpenBve
             internal Axle RearAxle;
             internal double FrontAxlePosition;
             internal double RearAxlePosition;
-            internal Worlds.Vector.Vector3D Up;
+            internal Vectors.Vector3D Up;
             internal CarSection[] CarSections;
             internal int CurrentCarSection;
             internal double DriverX;
@@ -522,7 +522,7 @@ namespace OpenBve
                     a.Objects[i].ObjectIndex = ObjectManager.CreateDynamicObject();
                 }
                 Train.Cars[Train.DriverCar].CarSections[0].Elements = a.Objects;
-                World.CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
+                World.CameraRestriction = World.CameraRestrictionMode.NotAvailable;
             }
             else
             {
@@ -530,7 +530,7 @@ namespace OpenBve
                 if (System.IO.File.Exists(File))
                 {
                     Panel2CfgParser.ParsePanel2Config(TrainPath, Encoding, Train);
-                    World.CameraRestriction = Worlds.CameraRestrictionMode.On;
+                    World.CameraRestriction = World.CameraRestrictionMode.On;
                 }
                 else
                 {
@@ -538,11 +538,11 @@ namespace OpenBve
                     if (System.IO.File.Exists(File))
                     {
                         PanelCfgParser.ParsePanelConfig(TrainPath, Encoding, Train);
-                        World.CameraRestriction = Worlds.CameraRestrictionMode.On;
+                        World.CameraRestriction = World.CameraRestrictionMode.On;
                     }
                     else
                     {
-                        World.CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
+                        World.CameraRestriction = World.CameraRestrictionMode.NotAvailable;
                     }
                 }
             }
@@ -911,8 +911,8 @@ namespace OpenBve
                 double a = -Train.Cars[CarIndex].Specs.CurrentRollDueToTopplingAngle - Train.Cars[CarIndex].Specs.CurrentRollDueToCantAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
-                Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
                 Train.Cars[CarIndex].Up.X = ux;
                 Train.Cars[CarIndex].Up.Y = uy;
                 Train.Cars[CarIndex].Up.Z = uz;
@@ -923,8 +923,8 @@ namespace OpenBve
                 double a = Train.Cars[CarIndex].Specs.CurrentPitchDueToAccelerationAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                 double cx = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X);
                 double cy = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y);
                 double cz = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z);
@@ -934,8 +934,8 @@ namespace OpenBve
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X -= cx;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y -= cy;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z -= cz;
-                Vectors.Rotate(ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
-                Vectors.Rotate(ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
+                World.Rotate(ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
+                World.Rotate(ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y, ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z, sx, sy, sz, cosa, sina);
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X += cx;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y += cy;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z += cz;
@@ -959,7 +959,7 @@ namespace OpenBve
                     {
                         if (!SoundManager.IsPlaying(Train.Cars[CarIndex].Sounds.SpringL.SoundSourceIndex))
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.SpringL.Position;
+                            Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.SpringL.Position;
                             SoundManager.PlaySound(ref Train.Cars[CarIndex].Sounds.SpringL.SoundSourceIndex, snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                         }
                     }
@@ -972,7 +972,7 @@ namespace OpenBve
                     {
                         if (!SoundManager.IsPlaying(Train.Cars[CarIndex].Sounds.SpringR.SoundSourceIndex))
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.SpringR.Position;
+                            Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.SpringR.Position;
                             SoundManager.PlaySound(ref Train.Cars[CarIndex].Sounds.SpringR.SoundSourceIndex, snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                         }
                     }
@@ -986,8 +986,8 @@ namespace OpenBve
 				 * line that forms between the axles hits the rail, i.e. the less perpendicular that
 				 * line is to the rails, the more flange noise there will be.
 				 * */
-                Worlds.Vector.Vector3D d = Worlds.Vector.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition);
-                Vectors.Normalize(ref d.X, ref d.Y, ref d.Z);
+                Vectors.Vector3D d = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition);
+                World.Normalize(ref d.X, ref d.Y, ref d.Z);
                 double b0 = d.X * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Z;
                 double b1 = d.X * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Z;
                 double spd = Math.Abs(Train.Cars[CarIndex].Specs.CurrentSpeed);
@@ -1046,7 +1046,7 @@ namespace OpenBve
                         int snd = Train.Cars[CarIndex].Sounds.Flange[i].SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.Flange[i].Position;
+                            Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.Flange[i].Position;
                             SoundManager.PlaySound(ref Train.Cars[CarIndex].Sounds.Flange[i].SoundSourceIndex, snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, true, pitch, gain);
                         }
                     }
@@ -1075,10 +1075,10 @@ namespace OpenBve
             double cx = rx + sx * Train.Cars[i].DriverX + ux * Train.Cars[i].DriverY + dx * Train.Cars[i].DriverZ;
             double cy = ry + sy * Train.Cars[i].DriverX + uy * Train.Cars[i].DriverY + dy * Train.Cars[i].DriverZ;
             double cz = rz + sz * Train.Cars[i].DriverX + uz * Train.Cars[i].DriverY + dz * Train.Cars[i].DriverZ;
-            World.CameraTrackFollower.WorldPosition = new Worlds.Vector.Vector3D(cx, cy, cz);
-            World.CameraTrackFollower.WorldDirection = new Worlds.Vector.Vector3D(dx, dy, dz);
-            World.CameraTrackFollower.WorldUp = new Worlds.Vector.Vector3D(ux, uy, uz);
-            World.CameraTrackFollower.WorldSide = new Worlds.Vector.Vector3D(sx, sy, sz);
+            World.CameraTrackFollower.WorldPosition = new Vectors.Vector3D(cx, cy, cz);
+            World.CameraTrackFollower.WorldDirection = new Vectors.Vector3D(dx, dy, dz);
+            World.CameraTrackFollower.WorldUp = new Vectors.Vector3D(ux, uy, uz);
+            World.CameraTrackFollower.WorldSide = new Vectors.Vector3D(sx, sy, sz);
             double f = (Train.Cars[i].DriverZ - Train.Cars[i].RearAxlePosition) / (Train.Cars[i].FrontAxlePosition - Train.Cars[i].RearAxlePosition);
             double tp = (1.0 - f) * Train.Cars[i].RearAxle.Follower.TrackPosition + f * Train.Cars[i].FrontAxle.Follower.TrackPosition;
             TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, tp, false, false);
@@ -1242,7 +1242,7 @@ namespace OpenBve
             {
                 for (int i = 0; i < Train.Cars[c].CarSections[s].Elements.Length; i++)
                 {
-                    UpdateCarSectionElement(Train, CarIndex, s, i, new Worlds.Vector.Vector3D(px, py, pz), new Worlds.Vector.Vector3D(dx, dy, dz), new Worlds.Vector.Vector3D(ux, uy, uz), new Worlds.Vector.Vector3D(sx, sy, sz), Train.Cars[c].CurrentlyVisible, TimeElapsed, ForceUpdate);
+                    UpdateCarSectionElement(Train, CarIndex, s, i, new Vectors.Vector3D(px, py, pz), new Vectors.Vector3D(dx, dy, dz), new Vectors.Vector3D(ux, uy, uz), new Vectors.Vector3D(sx, sy, sz), Train.Cars[c].CurrentlyVisible, TimeElapsed, ForceUpdate);
                     // brightness change
                     int o = Train.Cars[c].CarSections[s].Elements[i].ObjectIndex;
                     if (ObjectManager.Objects[o] != null)
@@ -1287,12 +1287,12 @@ namespace OpenBve
         }
 
         // update car section element
-        private static void UpdateCarSectionElement(Train Train, int CarIndex, int SectionIndex, int ElementIndex, Worlds.Vector.Vector3D Position, Worlds.Vector.Vector3D Direction, Worlds.Vector.Vector3D Up, Worlds.Vector.Vector3D Side, bool Show, double TimeElapsed, bool ForceUpdate)
+        private static void UpdateCarSectionElement(Train Train, int CarIndex, int SectionIndex, int ElementIndex, Vectors.Vector3D Position, Vectors.Vector3D Direction, Vectors.Vector3D Up, Vectors.Vector3D Side, bool Show, double TimeElapsed, bool ForceUpdate)
         {
-            Worlds.Vector.Vector3D p;
-            if (Train.Cars[CarIndex].CarSections[SectionIndex].Overlay & World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
+            Vectors.Vector3D p;
+            if (Train.Cars[CarIndex].CarSections[SectionIndex].Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
             {
-                p = new Worlds.Vector.Vector3D(Train.Cars[CarIndex].DriverX, Train.Cars[CarIndex].DriverY, Train.Cars[CarIndex].DriverZ);
+                p = new Vectors.Vector3D(Train.Cars[CarIndex].DriverX, Train.Cars[CarIndex].DriverY, Train.Cars[CarIndex].DriverZ);
             }
             else
             {
@@ -1821,7 +1821,7 @@ namespace OpenBve
                                 int snd = Game.Stations[i].ArrivalSoundIndex;
                                 if (snd >= 0)
                                 {
-                                    Worlds.Vector.Vector3D pos = Game.Stations[i].SoundOrigin;
+                                    Vectors.Vector3D pos = Game.Stations[i].SoundOrigin;
                                     SoundManager.PlaySound(snd, pos, SoundManager.Importance.DontCare, false);
                                 }
                                 Train.StationArrivalTime = Game.SecondsSinceMidnight;
@@ -1921,7 +1921,7 @@ namespace OpenBve
                                     int snd = Train.Cars[Train.DriverCar].Sounds.Adjust.SoundBufferIndex;
                                     if (snd >= 0)
                                     {
-                                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Adjust.Position;
+                                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Adjust.Position;
                                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                                     }
                                     if (Train == TrainManager.PlayerTrain)
@@ -2161,7 +2161,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.PilotLampOn.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.PilotLampOn.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.PilotLampOn.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -2170,7 +2170,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.PilotLampOff.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.PilotLampOff.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.PilotLampOff.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -2207,7 +2207,7 @@ namespace OpenBve
                     int snd = Train.Cars[i].Sounds.DoorOpenL.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.DoorOpenL.Position;
+                        Vectors.Vector3D pos = Train.Cars[i].Sounds.DoorOpenL.Position;
                         SoundManager.PlaySound(snd, Train, i, pos, SoundManager.Importance.DontCare, false, Train.Cars[i].Specs.DoorOpenPitch, 1.0);
                     }
                     for (int j = 0; j < Train.Cars[i].Specs.Doors.Length; j++)
@@ -2226,7 +2226,7 @@ namespace OpenBve
                     int snd = Train.Cars[i].Sounds.DoorOpenR.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.DoorOpenR.Position;
+                        Vectors.Vector3D pos = Train.Cars[i].Sounds.DoorOpenR.Position;
                         SoundManager.PlaySound(snd, Train, i, pos, SoundManager.Importance.DontCare, false, Train.Cars[i].Specs.DoorOpenPitch, 1.0);
                     }
                     for (int j = 0; j < Train.Cars[i].Specs.Doors.Length; j++)
@@ -2262,7 +2262,7 @@ namespace OpenBve
                     int snd = Train.Cars[i].Sounds.DoorCloseL.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.DoorCloseL.Position;
+                        Vectors.Vector3D pos = Train.Cars[i].Sounds.DoorCloseL.Position;
                         SoundManager.PlaySound(snd, Train, i, pos, SoundManager.Importance.DontCare, false, Train.Cars[i].Specs.DoorClosePitch, 1.0);
                     }
                 }
@@ -2274,7 +2274,7 @@ namespace OpenBve
                     int snd = Train.Cars[i].Sounds.DoorCloseR.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.DoorCloseR.Position;
+                        Vectors.Vector3D pos = Train.Cars[i].Sounds.DoorCloseR.Position;
                         SoundManager.PlaySound(snd, Train, i, pos, SoundManager.Importance.DontCare, false, Train.Cars[i].Specs.DoorClosePitch, 1.0);
                     }
                 }
@@ -2397,7 +2397,7 @@ namespace OpenBve
                         int snd = Train.Cars[CarIndex].Sounds.CpEnd.SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.CpEnd.Position;
+                            Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.CpEnd.Position;
                             SoundManager.PlaySound(snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                         }
                         snd = Train.Cars[CarIndex].Sounds.CpLoop.SoundBufferIndex;
@@ -2416,7 +2416,7 @@ namespace OpenBve
                             int snd = Train.Cars[CarIndex].Sounds.CpLoop.SoundBufferIndex;
                             if (snd >= 0)
                             {
-                                Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.CpLoop.Position;
+                                Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.CpLoop.Position;
                                 SoundManager.PlaySound(ref Train.Cars[CarIndex].Sounds.CpLoop.SoundSourceIndex, snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, true);
                             }
                         }
@@ -2432,7 +2432,7 @@ namespace OpenBve
                         int snd = Train.Cars[CarIndex].Sounds.CpStart.SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.CpStart.Position;
+                            Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.CpStart.Position;
                             SoundManager.PlaySound(snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                         }
                     }
@@ -2966,7 +2966,7 @@ namespace OpenBve
                 int snd = Train.Cars[CarIndex].Sounds.AirZero.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.AirZero.Position;
+                    Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.AirZero.Position;
                     SoundManager.PlaySound(snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -2976,7 +2976,7 @@ namespace OpenBve
                 int snd = Train.Cars[CarIndex].Sounds.Air.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.Air.Position;
+                    Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.Air.Position;
                     SoundManager.PlaySound(snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -2986,7 +2986,7 @@ namespace OpenBve
                 int snd = Train.Cars[CarIndex].Sounds.AirHigh.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[CarIndex].Sounds.AirHigh.Position;
+                    Vectors.Vector3D pos = Train.Cars[CarIndex].Sounds.AirHigh.Position;
                     SoundManager.PlaySound(snd, Train, CarIndex, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -3073,7 +3073,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMax.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMax.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMax.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
                 for (int i = 0; i < Train.Cars.Length; i++)
@@ -3081,7 +3081,7 @@ namespace OpenBve
                     snd = Train.Cars[i].Sounds.EmrBrake.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.EmrBrake.Position;
+                        Vectors.Vector3D pos = Train.Cars[i].Sounds.EmrBrake.Position;
                         SoundManager.PlaySound(snd, Train, i, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3116,7 +3116,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
                 // apply
@@ -3171,7 +3171,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.ReverserOn.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.ReverserOn.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.ReverserOn.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3180,7 +3180,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.ReverserOff.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.ReverserOff.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.ReverserOff.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3218,7 +3218,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.MasterControllerDown.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerDown.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerDown.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3228,7 +3228,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.MasterControllerMin.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerMin.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerMin.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3241,7 +3241,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.MasterControllerUp.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerUp.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerUp.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3251,7 +3251,7 @@ namespace OpenBve
                     int snd = Train.Cars[Train.DriverCar].Sounds.MasterControllerMax.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerMax.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.MasterControllerMax.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3263,7 +3263,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.Brake.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Brake.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Brake.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
                 if (b > 0)
@@ -3272,7 +3272,7 @@ namespace OpenBve
                     snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3282,7 +3282,7 @@ namespace OpenBve
                     snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.SoundBufferIndex;
                     if (snd >= 0)
                     {
-                        Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.Position;
+                        Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.Position;
                         SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                     }
                 }
@@ -3293,7 +3293,7 @@ namespace OpenBve
                 int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.SoundBufferIndex;
                 if (snd >= 0)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.Position;
+                    Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.Position;
                     SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                 }
             }
@@ -3355,7 +3355,7 @@ namespace OpenBve
                         int snd = Train.Cars[Train.DriverCar].Sounds.Brake.SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Brake.Position;
+                            Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.Brake.Position;
                             SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                         }
                     }
@@ -3369,7 +3369,7 @@ namespace OpenBve
                             int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.SoundBufferIndex;
                             if (snd >= 0)
                             {
-                                Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
+                                Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleRelease.Position;
                                 SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                             }
                         }
@@ -3379,7 +3379,7 @@ namespace OpenBve
                             int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.SoundBufferIndex;
                             if (snd >= 0)
                             {
-                                Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.Position;
+                                Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleMin.Position;
                                 SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                             }
                         }
@@ -3390,7 +3390,7 @@ namespace OpenBve
                         int snd = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.Position;
+                            Vectors.Vector3D pos = Train.Cars[Train.DriverCar].Sounds.BrakeHandleApply.Position;
                             SoundManager.PlaySound(snd, Train, Train.DriverCar, pos, SoundManager.Importance.DontCare, false);
                         }
                     }
@@ -4390,7 +4390,7 @@ namespace OpenBve
                         int snd = Train.Cars[i].Sounds.Run[j].SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.Run[j].Position;
+                            Vectors.Vector3D pos = Train.Cars[i].Sounds.Run[j].Position;
                             SoundManager.PlaySound(ref Train.Cars[i].Sounds.Run[j].SoundSourceIndex, snd, Train, i, pos, SoundManager.Importance.DontCare, true, pitch, gain);
                         }
                     }
@@ -4401,7 +4401,7 @@ namespace OpenBve
             {
                 if (Train.Cars[i].Specs.IsMotorCar)
                 {
-                    Worlds.Vector.Vector3D pos = Train.Cars[i].Sounds.Motor.Position;
+                    Vectors.Vector3D pos = Train.Cars[i].Sounds.Motor.Position;
                     double speed = Math.Abs(Train.Cars[i].Specs.CurrentPerceivedSpeed);
                     int idx = (int)Math.Round(speed * Train.Cars[i].Sounds.Motor.SpeedConversionFactor);
                     int odir = Train.Cars[i].Sounds.Motor.CurrentAccelerationDirection;

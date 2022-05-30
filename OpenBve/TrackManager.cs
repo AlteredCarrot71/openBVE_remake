@@ -199,7 +199,7 @@ namespace OpenBve
                         int snd = Train.Cars[d].Sounds.Halt.SoundBufferIndex;
                         if (snd >= 0)
                         {
-                            Worlds.Vector.Vector3D pos = Train.Cars[d].Sounds.Halt.Position;
+                            Vectors.Vector3D pos = Train.Cars[d].Sounds.Halt.Position;
                             if (Train.Specs.PassAlarm == TrainManager.PassAlarmType.Single)
                             {
                                 SoundManager.PlaySound(snd, Train, d, pos, SoundManager.Importance.DontCare, false);
@@ -629,9 +629,9 @@ namespace OpenBve
             internal bool PlayerTrainOnly;
             internal bool Once;
             internal bool Dynamic;
-            internal Worlds.Vector.Vector3D Position;
+            internal Vectors.Vector3D Position;
             internal double Speed;
-            internal SoundEvent(double TrackPositionDelta, int SoundIndex, bool PlayerTrainOnly, bool Once, bool Dynamic, Worlds.Vector.Vector3D Position, double Speed)
+            internal SoundEvent(double TrackPositionDelta, int SoundIndex, bool PlayerTrainOnly, bool Once, bool Dynamic, Vectors.Vector3D Position, double Speed)
             {
                 this.TrackPositionDelta = TrackPositionDelta;
                 this.DontTriggerAnymore = false;
@@ -649,7 +649,7 @@ namespace OpenBve
                 {
                     if (!PlayerTrainOnly | Train == TrainManager.PlayerTrain)
                     {
-                        Worlds.Vector.Vector3D p = this.Position;
+                        Vectors.Vector3D p = this.Position;
                         double pitch = 1.0;
                         double gain = 1.0;
                         int i = this.SoundIndex;
@@ -772,10 +772,10 @@ namespace OpenBve
             internal double CurveCantTangent;
             internal double AdhesionMultiplier;
             internal double CsvRwAccuracyLevel;
-            internal Worlds.Vector.Vector3D WorldPosition;
-            internal Worlds.Vector.Vector3D WorldDirection;
-            internal Worlds.Vector.Vector3D WorldUp;
-            internal Worlds.Vector.Vector3D WorldSide;
+            internal Vectors.Vector3D WorldPosition;
+            internal Vectors.Vector3D WorldDirection;
+            internal Vectors.Vector3D WorldUp;
+            internal Vectors.Vector3D WorldSide;
             internal GeneralEvent[] Events;
             internal TrackElement(double StartingTrackPosition)
             {
@@ -785,10 +785,10 @@ namespace OpenBve
                 this.CurveCantTangent = 0.0;
                 this.AdhesionMultiplier = 1.0;
                 this.CsvRwAccuracyLevel = 2.0;
-                this.WorldPosition = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
-                this.WorldDirection = new Worlds.Vector.Vector3D(0.0, 0.0, 1.0);
-                this.WorldUp = new Worlds.Vector.Vector3D(0.0, 1.0, 0.0);
-                this.WorldSide = new Worlds.Vector.Vector3D(1.0, 0.0, 0.0);
+                this.WorldPosition = new Vectors.Vector3D(0.0, 0.0, 0.0);
+                this.WorldDirection = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                this.WorldUp = new Vectors.Vector3D(0.0, 1.0, 0.0);
+                this.WorldSide = new Vectors.Vector3D(1.0, 0.0, 0.0);
                 this.Events = new GeneralEvent[] { };
             }
         }
@@ -805,10 +805,10 @@ namespace OpenBve
         {
             internal int LastTrackElement;
             internal double TrackPosition;
-            internal Worlds.Vector.Vector3D WorldPosition;
-            internal Worlds.Vector.Vector3D WorldDirection;
-            internal Worlds.Vector.Vector3D WorldUp;
-            internal Worlds.Vector.Vector3D WorldSide;
+            internal Vectors.Vector3D WorldPosition;
+            internal Vectors.Vector3D WorldDirection;
+            internal Vectors.Vector3D WorldUp;
+            internal Vectors.Vector3D WorldSide;
             internal double CurveRadius;
             internal double CurveCant;
             internal double CantDueToInaccuracy;
@@ -865,23 +865,23 @@ namespace OpenBve
                         double f = 2.0 * r * r * (1.0 - Math.Cos(b));
                         double c = (double)Math.Sign(db) * Math.Sqrt(f >= 0.0 ? f : 0.0);
                         double a = 0.5 * (double)Math.Sign(r) * b;
-                        Worlds.Vector.Vector3D D = new Worlds.Vector.Vector3D(CurrentTrack.Elements[i].WorldDirection.X, 0.0, CurrentTrack.Elements[i].WorldDirection.Z);
-                        Vectors.Normalize(ref D.X, ref D.Y, ref D.Z);
+                        Vectors.Vector3D D = new Vectors.Vector3D(CurrentTrack.Elements[i].WorldDirection.X, 0.0, CurrentTrack.Elements[i].WorldDirection.Z);
+                        World.Normalize(ref D.X, ref D.Y, ref D.Z);
                         double cosa = Math.Cos(a);
                         double sina = Math.Sin(a);
-                        Vectors.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
+                        World.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
                         Follower.WorldPosition.X = CurrentTrack.Elements[i].WorldPosition.X + c * D.X;
                         Follower.WorldPosition.Y = CurrentTrack.Elements[i].WorldPosition.Y + h;
                         Follower.WorldPosition.Z = CurrentTrack.Elements[i].WorldPosition.Z + c * D.Z;
-                        Vectors.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
+                        World.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
                         Follower.WorldDirection.X = D.X;
                         Follower.WorldDirection.Y = p;
                         Follower.WorldDirection.Z = D.Z;
-                        Vectors.Normalize(ref Follower.WorldDirection.X, ref Follower.WorldDirection.Y, ref Follower.WorldDirection.Z);
+                        World.Normalize(ref Follower.WorldDirection.X, ref Follower.WorldDirection.Y, ref Follower.WorldDirection.Z);
                         double cos2a = Math.Cos(2.0 * a);
                         double sin2a = Math.Sin(2.0 * a);
                         Follower.WorldSide = CurrentTrack.Elements[i].WorldSide;
-                        Vectors.Rotate(ref Follower.WorldSide.X, ref Follower.WorldSide.Y, ref Follower.WorldSide.Z, 0.0, 1.0, 0.0, cos2a, sin2a);
+                        World.Rotate(ref Follower.WorldSide.X, ref Follower.WorldSide.Y, ref Follower.WorldSide.Z, 0.0, 1.0, 0.0, cos2a, sin2a);
                         Vectors.Cross(Follower.WorldDirection.X, Follower.WorldDirection.Y, Follower.WorldDirection.Z, Follower.WorldSide.X, Follower.WorldSide.Y, Follower.WorldSide.Z, out Follower.WorldUp.X, out Follower.WorldUp.Y, out Follower.WorldUp.Z);
                         Follower.CurveRadius = CurrentTrack.Elements[i].CurveRadius;
                     }

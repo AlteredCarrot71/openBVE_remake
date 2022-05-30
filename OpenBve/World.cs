@@ -5,12 +5,235 @@ namespace OpenBve
 {
     internal static class World
     {
+        #region vertices
+        /// <summary>Represents a vertex consisting of 3D coordinates and 2D texture coordinates.</summary>
+        internal struct Vertex
+        {
+            internal Vectors.Vector3D Coordinates;
+            internal Vectors.Vector2Df TextureCoordinates;
+            internal Vertex(double X, double Y, double Z)
+            {
+                this.Coordinates = new Vectors.Vector3D(X, Y, Z);
+                this.TextureCoordinates = new Vectors.Vector2Df(0.0f, 0.0f);
+            }
+            internal Vertex(Vectors.Vector3D Coordinates, Vectors.Vector2Df TextureCoordinates)
+            {
+                this.Coordinates = Coordinates;
+                this.TextureCoordinates = TextureCoordinates;
+            }
+            // operators
+            public static bool operator ==(Vertex A, Vertex B)
+            {
+                if (A.Coordinates.X != B.Coordinates.X | A.Coordinates.Y != B.Coordinates.Y | A.Coordinates.Z != B.Coordinates.Z) return false;
+                if (A.TextureCoordinates.X != B.TextureCoordinates.X | A.TextureCoordinates.Y != B.TextureCoordinates.Y) return false;
+                return true;
+            }
+            public static bool operator !=(Vertex A, Vertex B)
+            {
+                if (A.Coordinates.X != B.Coordinates.X | A.Coordinates.Y != B.Coordinates.Y | A.Coordinates.Z != B.Coordinates.Z) return true;
+                if (A.TextureCoordinates.X != B.TextureCoordinates.X | A.TextureCoordinates.Y != B.TextureCoordinates.Y) return true;
+                return false;
+            }
+        }
+        #endregion
+
+        #region mesh material
+        /// <summary>Represents material properties.</summary>
+        internal struct MeshMaterial
+        {
+            /// <summary>A bit mask combining constants of the MeshMaterial structure.</summary>
+            internal byte Flags;
+            internal Colors.ColorRGBA Color;
+            internal Colors.ColorRGB TransparentColor;
+            internal Colors.ColorRGB EmissiveColor;
+            internal int DaytimeTextureIndex;
+            internal int NighttimeTextureIndex;
+            /// <summary>A value between 0 (daytime) and 255 (nighttime).</summary>
+            internal byte DaytimeNighttimeBlend;
+            internal MeshMaterialBlendMode BlendMode;
+            /// <summary>A bit mask specifying the glow properties. Use GetGlowAttenuationData to create valid data for this field.</summary>
+            internal ushort GlowAttenuationData;
+            internal const int EmissiveColorMask = 1;
+            internal const int TransparentColorMask = 2;
+            // operators
+            public static bool operator ==(MeshMaterial A, MeshMaterial B)
+            {
+                if (A.Flags != B.Flags) return false;
+                if (A.Color.R != B.Color.R | A.Color.G != B.Color.G | A.Color.B != B.Color.B | A.Color.A != B.Color.A) return false;
+                if (A.TransparentColor.R != B.TransparentColor.R | A.TransparentColor.G != B.TransparentColor.G | A.TransparentColor.B != B.TransparentColor.B) return false;
+                if (A.EmissiveColor.R != B.EmissiveColor.R | A.EmissiveColor.G != B.EmissiveColor.G | A.EmissiveColor.B != B.EmissiveColor.B) return false;
+                if (A.DaytimeTextureIndex != B.DaytimeTextureIndex) return false;
+                if (A.NighttimeTextureIndex != B.NighttimeTextureIndex) return false;
+                if (A.BlendMode != B.BlendMode) return false;
+                if (A.GlowAttenuationData != B.GlowAttenuationData) return false;
+                return true;
+            }
+            public static bool operator !=(MeshMaterial A, MeshMaterial B)
+            {
+                if (A.Flags != B.Flags) return true;
+                if (A.Color.R != B.Color.R | A.Color.G != B.Color.G | A.Color.B != B.Color.B | A.Color.A != B.Color.A) return true;
+                if (A.TransparentColor.R != B.TransparentColor.R | A.TransparentColor.G != B.TransparentColor.G | A.TransparentColor.B != B.TransparentColor.B) return true;
+                if (A.EmissiveColor.R != B.EmissiveColor.R | A.EmissiveColor.G != B.EmissiveColor.G | A.EmissiveColor.B != B.EmissiveColor.B) return true;
+                if (A.DaytimeTextureIndex != B.DaytimeTextureIndex) return true;
+                if (A.NighttimeTextureIndex != B.NighttimeTextureIndex) return true;
+                if (A.BlendMode != B.BlendMode) return true;
+                if (A.GlowAttenuationData != B.GlowAttenuationData) return true;
+                return false;
+            }
+        }
+        internal enum MeshMaterialBlendMode : byte
+        {
+            Normal = 0,
+            Additive = 1
+        }
+        #endregion
+
+        #region mesh face vertex
+        /// <summary>Represents a reference to a vertex and the normal to be used for that vertex.</summary>
+        internal struct MeshFaceVertex
+        {
+            /// <summary>A reference to an element in the Vertex array of the contained Mesh structure.</summary>
+            internal ushort Index;
+            /// <summary>The normal to be used at the vertex.</summary>
+            internal Vectors.Vector3Df Normal;
+            internal MeshFaceVertex(int Index)
+            {
+                this.Index = (ushort)Index;
+                this.Normal = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
+            }
+            internal MeshFaceVertex(int Index, Vectors.Vector3Df Normal)
+            {
+                this.Index = (ushort)Index;
+                this.Normal = Normal;
+            }
+            // operators
+            public static bool operator ==(MeshFaceVertex A, MeshFaceVertex B)
+            {
+                if (A.Index != B.Index) return false;
+                if (A.Normal.X != B.Normal.X) return false;
+                if (A.Normal.Y != B.Normal.Y) return false;
+                if (A.Normal.Z != B.Normal.Z) return false;
+                return true;
+            }
+            public static bool operator !=(MeshFaceVertex A, MeshFaceVertex B)
+            {
+                if (A.Index != B.Index) return true;
+                if (A.Normal.X != B.Normal.X) return true;
+                if (A.Normal.Y != B.Normal.Y) return true;
+                if (A.Normal.Z != B.Normal.Z) return true;
+                return false;
+            }
+        }
+        #endregion
+
+        #region mesh face
+        /// <summary>Represents a face consisting of vertices and material attributes.</summary>
+        internal struct MeshFace
+        {
+            internal MeshFaceVertex[] Vertices;
+            /// <summary>A reference to an element in the Material array of the containing Mesh structure.</summary>
+            internal ushort Material;
+            /// <summary>A bit mask combining constants of the MeshFace structure.</summary>
+            internal byte Flags;
+            internal MeshFace(int[] Vertices)
+            {
+                this.Vertices = new MeshFaceVertex[Vertices.Length];
+                for (int i = 0; i < Vertices.Length; i++)
+                {
+                    this.Vertices[i] = new MeshFaceVertex(Vertices[i]);
+                }
+                this.Material = 0;
+                this.Flags = 0;
+            }
+            internal void Flip()
+            {
+                if ((this.Flags & FaceTypeMask) == FaceTypeQuadStrip)
+                {
+                    for (int i = 0; i < this.Vertices.Length; i += 2)
+                    {
+                        MeshFaceVertex x = this.Vertices[i];
+                        this.Vertices[i] = this.Vertices[i + 1];
+                        this.Vertices[i + 1] = x;
+                    }
+                }
+                else
+                {
+                    int n = this.Vertices.Length;
+                    for (int i = 0; i < (n >> 1); i++)
+                    {
+                        MeshFaceVertex x = this.Vertices[i];
+                        this.Vertices[i] = this.Vertices[n - i - 1];
+                        this.Vertices[n - i - 1] = x;
+                    }
+                }
+            }
+            internal const int FaceTypeMask = 7;
+            internal const int FaceTypePolygon = 0;
+            internal const int FaceTypeTriangles = 1;
+            internal const int FaceTypeTriangleStrip = 2;
+            internal const int FaceTypeQuads = 3;
+            internal const int FaceTypeQuadStrip = 4;
+            internal const int Face2Mask = 8;
+        }
+        #endregion
+
+        #region mesh
+        /// <summary>Represents a mesh consisting of a series of vertices, faces and material properties.</summary>
+        internal struct Mesh
+        {
+            internal Vertex[] Vertices;
+            internal MeshMaterial[] Materials;
+            internal MeshFace[] Faces;
+            /// <summary>Creates a mesh consisting of one face, which is represented by individual vertices, and a color.</summary>
+            /// <param name="Vertices">The vertices that make up one face.</param>
+            /// <param name="Color">The color to be applied on the face.</param>
+            internal Mesh(Vertex[] Vertices, Colors.ColorRGBA Color)
+            {
+                this.Vertices = Vertices;
+                this.Materials = new MeshMaterial[1];
+                this.Materials[0].Color = Color;
+                this.Materials[0].DaytimeTextureIndex = -1;
+                this.Materials[0].NighttimeTextureIndex = -1;
+                this.Faces = new MeshFace[1];
+                this.Faces[0].Material = 0;
+                this.Faces[0].Vertices = new MeshFaceVertex[Vertices.Length];
+                for (int i = 0; i < Vertices.Length; i++)
+                {
+                    this.Faces[0].Vertices[i].Index = (ushort)i;
+                }
+            }
+            /// <summary>Creates a mesh consisting of the specified vertices, faces and color.</summary>
+            /// <param name="Vertices">The vertices used.</param>
+            /// <param name="FaceVertices">A list of faces represented by a list of references to vertices.</param>
+            /// <param name="Color">The color to be applied on all of the faces.</param>
+            internal Mesh(Vertex[] Vertices, int[][] FaceVertices, Colors.ColorRGBA Color)
+            {
+                this.Vertices = Vertices;
+                this.Materials = new MeshMaterial[1];
+                this.Materials[0].Color = Color;
+                this.Materials[0].DaytimeTextureIndex = -1;
+                this.Materials[0].NighttimeTextureIndex = -1;
+                this.Faces = new MeshFace[FaceVertices.Length];
+                for (int i = 0; i < FaceVertices.Length; i++)
+                {
+                    this.Faces[i] = new MeshFace(FaceVertices[i]);
+                }
+            }
+        }
+        #endregion
+
         #region glow
+        internal enum GlowAttenuationMode
+        {
+            None = 0,
+            DivisionExponent2 = 1,
+            DivisionExponent4 = 2,
+        }
         /// <summary>Creates glow attenuation data from a half distance and a mode. The resulting value can be later passed to SplitGlowAttenuationData in order to reconstruct the parameters.</summary>
         /// <param name="HalfDistance">The distance at which the glow is at 50% of its full intensity. The value is clamped to the integer range from 1 to 4096. Values less than or equal to 0 disable glow attenuation.</param>
         /// <param name="Mode">The glow attenuation mode.</param>
         /// <returns>A System.UInt16 packed with the information about the half distance and glow attenuation mode.</returns>
-        internal static short GetGlowAttenuationData(double HalfDistance, GlowAttenuationMode Mode)
+        internal static ushort GetGlowAttenuationData(double HalfDistance, GlowAttenuationMode Mode)
         {
             if (HalfDistance <= 0.0 | Mode == GlowAttenuationMode.None) return 0;
             if (HalfDistance < 1.0)
@@ -21,13 +244,13 @@ namespace OpenBve
             {
                 HalfDistance = 4095.0;
             }
-            return (short)((int)Math.Round(HalfDistance) | ((int)Mode << 12));
+            return (ushort)((int)Math.Round(HalfDistance) | ((int)Mode << 12));
         }
         /// <summary>Recreates the half distance and the glow attenuation mode from a packed System.UInt16 that was created by GetGlowAttenuationData.</summary>
         /// <param name="Data">The data returned by GetGlowAttenuationData.</param>
         /// <param name="Mode">The mode of glow attenuation.</param>
         /// <param name="HalfDistance">The half distance of glow attenuation.</param>
-        internal static void SplitGlowAttenuationData(short Data, out GlowAttenuationMode Mode, out double HalfDistance)
+        internal static void SplitGlowAttenuationData(ushort Data, out GlowAttenuationMode Mode, out double HalfDistance)
         {
             Mode = (GlowAttenuationMode)(Data >> 12);
             HalfDistance = (double)(Data & 4095);
@@ -35,8 +258,8 @@ namespace OpenBve
         #endregion
 
         #region display
-        internal static double HorizontalViewingAngle = 0;
-        internal static double VerticalViewingAngle = 0;
+        internal static double HorizontalViewingAngle;
+        internal static double VerticalViewingAngle;
         internal static double OriginalVerticalViewingAngle;
         internal static double AspectRatio;
         /// <summary>The current viewing distance in the forward direction.</summary>
@@ -66,6 +289,17 @@ namespace OpenBve
         #endregion
 
         #region driver body
+        internal struct DriverBody
+        {
+            internal double SlowX;
+            internal double FastX;
+            internal double Roll;
+            internal ObjectManager.Damping RollDamping;
+            internal double SlowY;
+            internal double FastY;
+            internal double Pitch;
+            internal ObjectManager.Damping PitchDamping;
+        }
         internal static DriverBody CurrentDriverBody;
         internal static void UpdateDriverBody(double TimeElapsed)
         {
@@ -210,7 +444,7 @@ namespace OpenBve
         #region mouse grab
         internal static bool MouseGrabEnabled = false;
         internal static bool MouseGrabIgnoreOnce = false;
-        internal static Worlds.Vector.Vector2D MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
+        internal static Vectors.Vector2D MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
         internal static void UpdateMouseGrab(double TimeElapsed)
         {
             if (MouseGrabEnabled)
@@ -226,7 +460,7 @@ namespace OpenBve
                 }
                 CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
                 CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
-                MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
+                MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
             }
         }
         #endregion
@@ -234,13 +468,13 @@ namespace OpenBve
         #region relative camera
         internal struct CameraAlignment
         {
-            internal Worlds.Vector.Vector3D Position;
+            internal Vectors.Vector3D Position;
             internal double Yaw;
             internal double Pitch;
             internal double Roll;
             internal double TrackPosition;
             internal double Zoom;
-            internal CameraAlignment(Worlds.Vector.Vector3D Position, double Yaw, double Pitch, double Roll, double TrackPosition, double Zoom)
+            internal CameraAlignment(Vectors.Vector3D Position, double Yaw, double Pitch, double Roll, double TrackPosition, double Zoom)
             {
                 this.Position = Position;
                 this.Yaw = Yaw;
@@ -271,16 +505,25 @@ namespace OpenBve
         #endregion
 
         #region camera restriction
-        internal static Worlds.Vector.Vector3D CameraRestrictionBottomLeft = new Worlds.Vector.Vector3D(-1.0, -1.0, 1.0);
-        internal static Worlds.Vector.Vector3D CameraRestrictionTopRight = new Worlds.Vector.Vector3D(1.0, 1.0, 1.0);
-        internal static CameraRestrictionMode CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
+        internal static Vectors.Vector3D CameraRestrictionBottomLeft = new Vectors.Vector3D(-1.0, -1.0, 1.0);
+        internal static Vectors.Vector3D CameraRestrictionTopRight = new Vectors.Vector3D(1.0, 1.0, 1.0);
+        internal enum CameraRestrictionMode
+        {
+            /// <summary>Represents a 3D cab.</summary>
+            NotAvailable = -1,
+            /// <summary>Represents a 2D cab with camera restriction disabled.</summary>
+            Off = 0,
+            /// <summary>Represents a 2D cab with camera restriction enabled.</summary>
+            On = 1
+        }
+        internal static CameraRestrictionMode CameraRestriction = CameraRestrictionMode.NotAvailable;
         #endregion
 
         #region absolute camera
-        internal static Worlds.Vector.Vector3D AbsoluteCameraPosition;
-        internal static Worlds.Vector.Vector3D AbsoluteCameraDirection;
-        internal static Worlds.Vector.Vector3D AbsoluteCameraUp;
-        internal static Worlds.Vector.Vector3D AbsoluteCameraSide;
+        internal static Vectors.Vector3D AbsoluteCameraPosition;
+        internal static Vectors.Vector3D AbsoluteCameraDirection;
+        internal static Vectors.Vector3D AbsoluteCameraUp;
+        internal static Vectors.Vector3D AbsoluteCameraSide;
         #endregion
 
         #region camera restriction
@@ -378,12 +621,12 @@ namespace OpenBve
         {
             if (World.CameraRestriction == CameraRestrictionMode.On)
             {
-                Worlds.Vector.Vector3D[] p = new Worlds.Vector.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
-                Worlds.Vector.Vector2D[] r = new Worlds.Vector.Vector2D[2];
+                Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
+                Vectors.Vector2D[] r = new Vectors.Vector2D[2];
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates
-                    Vectors.Rotate(ref p[j].X, ref p[j].Y, ref p[j].Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
+                    World.Rotate(ref p[j].X, ref p[j].Y, ref p[j].Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
                     double rx = -Math.Tan(World.CameraCurrentAlignment.Yaw) - World.CameraCurrentAlignment.Position.X;
                     double ry = -Math.Tan(World.CameraCurrentAlignment.Pitch) - World.CameraCurrentAlignment.Position.Y;
                     double rz = -World.CameraCurrentAlignment.Position.Z;
@@ -535,7 +778,7 @@ namespace OpenBve
                     double cx = px + sx * ox + ux * oy + dx * oz;
                     double cy = py + sy * ox + uy * oy + dy * oz;
                     double cz = pz + sz * ox + uz * oy + dz * oz;
-                    AbsoluteCameraPosition = new Worlds.Vector.Vector3D(cx, cy, cz);
+                    AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
                     dx = tx - cx;
                     dy = ty - cy;
                     dz = tz - cz;
@@ -544,9 +787,9 @@ namespace OpenBve
                     dx *= ti;
                     dy *= ti;
                     dz *= ti;
-                    AbsoluteCameraDirection = new Worlds.Vector.Vector3D(dx, dy, dz);
-                    AbsoluteCameraSide = new Worlds.Vector.Vector3D(dz, 0.0, -dx);
-                    Vectors.Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
+                    AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
+                    AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
+                    Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
                     Vectors.Cross(dx, dy, dz, AbsoluteCameraSide.X, AbsoluteCameraSide.Y, AbsoluteCameraSide.Z, out AbsoluteCameraUp.X, out AbsoluteCameraUp.Y, out AbsoluteCameraUp.Z);
                     UpdateViewingDistances();
                     if (CameraMode == CameraViewMode.FlyByZooming)
@@ -632,7 +875,7 @@ namespace OpenBve
                     double rx = f.WorldPosition.X - cx + World.CameraTrackFollower.WorldSide.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
                     double ry = f.WorldPosition.Y - cy + World.CameraTrackFollower.WorldSide.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
                     double rz = f.WorldPosition.Z - cz + World.CameraTrackFollower.WorldSide.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
-                    Vectors.Normalize(ref rx, ref ry, ref rz);
+                    World.Normalize(ref rx, ref ry, ref rz);
                     double t = dz * (sy * ux - sx * uy) + dy * (-sz * ux + sx * uz) + dx * (sz * uy - sy * uz);
                     if (t != 0.0)
                     {
@@ -682,8 +925,8 @@ namespace OpenBve
                                 double a = TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverPitch;
                                 double cosa = Math.Cos(-a);
                                 double sina = Math.Sin(-a);
-                                Vectors.Rotate(ref dx2, ref dy2, ref dz2, sx, sy, sz, cosa, sina);
-                                Vectors.Rotate(ref ux2, ref uy2, ref uz2, sx, sy, sz, cosa, sina);
+                                World.Rotate(ref dx2, ref dy2, ref dz2, sx, sy, sz, cosa, sina);
+                                World.Rotate(ref ux2, ref uy2, ref uz2, sx, sy, sz, cosa, sina);
                             }
                         }
                     }
@@ -732,8 +975,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-bodyPitch);
                             double sina = Math.Sin(-bodyPitch);
-                            Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                            Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                            World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                            World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                         }
                     }
                     {
@@ -747,8 +990,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-bodyRoll);
                             double sina = Math.Sin(-bodyRoll);
-                            Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                            Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                            World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                            World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                         }
                     }
                     {
@@ -762,8 +1005,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(headYaw);
                             double sina = Math.Sin(headYaw);
-                            Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
-                            Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
+                            World.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
+                            World.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
                         }
                     }
                     {
@@ -777,8 +1020,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-headPitch);
                             double sina = Math.Sin(-headPitch);
-                            Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                            Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                            World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                            World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                         }
                     }
                     {
@@ -792,8 +1035,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-headRoll);
                             double sina = Math.Sin(-headRoll);
-                            Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                            Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                            World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                            World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                         }
                     }
                 }
@@ -807,29 +1050,29 @@ namespace OpenBve
                     {
                         double cosa = Math.Cos(totalYaw);
                         double sina = Math.Sin(totalYaw);
-                        Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
-                        Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
+                        World.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
+                        World.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
                     }
                     if (totalPitch != 0.0)
                     {
                         double cosa = Math.Cos(-totalPitch);
                         double sina = Math.Sin(-totalPitch);
-                        Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                        Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                        World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                        World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                     }
                     if (totalRoll != 0.0)
                     {
                         double cosa = Math.Cos(-totalRoll);
                         double sina = Math.Sin(-totalRoll);
-                        Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                        Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                        World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                        World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                     }
                 }
                 // finish
-                AbsoluteCameraPosition = new Worlds.Vector.Vector3D(cx, cy, cz);
-                AbsoluteCameraDirection = new Worlds.Vector.Vector3D(dx, dy, dz);
-                AbsoluteCameraUp = new Worlds.Vector.Vector3D(ux, uy, uz);
-                AbsoluteCameraSide = new Worlds.Vector.Vector3D(sx, sy, sz);
+                AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
+                AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
+                AbsoluteCameraUp = new Vectors.Vector3D(ux, uy, uz);
+                AbsoluteCameraSide = new Vectors.Vector3D(sx, sy, sz);
             }
         }
         private static void AdjustAlignment(ref double Source, double Direction, ref double Speed, double TimeElapsed)
@@ -928,6 +1171,280 @@ namespace OpenBve
             World.ForwardViewingDistance = d * max;
             World.BackwardViewingDistance = -d * min;
             ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + World.CameraCurrentAlignment.Position.Z, true);
+        }
+        #endregion
+
+        // ================================
+        #region vector transformation
+        internal struct Transformation
+        {
+            internal Vectors.Vector3D X;
+            internal Vectors.Vector3D Y;
+            internal Vectors.Vector3D Z;
+            internal Transformation(double Yaw, double Pitch, double Roll)
+            {
+                if (Yaw == 0.0 & Pitch == 0.0 & Roll == 0.0)
+                {
+                    this.X = new Vectors.Vector3D(1.0, 0.0, 0.0);
+                    this.Y = new Vectors.Vector3D(0.0, 1.0, 0.0);
+                    this.Z = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                }
+                else if (Pitch == 0.0 & Roll == 0.0)
+                {
+                    double cosYaw = Math.Cos(Yaw);
+                    double sinYaw = Math.Sin(Yaw);
+                    this.X = new Vectors.Vector3D(cosYaw, 0.0, -sinYaw);
+                    this.Y = new Vectors.Vector3D(0.0, 1.0, 0.0);
+                    this.Z = new Vectors.Vector3D(sinYaw, 0.0, cosYaw);
+                }
+                else
+                {
+                    double sx = 1.0, sy = 0.0, sz = 0.0;
+                    double ux = 0.0, uy = 1.0, uz = 0.0;
+                    double dx = 0.0, dy = 0.0, dz = 1.0;
+                    double cosYaw = Math.Cos(Yaw);
+                    double sinYaw = Math.Sin(Yaw);
+                    double cosPitch = Math.Cos(-Pitch);
+                    double sinPitch = Math.Sin(-Pitch);
+                    double cosRoll = Math.Cos(-Roll);
+                    double sinRoll = Math.Sin(-Roll);
+                    Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
+                    Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
+                    Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
+                    Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
+                    Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
+                    Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
+                    this.X = new Vectors.Vector3D(sx, sy, sz);
+                    this.Y = new Vectors.Vector3D(ux, uy, uz);
+                    this.Z = new Vectors.Vector3D(dx, dy, dz);
+                }
+            }
+            internal Transformation(Transformation Transformation, double Yaw, double Pitch, double Roll)
+            {
+                double sx = Transformation.X.X, sy = Transformation.X.Y, sz = Transformation.X.Z;
+                double ux = Transformation.Y.X, uy = Transformation.Y.Y, uz = Transformation.Y.Z;
+                double dx = Transformation.Z.X, dy = Transformation.Z.Y, dz = Transformation.Z.Z;
+                double cosYaw = Math.Cos(Yaw);
+                double sinYaw = Math.Sin(Yaw);
+                double cosPitch = Math.Cos(-Pitch);
+                double sinPitch = Math.Sin(-Pitch);
+                double cosRoll = Math.Cos(Roll);
+                double sinRoll = Math.Sin(Roll);
+                Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
+                Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
+                Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
+                Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
+                Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
+                Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
+                this.X = new Vectors.Vector3D(sx, sy, sz);
+                this.Y = new Vectors.Vector3D(ux, uy, uz);
+                this.Z = new Vectors.Vector3D(dx, dy, dz);
+            }
+            internal Transformation(Transformation BaseTransformation, Transformation AuxTransformation)
+            {
+                Vectors.Vector3D x = BaseTransformation.X;
+                Vectors.Vector3D y = BaseTransformation.Y;
+                Vectors.Vector3D z = BaseTransformation.Z;
+                Vectors.Vector3D s = AuxTransformation.X;
+                Vectors.Vector3D u = AuxTransformation.Y;
+                Vectors.Vector3D d = AuxTransformation.Z;
+                Rotate(ref x.X, ref x.Y, ref x.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                Rotate(ref y.X, ref y.Y, ref y.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                Rotate(ref z.X, ref z.Y, ref z.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                this.X = x;
+                this.Y = y;
+                this.Z = z;
+            }
+        }
+        #endregion
+
+        #region vector rotate
+        internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
+        {
+            double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            dx *= t; dy *= t; dz *= t;
+            double oc = 1.0 - cosa;
+            double x = (cosa + oc * dx * dx) * px + (oc * dx * dy - sina * dz) * py + (oc * dx * dz + sina * dy) * pz;
+            double y = (cosa + oc * dy * dy) * py + (oc * dx * dy + sina * dz) * px + (oc * dy * dz - sina * dx) * pz;
+            double z = (cosa + oc * dz * dz) * pz + (oc * dx * dz - sina * dy) * px + (oc * dy * dz + sina * dx) * py;
+            px = x; py = y; pz = z;
+        }
+        internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double cosa, double sina)
+        {
+            double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
+            dx *= t; dy *= t; dz *= t;
+            double oc = 1.0 - cosa;
+            double x = (cosa + oc * dx * dx) * (double)px + (oc * dx * dy - sina * dz) * (double)py + (oc * dx * dz + sina * dy) * (double)pz;
+            double y = (cosa + oc * dy * dy) * (double)py + (oc * dx * dy + sina * dz) * (double)px + (oc * dy * dz - sina * dx) * (double)pz;
+            double z = (cosa + oc * dz * dz) * (double)pz + (oc * dx * dz - sina * dy) * (double)px + (oc * dy * dz + sina * dx) * (double)py;
+            px = (float)x; py = (float)y; pz = (float)z;
+        }
+        internal static void Rotate(ref Vectors.Vector2D Vector, double cosa, double sina)
+        {
+            double u = Vector.X * cosa - Vector.Y * sina;
+            double v = Vector.X * sina + Vector.Y * cosa;
+            Vector.X = u;
+            Vector.Y = v;
+        }
+        internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
+        {
+            double x, y, z;
+            x = sx * (double)px + ux * (double)py + dx * (double)pz;
+            y = sy * (double)px + uy * (double)py + dy * (double)pz;
+            z = sz * (double)px + uz * (double)py + dz * (double)pz;
+            px = (float)x; py = (float)y; pz = (float)z;
+        }
+        internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
+        {
+            double x, y, z;
+            x = sx * px + ux * py + dx * pz;
+            y = sy * px + uy * py + dy * pz;
+            z = sz * px + uz * py + dz * pz;
+            px = x; py = y; pz = z;
+        }
+        internal static void Rotate(ref float px, ref float py, ref float pz, Transformation t)
+        {
+            double x, y, z;
+            x = t.X.X * (double)px + t.Y.X * (double)py + t.Z.X * (double)pz;
+            y = t.X.Y * (double)px + t.Y.Y * (double)py + t.Z.Y * (double)pz;
+            z = t.X.Z * (double)px + t.Y.Z * (double)py + t.Z.Z * (double)pz;
+            px = (float)x; py = (float)y; pz = (float)z;
+        }
+        internal static void Rotate(ref double px, ref double py, ref double pz, Transformation t)
+        {
+            double x, y, z;
+            x = t.X.X * px + t.Y.X * py + t.Z.X * pz;
+            y = t.X.Y * px + t.Y.Y * py + t.Z.Y * pz;
+            z = t.X.Z * px + t.Y.Z * py + t.Z.Z * pz;
+            px = x; py = y; pz = z;
+        }
+        internal static void RotatePlane(ref Vectors.Vector3D Vector, double cosa, double sina)
+        {
+            double u = Vector.X * cosa - Vector.Z * sina;
+            double v = Vector.X * sina + Vector.Z * cosa;
+            Vector.X = u;
+            Vector.Z = v;
+        }
+        internal static void RotatePlane(ref Vectors.Vector3Df Vector, double cosa, double sina)
+        {
+            double u = (double)Vector.X * cosa - (double)Vector.Z * sina;
+            double v = (double)Vector.X * sina + (double)Vector.Z * cosa;
+            Vector.X = (float)u;
+            Vector.Z = (float)v;
+        }
+        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vectors.Vector2D Direction, double cosa, double sina)
+        {
+            double dx = Direction.X, dy = Direction.Y;
+            double x = Vector.X, y = Vector.Y, z = Vector.Z;
+            double u = dy * x - dx * z;
+            double v = dx * x + dy * z;
+            Vector.X = dy * u + dx * v * cosa - dx * y * sina;
+            Vector.Y = y * cosa + v * sina;
+            Vector.Z = -dx * u + dy * v * cosa - dy * y * sina;
+        }
+        internal static void RotateUpDown(ref Vectors.Vector3D Vector, double dx, double dy, double cosa, double sina)
+        {
+            double x = Vector.X, y = Vector.Y, z = Vector.Z;
+            double u = dy * x - dx * z;
+            double v = dx * x + dy * z;
+            Vector.X = dy * u + dx * v * cosa - dx * y * sina;
+            Vector.Y = y * cosa + v * sina;
+            Vector.Z = -dx * u + dy * v * cosa - dy * y * sina;
+        }
+        internal static void RotateUpDown(ref Vectors.Vector3Df Vector, double dx, double dy, double cosa, double sina)
+        {
+            double x = (double)Vector.X, y = (double)Vector.Y, z = (double)Vector.Z;
+            double u = dy * x - dx * z;
+            double v = dx * x + dy * z;
+            Vector.X = (float)(dy * u + dx * v * cosa - dx * y * sina);
+            Vector.Y = (float)(y * cosa + v * sina);
+            Vector.Z = (float)(-dx * u + dy * v * cosa - dy * y * sina);
+        }
+        internal static void RotateUpDown(ref double px, ref double py, ref double pz, double dx, double dz, double cosa, double sina)
+        {
+            double x = px, y = py, z = pz;
+            double u = dz * x - dx * z;
+            double v = dx * x + dz * z;
+            px = dz * u + dx * v * cosa - dx * y * sina;
+            py = y * cosa + v * sina;
+            pz = -dx * u + dz * v * cosa - dz * y * sina;
+        }
+        #endregion
+
+        #region vector like normalize
+        internal static void Normalize(ref double x, ref double y)
+        {
+            double t = x * x + y * y;
+            if (t != 0.0)
+            {
+                t = 1.0 / Math.Sqrt(t);
+                x *= t;
+                y *= t;
+            }
+        }
+        internal static void Normalize(ref double x, ref double y, ref double z)
+        {
+            double t = x * x + y * y + z * z;
+            if (t != 0.0)
+            {
+                t = 1.0 / Math.Sqrt(t);
+                x *= t;
+                y *= t;
+                z *= t;
+            }
+        }
+        #endregion
+
+        #region mesh create normals
+        internal static void CreateNormals(ref Mesh Mesh)
+        {
+            for (int i = 0; i < Mesh.Faces.Length; i++)
+            {
+                CreateNormals(ref Mesh, i);
+            }
+        }
+        internal static void CreateNormals(ref Mesh Mesh, int FaceIndex)
+        {
+            if (Mesh.Faces[FaceIndex].Vertices.Length >= 3)
+            {
+                int i0 = (int)Mesh.Faces[FaceIndex].Vertices[0].Index;
+                int i1 = (int)Mesh.Faces[FaceIndex].Vertices[1].Index;
+                int i2 = (int)Mesh.Faces[FaceIndex].Vertices[2].Index;
+                double ax = Mesh.Vertices[i1].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
+                double ay = Mesh.Vertices[i1].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
+                double az = Mesh.Vertices[i1].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
+                double bx = Mesh.Vertices[i2].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
+                double by = Mesh.Vertices[i2].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
+                double bz = Mesh.Vertices[i2].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
+                double nx = ay * bz - az * by;
+                double ny = az * bx - ax * bz;
+                double nz = ax * by - ay * bx;
+                double t = nx * nx + ny * ny + nz * nz;
+                if (t != 0.0)
+                {
+                    t = 1.0 / Math.Sqrt(t);
+                    float mx = (float)(nx * t);
+                    float my = (float)(ny * t);
+                    float mz = (float)(nz * t);
+                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
+                    {
+                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
+                        {
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(mx, my, mz);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
+                    {
+                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
+                        {
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(0.0f, 1.0f, 0.0f);
+                        }
+                    }
+                }
+            }
         }
         #endregion
     }

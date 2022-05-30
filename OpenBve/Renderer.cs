@@ -102,14 +102,14 @@ namespace OpenBve
             internal ObjectList List;
             internal int OpenGlDisplayList;
             internal bool OpenGlDisplayListAvailable;
-            internal Worlds.Vector.Vector3D WorldPosition;
+            internal Vectors.Vector3D WorldPosition;
             internal bool Update;
             internal ObjectGroup()
             {
                 this.List = new ObjectList();
                 this.OpenGlDisplayList = 0;
                 this.OpenGlDisplayListAvailable = false;
-                this.WorldPosition = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
+                this.WorldPosition = new Vectors.Vector3D(0.0, 0.0, 0.0);
                 this.Update = true;
             }
         }
@@ -145,7 +145,7 @@ namespace OpenBve
         internal static bool OptionLighting = true;
         internal static Colors.ColorRGB OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
         internal static Colors.ColorRGB OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
-        internal static Worlds.Vector.Vector3Df OptionLightPosition = new Worlds.Vector.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+        internal static Vectors.Vector3Df OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
         internal static float OptionLightingResultingAmount = 1.0f;
         internal static bool OptionNormals = false;
         internal static bool OptionWireframe = false;
@@ -183,7 +183,7 @@ namespace OpenBve
             OptionLighting = true;
             OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
             OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
-            OptionLightPosition = new Worlds.Vector.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+            OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
             OptionLightingResultingAmount = 1.0f;
             OptionClock = false;
             OptionBrakeSystems = false;
@@ -406,7 +406,7 @@ namespace OpenBve
                 {
                     Gl.glEnable(Gl.GL_LIGHTING); LightingEnabled = true;
                 }
-                if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
+                if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
                 {
                     Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_AMBIENT, new float[] { inv255 * (float)OptionAmbientColor.R, inv255 * (float)OptionAmbientColor.G, inv255 * (float)OptionAmbientColor.B, 1.0f });
                     Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_DIFFUSE, new float[] { inv255 * (float)OptionDiffuseColor.R, inv255 * (float)OptionDiffuseColor.G, inv255 * (float)OptionDiffuseColor.B, 1.0f });
@@ -513,7 +513,7 @@ namespace OpenBve
                 for (int i = 0; i < DynamicAlpha.FaceCount; i++)
                 {
                     int r = (int)ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Faces[DynamicAlpha.Faces[i].FaceIndex].Material;
-                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Normal & ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
+                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Normal & ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
                     {
                         if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].Color.A == 255)
                         {
@@ -528,7 +528,7 @@ namespace OpenBve
                 for (int i = 0; i < DynamicAlpha.FaceCount; i++)
                 {
                     int r = (int)ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Faces[DynamicAlpha.Faces[i].FaceIndex].Material;
-                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
+                    if (ObjectManager.Objects[DynamicAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Additive)
                     {
                         if (!additive)
                         {
@@ -569,7 +569,7 @@ namespace OpenBve
             Gl.glLoadIdentity();
             MainLoop.UpdateViewport(MainLoop.ViewPortChangeMode.ChangeToCab);
             Glu.gluLookAt(0.0, 0.0, 0.0, dx, dy, dz, ux, uy, uz);
-            if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
+            if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
             {
                 // 3d cab
                 Gl.glDepthMask(Gl.GL_TRUE);
@@ -608,7 +608,7 @@ namespace OpenBve
                     for (int i = 0; i < OverlayAlpha.FaceCount; i++)
                     {
                         int r = (int)ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Faces[OverlayAlpha.Faces[i].FaceIndex].Material;
-                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Normal & ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
+                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Normal & ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].GlowAttenuationData == 0)
                         {
                             if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].Color.A == 255)
                             {
@@ -623,7 +623,7 @@ namespace OpenBve
                     for (int i = 0; i < OverlayAlpha.FaceCount; i++)
                     {
                         int r = (int)ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Faces[OverlayAlpha.Faces[i].FaceIndex].Material;
-                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
+                        if (ObjectManager.Objects[OverlayAlpha.Faces[i].ObjectIndex].Mesh.Materials[r].BlendMode == World.MeshMaterialBlendMode.Additive)
                         {
                             if (!additive)
                             {
@@ -720,7 +720,7 @@ namespace OpenBve
         {
             if (CullEnabled)
             {
-                if (!OptionBackfaceCulling || (ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & Worlds.Mesh.Face.Face2Mask) != 0)
+                if (!OptionBackfaceCulling || (ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & World.MeshFace.Face2Mask) != 0)
                 {
                     Gl.glDisable(Gl.GL_CULL_FACE);
                     CullEnabled = false;
@@ -728,7 +728,7 @@ namespace OpenBve
             }
             else if (OptionBackfaceCulling)
             {
-                if ((ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & Worlds.Mesh.Face.Face2Mask) == 0)
+                if ((ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Flags & World.MeshFace.Face2Mask) == 0)
                 {
                     Gl.glEnable(Gl.GL_CULL_FACE);
                     CullEnabled = true;
@@ -737,7 +737,7 @@ namespace OpenBve
             int r = (int)ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex].Material;
             RenderFace(ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Materials[r], ObjectManager.Objects[Face.ObjectIndex].Mesh.Vertices, ref ObjectManager.Objects[Face.ObjectIndex].Mesh.Faces[Face.FaceIndex], CameraX, CameraY, CameraZ);
         }
-        private static void RenderFace(ref Worlds.Mesh.Material Material, Vertex[] Vertices, ref Worlds.Mesh.Face Face, double CameraX, double CameraY, double CameraZ)
+        private static void RenderFace(ref World.MeshMaterial Material, World.Vertex[] Vertices, ref World.MeshFace Face, double CameraX, double CameraY, double CameraZ)
         {
             // texture
             int OpenGlDaytimeTextureIndex = Material.DaytimeTextureIndex >= 0 ? TextureManager.UseTexture(Material.DaytimeTextureIndex, TextureManager.UseMode.Normal) : 0;
@@ -766,7 +766,7 @@ namespace OpenBve
             }
             // blend mode
             float factor;
-            if (Material.BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
+            if (Material.BlendMode == World.MeshMaterialBlendMode.Additive)
             {
                 factor = 1.0f;
                 if (!BlendEnabled) Gl.glEnable(Gl.GL_BLEND);
@@ -803,19 +803,19 @@ namespace OpenBve
                 }
             }
             // render daytime polygon
-            int FaceType = Face.Flags & Worlds.Mesh.Face.FaceTypeMask;
+            int FaceType = Face.Flags & World.MeshFace.FaceTypeMask;
             switch (FaceType)
             {
-                case Worlds.Mesh.Face.FaceTypeTriangles:
+                case World.MeshFace.FaceTypeTriangles:
                     Gl.glBegin(Gl.GL_TRIANGLES);
                     break;
-                case Worlds.Mesh.Face.FaceTypeTriangleStrip:
+                case World.MeshFace.FaceTypeTriangleStrip:
                     Gl.glBegin(Gl.GL_TRIANGLE_STRIP);
                     break;
-                case Worlds.Mesh.Face.FaceTypeQuads:
+                case World.MeshFace.FaceTypeQuads:
                     Gl.glBegin(Gl.GL_QUADS);
                     break;
-                case Worlds.Mesh.Face.FaceTypeQuadStrip:
+                case World.MeshFace.FaceTypeQuadStrip:
                     Gl.glBegin(Gl.GL_QUAD_STRIP);
                     break;
                 default:
@@ -831,7 +831,7 @@ namespace OpenBve
             {
                 Gl.glColor4f(inv255 * (float)Material.Color.R * factor, inv255 * Material.Color.G * factor, inv255 * (float)Material.Color.B * factor, inv255 * (float)Material.Color.A);
             }
-            if ((Material.Flags & Worlds.Mesh.Material.EmissiveColorMask) != 0)
+            if ((Material.Flags & World.MeshMaterial.EmissiveColorMask) != 0)
             {
                 Gl.glMaterialfv(Gl.GL_FRONT_AND_BACK, Gl.GL_EMISSION, new float[] { inv255 * (float)Material.EmissiveColor.R, inv255 * (float)Material.EmissiveColor.G, inv255 * (float)Material.EmissiveColor.B, 1.0f });
                 EmissiveEnabled = true;
@@ -898,16 +898,16 @@ namespace OpenBve
                 Gl.glEnable(Gl.GL_ALPHA_TEST);
                 switch (FaceType)
                 {
-                    case Worlds.Mesh.Face.FaceTypeTriangles:
+                    case World.MeshFace.FaceTypeTriangles:
                         Gl.glBegin(Gl.GL_TRIANGLES);
                         break;
-                    case Worlds.Mesh.Face.FaceTypeTriangleStrip:
+                    case World.MeshFace.FaceTypeTriangleStrip:
                         Gl.glBegin(Gl.GL_TRIANGLE_STRIP);
                         break;
-                    case Worlds.Mesh.Face.FaceTypeQuads:
+                    case World.MeshFace.FaceTypeQuads:
                         Gl.glBegin(Gl.GL_QUADS);
                         break;
-                    case Worlds.Mesh.Face.FaceTypeQuadStrip:
+                    case World.MeshFace.FaceTypeQuadStrip:
                         Gl.glBegin(Gl.GL_QUAD_STRIP);
                         break;
                     default:
@@ -928,7 +928,7 @@ namespace OpenBve
                     if (alphafactor > 1.0f) alphafactor = 1.0f;
                 }
                 Gl.glColor4f(inv255 * (float)Material.Color.R * factor, inv255 * Material.Color.G * factor, inv255 * (float)Material.Color.B * factor, inv255 * (float)Material.Color.A * alphafactor);
-                if ((Material.Flags & Worlds.Mesh.Material.EmissiveColorMask) != 0)
+                if ((Material.Flags & World.MeshMaterial.EmissiveColorMask) != 0)
                 {
                     Gl.glMaterialfv(Gl.GL_FRONT_AND_BACK, Gl.GL_EMISSION, new float[] { inv255 * (float)Material.EmissiveColor.R, inv255 * (float)Material.EmissiveColor.G, inv255 * (float)Material.EmissiveColor.B, 1.0f });
                     EmissiveEnabled = true;
@@ -968,7 +968,7 @@ namespace OpenBve
                 }
             }
             // finalize
-            if (Material.BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
+            if (Material.BlendMode == World.MeshMaterialBlendMode.Additive)
             {
                 Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
                 if (!BlendEnabled) Gl.glDisable(Gl.GL_BLEND);
@@ -1079,8 +1079,8 @@ namespace OpenBve
                         y1 = (float)(0.375 * World.BackgroundImageDistance);
                     }
                     const int n = 32;
-                    Worlds.Vector.Vector3Df[] bottom = new Worlds.Vector.Vector3Df[n];
-                    Worlds.Vector.Vector3Df[] top = new Worlds.Vector.Vector3Df[n];
+                    Vectors.Vector3Df[] bottom = new Vectors.Vector3Df[n];
+                    Vectors.Vector3Df[] top = new Vectors.Vector3Df[n];
                     double angleValue = 2.61799387799149 - 3.14159265358979 / (double)n;
                     double angleIncrement = 6.28318530717958 / (double)n;
                     /*
@@ -1092,8 +1092,8 @@ namespace OpenBve
                     {
                         float x = (float)(World.BackgroundImageDistance * Math.Cos(angleValue));
                         float z = (float)(World.BackgroundImageDistance * Math.Sin(angleValue));
-                        bottom[i] = new Worlds.Vector.Vector3Df(scale * x, scale * y0, scale * z);
-                        top[i] = new Worlds.Vector.Vector3Df(scale * x, scale * y1, scale * z);
+                        bottom[i] = new Vectors.Vector3Df(scale * x, scale * y0, scale * z);
+                        top[i] = new Vectors.Vector3Df(scale * x, scale * y1, scale * z);
                         angleValue += angleIncrement;
                     }
                     float textureStart = 0.5f * (float)Data.Repetition / (float)n;
@@ -3567,7 +3567,7 @@ namespace OpenBve
                 for (int i = 0; i < f; i++)
                 {
                     bool alpha = false;
-                    if (Type == ObjectType.Overlay & World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
+                    if (Type == ObjectType.Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
                     {
                         alpha = true;
                     }
@@ -3578,7 +3578,7 @@ namespace OpenBve
                         {
                             alpha = true;
                         }
-                        else if (ObjectManager.Objects[ObjectIndex].Mesh.Materials[k].BlendMode == Worlds.Mesh.MaterialBlendMode.Additive)
+                        else if (ObjectManager.Objects[ObjectIndex].Mesh.Materials[k].BlendMode == World.MeshMaterialBlendMode.Additive)
                         {
                             alpha = true;
                         }
@@ -3907,12 +3907,11 @@ namespace OpenBve
         }
 
         // get distance factor
-        private static double GetDistanceFactor(Vertex[] Vertices, ref Worlds.Mesh.Face Face, short GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
+        private static double GetDistanceFactor(World.Vertex[] Vertices, ref World.MeshFace Face, ushort GlowAttenuationData, double CameraX, double CameraY, double CameraZ)
         {
             if (Face.Vertices.Length != 0)
             {
-                Worlds.GlowAttenuationMode mode; 
-                double halfdistance;
+                World.GlowAttenuationMode mode; double halfdistance;
                 World.SplitGlowAttenuationData(GlowAttenuationData, out mode, out halfdistance);
                 int i = (int)Face.Vertices[0].Index;
                 double dx = Vertices[i].Coordinates.X - CameraX;
@@ -3920,12 +3919,12 @@ namespace OpenBve
                 double dz = Vertices[i].Coordinates.Z - CameraZ;
                 switch (mode)
                 {
-                    case Worlds.GlowAttenuationMode.DivisionExponent2:
+                    case World.GlowAttenuationMode.DivisionExponent2:
                         {
                             double t = dx * dx + dy * dy + dz * dz;
                             return t / (t + halfdistance * halfdistance);
                         }
-                    case Worlds.GlowAttenuationMode.DivisionExponent4:
+                    case World.GlowAttenuationMode.DivisionExponent4:
                         {
                             double t = dx * dx + dy * dy + dz * dz;
                             t *= t; halfdistance *= halfdistance;

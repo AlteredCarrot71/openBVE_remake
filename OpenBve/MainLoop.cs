@@ -205,7 +205,7 @@ namespace OpenBve
                 Timetable.DefaultTimetableDescription = Game.LogTrainName;
             }
             // initialize camera
-            if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
+            if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
             {
                 World.CameraMode = World.CameraViewMode.InteriorLookAhead;
             }
@@ -213,8 +213,8 @@ namespace OpenBve
             TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, -1.0, true, false);
             ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + World.CameraCurrentAlignment.Position.Z);
             World.CameraSavedInterior = new World.CameraAlignment();
-            World.CameraSavedExterior = new World.CameraAlignment(new Worlds.Vector.Vector3D(-2.5, 1.5, -15.0), 0.3, -0.2, 0.0, PlayerFirstStationPosition, 1.0);
-            World.CameraSavedTrack = new World.CameraAlignment(new Worlds.Vector.Vector3D(-3.0, 2.5, 0.0), 0.3, 0.0, 0.0, TrainManager.PlayerTrain.Cars[0].FrontAxle.Follower.TrackPosition - 10.0, 1.0);
+            World.CameraSavedExterior = new World.CameraAlignment(new Vectors.Vector3D(-2.5, 1.5, -15.0), 0.3, -0.2, 0.0, PlayerFirstStationPosition, 1.0);
+            World.CameraSavedTrack = new World.CameraAlignment(new Vectors.Vector3D(-3.0, 2.5, 0.0), 0.3, 0.0, 0.0, TrainManager.PlayerTrain.Cars[0].FrontAxle.Follower.TrackPosition - 10.0, 1.0);
             // timer
             Timers.Initialize();
             // framerate display
@@ -340,7 +340,7 @@ namespace OpenBve
                 {
                     TrainManager.UpdateCamera(TrainManager.PlayerTrain);
                 }
-                if (World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
+                if (World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
                 {
                     World.UpdateDriverBody(TimeElapsed);
                 }
@@ -688,7 +688,7 @@ namespace OpenBve
                             World.MouseGrabEnabled = !World.MouseGrabEnabled;
                             if (World.MouseGrabEnabled)
                             {
-                                World.MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
+                                World.MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
                                 Sdl.SDL_WM_GrabInput(Sdl.SDL_GRAB_ON);
                                 Game.AddMessage(Interface.GetInterfaceString("notification_mousegrab_on"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 5.0);
                             }
@@ -707,7 +707,7 @@ namespace OpenBve
                         }
                         else if (World.MouseGrabEnabled)
                         {
-                            World.MouseGrabTarget = new Worlds.Vector.Vector2D((double)Event.motion.xrel, (double)Event.motion.yrel);
+                            World.MouseGrabTarget = new Vectors.Vector2D((double)Event.motion.xrel, (double)Event.motion.yrel);
                         }
                         break;
                 }
@@ -1157,7 +1157,7 @@ namespace OpenBve
                                         break;
                                     case Interface.Command.CameraRotateCCW:
                                         // camera rotate ccw
-                                        if ((World.CameraMode != World.CameraViewMode.Interior & World.CameraMode != World.CameraViewMode.InteriorLookAhead) | World.CameraRestriction != Worlds.CameraRestrictionMode.On)
+                                        if ((World.CameraMode != World.CameraViewMode.Interior & World.CameraMode != World.CameraViewMode.InteriorLookAhead) | World.CameraRestriction != World.CameraRestrictionMode.On)
                                         {
                                             double s = World.CameraMode == World.CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead ? World.CameraInteriorTopAngularSpeed : World.CameraExteriorTopAngularSpeed;
                                             World.CameraAlignmentDirection.Roll = -s * Interface.CurrentControls[i].AnalogState;
@@ -1165,7 +1165,7 @@ namespace OpenBve
                                         break;
                                     case Interface.Command.CameraRotateCW:
                                         // camera rotate cw
-                                        if ((World.CameraMode != World.CameraViewMode.Interior & World.CameraMode != World.CameraViewMode.InteriorLookAhead) | World.CameraRestriction != Worlds.CameraRestrictionMode.On)
+                                        if ((World.CameraMode != World.CameraViewMode.Interior & World.CameraMode != World.CameraViewMode.InteriorLookAhead) | World.CameraRestriction != World.CameraRestrictionMode.On)
                                         {
                                             double s = World.CameraMode == World.CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead ? World.CameraInteriorTopAngularSpeed : World.CameraExteriorTopAngularSpeed;
                                             World.CameraAlignmentDirection.Roll = s * Interface.CurrentControls[i].AnalogState;
@@ -1263,7 +1263,7 @@ namespace OpenBve
                                     case Interface.Command.CameraInterior:
                                         // camera: interior
                                         SaveCameraSettings();
-                                        if (World.CameraMode != World.CameraViewMode.InteriorLookAhead & World.CameraRestriction == Worlds.CameraRestrictionMode.NotAvailable)
+                                        if (World.CameraMode != World.CameraViewMode.InteriorLookAhead & World.CameraRestriction == World.CameraRestrictionMode.NotAvailable)
                                         {
                                             World.CameraMode = World.CameraViewMode.InteriorLookAhead;
                                             Game.AddMessage(Interface.GetInterfaceString("notification_interior_lookahead"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 2.0);
@@ -1294,7 +1294,7 @@ namespace OpenBve
                                         UpdateViewport(MainLoop.ViewPortChangeMode.NoChange);
                                         World.UpdateAbsoluteCamera(TimeElapsed);
                                         World.UpdateViewingDistances();
-                                        if (World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
+                                        if (World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
                                         {
                                             if (!World.PerformCameraRestrictionTest())
                                             {
@@ -1403,7 +1403,7 @@ namespace OpenBve
                                                 Game.AddMessage(Interface.GetInterfaceString("notification_track"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 2.0);
                                             }
                                             double z = World.CameraCurrentAlignment.Position.Z;
-                                            World.CameraCurrentAlignment.Position = new Worlds.Vector.Vector3D(World.CameraCurrentAlignment.Position.X, World.CameraCurrentAlignment.Position.Y, 0.0);
+                                            World.CameraCurrentAlignment.Position = new Vectors.Vector3D(World.CameraCurrentAlignment.Position.X, World.CameraCurrentAlignment.Position.Y, 0.0);
                                             World.CameraCurrentAlignment.Zoom = 0.0;
                                             World.CameraAlignmentDirection = new World.CameraAlignment();
                                             World.CameraAlignmentSpeed = new World.CameraAlignment();
@@ -1447,7 +1447,7 @@ namespace OpenBve
                                                 Game.AddMessage(Interface.GetInterfaceString("notification_track"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 2.0);
                                             }
                                             double z = World.CameraCurrentAlignment.Position.Z;
-                                            World.CameraCurrentAlignment.Position = new Worlds.Vector.Vector3D(World.CameraCurrentAlignment.Position.X, World.CameraCurrentAlignment.Position.Y, 0.0);
+                                            World.CameraCurrentAlignment.Position = new Vectors.Vector3D(World.CameraCurrentAlignment.Position.X, World.CameraCurrentAlignment.Position.Y, 0.0);
                                             World.CameraCurrentAlignment.Zoom = 0.0;
                                             World.CameraAlignmentDirection = new World.CameraAlignment();
                                             World.CameraAlignmentSpeed = new World.CameraAlignment();
@@ -1485,7 +1485,7 @@ namespace OpenBve
                                         // camera: reset
                                         if (World.CameraMode == World.CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead)
                                         {
-                                            World.CameraCurrentAlignment.Position = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
+                                            World.CameraCurrentAlignment.Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
                                         }
                                         World.CameraCurrentAlignment.Yaw = 0.0;
                                         World.CameraCurrentAlignment.Pitch = 0.0;
@@ -1515,7 +1515,7 @@ namespace OpenBve
                                         UpdateViewport(ViewPortChangeMode.NoChange);
                                         World.UpdateAbsoluteCamera(TimeElapsed);
                                         World.UpdateViewingDistances();
-                                        if ((World.CameraMode == World.CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & World.CameraRestriction == Worlds.CameraRestrictionMode.On)
+                                        if ((World.CameraMode == World.CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & World.CameraRestriction == World.CameraRestrictionMode.On)
                                         {
                                             if (!World.PerformCameraRestrictionTest())
                                             {
@@ -1525,18 +1525,18 @@ namespace OpenBve
                                         break;
                                     case Interface.Command.CameraRestriction:
                                         // camera: restriction
-                                        if (World.CameraRestriction != Worlds.CameraRestrictionMode.NotAvailable)
+                                        if (World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
                                         {
-                                            if (World.CameraRestriction == Worlds.CameraRestrictionMode.Off)
+                                            if (World.CameraRestriction == World.CameraRestrictionMode.Off)
                                             {
-                                                World.CameraRestriction = Worlds.CameraRestrictionMode.On;
+                                                World.CameraRestriction = World.CameraRestrictionMode.On;
                                             }
                                             else
                                             {
-                                                World.CameraRestriction = Worlds.CameraRestrictionMode.Off;
+                                                World.CameraRestriction = World.CameraRestrictionMode.Off;
                                             }
                                             World.InitializeCameraRestriction();
-                                            if (World.CameraRestriction == Worlds.CameraRestrictionMode.Off)
+                                            if (World.CameraRestriction == World.CameraRestrictionMode.Off)
                                             {
                                                 Game.AddMessage(Interface.GetInterfaceString("notification_camerarestriction_off"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 2.0);
                                             }
@@ -1793,7 +1793,7 @@ namespace OpenBve
                                                 int snd = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundBufferIndex;
                                                 if (snd >= 0)
                                                 {
-                                                    Worlds.Vector.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
+                                                    Vectors.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
                                                     int src = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundSourceIndex;
                                                     if (TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Loop)
                                                     {
@@ -1828,7 +1828,7 @@ namespace OpenBve
                                                 int snd = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundBufferIndex;
                                                 if (snd >= 0)
                                                 {
-                                                    Worlds.Vector.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
+                                                    Vectors.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
                                                     int src = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundSourceIndex;
                                                     if (TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Loop)
                                                     {
@@ -1863,7 +1863,7 @@ namespace OpenBve
                                                 int snd = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundBufferIndex;
                                                 if (snd >= 0)
                                                 {
-                                                    Worlds.Vector.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
+                                                    Vectors.Vector3D pos = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.Position;
                                                     int src = TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Sound.SoundSourceIndex;
                                                     if (TrainManager.PlayerTrain.Cars[d].Sounds.Horns[j].Loop)
                                                     {
@@ -2368,7 +2368,7 @@ namespace OpenBve
             {
                 Sdl.SDL_WM_GrabInput(Sdl.SDL_GRAB_ON);
             }
-            World.MouseGrabTarget = new Worlds.Vector.Vector2D(0.0, 0.0);
+            World.MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
             World.MouseGrabIgnoreOnce = true;
             World.InitializeCameraRestriction();
             if (Renderer.OptionBackfaceCulling)

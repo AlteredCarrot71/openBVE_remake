@@ -197,8 +197,8 @@ namespace OpenBve.Parsers
                 double x1 = (PanelRight - PanelCenterX) / PanelResolution;
                 double y0 = (PanelCenterY - PanelBottom) / PanelResolution * World.AspectRatio;
                 double y1 = (PanelCenterY - PanelTop) / PanelResolution * World.AspectRatio;
-                World.CameraRestrictionBottomLeft = new Worlds.Vector.Vector3D(x0 * WorldWidth, y0 * WorldHeight, EyeDistance);
-                World.CameraRestrictionTopRight = new Worlds.Vector.Vector3D(x1 * WorldWidth, y1 * WorldHeight, EyeDistance);
+                World.CameraRestrictionBottomLeft = new Vectors.Vector3D(x0 * WorldWidth, y0 * WorldHeight, EyeDistance);
+                World.CameraRestrictionTopRight = new Vectors.Vector3D(x1 * WorldWidth, y1 * WorldHeight, EyeDistance);
                 Train.Cars[Train.DriverCar].DriverYaw = Math.Atan((PanelCenterX - PanelOriginX) * WorldWidth / PanelResolution);
                 Train.Cars[Train.DriverCar].DriverPitch = Math.Atan((PanelOriginY - PanelCenterY) * WorldWidth / PanelResolution);
             }
@@ -571,9 +571,9 @@ namespace OpenBve.Parsers
                                         double nx = n * w;
                                         double ny = n * h;
                                         int j = CreateElement(Train, LocationX - ox * nx, LocationY - oy * ny, nx, ny, ox, oy, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday, tnight, Color, false);
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateZDirection = new Worlds.Vector.Vector3D(0.0, 0.0, -1.0);
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateXDirection = new Worlds.Vector.Vector3D(1.0, 0.0, 0.0);
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateYDirection = Worlds.Vector.Vector3D.Cross(Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateZDirection, Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateXDirection);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateZDirection = new Vectors.Vector3D(0.0, 0.0, -1.0);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateXDirection = new Vectors.Vector3D(1.0, 0.0, 0.0);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateYDirection = Vectors.Cross(Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateZDirection, Train.Cars[Train.DriverCar].CarSections[0].Elements[j].RotateXDirection);
                                         string f;
                                         switch (Subject.ToLowerInvariant())
                                         {
@@ -900,7 +900,7 @@ namespace OpenBve.Parsers
                                         double cx = 0.25 * (x0 + x1 + x2 + x3);
                                         double cy = 0.25 * (y0 + y1 + y2 + y3);
                                         double cz = 0.25 * (z0 + z1 + z2 + z3);
-                                        Vertex[] vertices = new Vertex[11];
+                                        World.Vertex[] vertices = new World.Vertex[11];
                                         int[][] faces = new int[][] {
                                             new int[] { 0, 1, 2 },
                                             new int[] { 0, 3, 4 },
@@ -908,16 +908,16 @@ namespace OpenBve.Parsers
                                             new int[] { 0, 7, 8 },
                                             new int[] { 0, 9, 10 }
                                         };
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new Worlds.Mesh.Mesh(vertices, faces, Color);
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].States[0].Object.Mesh = new World.Mesh(vertices, faces, Color);
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDClockwiseWinding = InitialAngle <= LastAngle;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDInitialAngle = InitialAngle;
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDLastAngle = LastAngle;
-                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDVectors = new Worlds.Vector.Vector3D[] {
-                                            new Worlds.Vector.Vector3D(x0, y0, z0),
-                                            new Worlds.Vector.Vector3D(x1, y1, z1),
-                                            new Worlds.Vector.Vector3D(x2, y2, z2),
-                                            new Worlds.Vector.Vector3D(x3, y3, z3),
-                                            new Worlds.Vector.Vector3D(cx, cy, cz)
+                                        Train.Cars[Train.DriverCar].CarSections[0].Elements[j].LEDVectors = new Vectors.Vector3D[] {
+                                            new Vectors.Vector3D(x0, y0, z0),
+                                            new Vectors.Vector3D(x1, y1, z1),
+                                            new Vectors.Vector3D(x2, y2, z2),
+                                            new Vectors.Vector3D(x3, y3, z3),
+                                            new Vectors.Vector3D(cx, cy, cz)
                                         };
                                         string f = GetStackLanguageFromSubject(Train, Subject, Section + " in " + FileName);
                                         double a0 = (InitialAngle * Maximum - LastAngle * Minimum) / (Maximum - Minimum);
@@ -1226,27 +1226,27 @@ namespace OpenBve.Parsers
             y1 = (y1 - 0.5) * WorldHeight;
             double xm = x0 * (1.0 - RelativeRotationCenterX) + x1 * RelativeRotationCenterX;
             double ym = y0 * (1.0 - RelativeRotationCenterY) + y1 * RelativeRotationCenterY;
-            Worlds.Vector.Vector3D[] v = new Worlds.Vector.Vector3D[4];
-            v[0] = new Worlds.Vector.Vector3D(x0 - xm, y1 - ym, 0);
-            v[1] = new Worlds.Vector.Vector3D(x0 - xm, y0 - ym, 0);
-            v[2] = new Worlds.Vector.Vector3D(x1 - xm, y0 - ym, 0);
-            v[3] = new Worlds.Vector.Vector3D(x1 - xm, y1 - ym, 0);
-            Vertex t0 = new Vertex(v[0], new Worlds.Vector.Vector2Df(0.0f, 1.0f));
-            Vertex t1 = new Vertex(v[1], new Worlds.Vector.Vector2Df(0.0f, 0.0f));
-            Vertex t2 = new Vertex(v[2], new Worlds.Vector.Vector2Df(1.0f, 0.0f));
-            Vertex t3 = new Vertex(v[3], new Worlds.Vector.Vector2Df(1.0f, 1.0f));
+            Vectors.Vector3D[] v = new Vectors.Vector3D[4];
+            v[0] = new Vectors.Vector3D(x0 - xm, y1 - ym, 0);
+            v[1] = new Vectors.Vector3D(x0 - xm, y0 - ym, 0);
+            v[2] = new Vectors.Vector3D(x1 - xm, y0 - ym, 0);
+            v[3] = new Vectors.Vector3D(x1 - xm, y1 - ym, 0);
+            World.Vertex t0 = new World.Vertex(v[0], new Vectors.Vector2Df(0.0f, 1.0f));
+            World.Vertex t1 = new World.Vertex(v[1], new Vectors.Vector2Df(0.0f, 0.0f));
+            World.Vertex t2 = new World.Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
+            World.Vertex t3 = new World.Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
             ObjectManager.StaticObject Object = new ObjectManager.StaticObject();
-            Object.Mesh.Vertices = new Vertex[] { t0, t1, t2, t3 };
-            Object.Mesh.Faces = new Worlds.Mesh.Face[] { new Worlds.Mesh.Face(new int[] { 0, 1, 2, 3 }) };
-            Object.Mesh.Materials = new Worlds.Mesh.Material[1];
-            Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? Worlds.Mesh.Material.TransparentColorMask : 0);
+            Object.Mesh.Vertices = new World.Vertex[] { t0, t1, t2, t3 };
+            Object.Mesh.Faces = new World.MeshFace[] { new World.MeshFace(new int[] { 0, 1, 2, 3 }) };
+            Object.Mesh.Materials = new World.MeshMaterial[1];
+            Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? World.MeshMaterial.TransparentColorMask : 0);
             Object.Mesh.Materials[0].Color = Color;
             Object.Mesh.Materials[0].TransparentColor = new Colors.ColorRGB(0, 0, 255);
             Object.Mesh.Materials[0].DaytimeTextureIndex = DaytimeTextureIndex;
             Object.Mesh.Materials[0].NighttimeTextureIndex = NighttimeTextureIndex;
             Object.Dynamic = true;
             // calculate offset
-            Worlds.Vector.Vector3D o;
+            Vectors.Vector3D o;
             o.X = xm + DriverX;
             o.Y = ym + DriverY;
             o.Z = EyeDistance - Distance + DriverZ;
