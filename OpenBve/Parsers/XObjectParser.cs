@@ -1513,11 +1513,11 @@ namespace OpenBve.Parsers
                                 double x = (double)vertices[j].Data[0];
                                 double y = (double)vertices[j].Data[1];
                                 double z = (double)vertices[j].Data[2];
-                                Vertices[j].Coordinates = new Vectors.Vector3D(x, y, z);
+                                Vertices[j].Coordinates = new Worlds.Vector.Vector3D(x, y, z);
                             }
                             // collect faces
                             int[][] Faces = new int[nFaces][];
-                            Vectors.Vector3Df[][] FaceNormals = new Vectors.Vector3Df[nFaces][];
+                            Worlds.Vector.Vector3Df[][] FaceNormals = new Worlds.Vector.Vector3Df[nFaces][];
                             int[] FaceMaterials = new int[nFaces];
                             for (int j = 0; j < nFaces; j++)
                             {
@@ -1558,7 +1558,7 @@ namespace OpenBve.Parsers
                                     return false;
                                 }
                                 Faces[j] = new int[nFaceVertexIndices];
-                                FaceNormals[j] = new Vectors.Vector3Df[nFaceVertexIndices];
+                                FaceNormals[j] = new Worlds.Vector.Vector3Df[nFaceVertexIndices];
                                 for (int k = 0; k < nFaceVertexIndices; k++)
                                 {
                                     if (faceVertexIndices[k] < 0 | faceVertexIndices[k] >= nVertices)
@@ -1567,7 +1567,7 @@ namespace OpenBve.Parsers
                                         return false;
                                     }
                                     Faces[j][k] = faceVertexIndices[k];
-                                    FaceNormals[j][k] = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
+                                    FaceNormals[j][k] = new Worlds.Vector.Vector3Df(0.0f, 0.0f, 0.0f);
                                 }
                             }
                             // collect additional templates
@@ -2019,7 +2019,7 @@ namespace OpenBve.Parsers
                                                 return false;
                                             }
                                             // collect normals
-                                            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[nNormals];
+                                            Worlds.Vector.Vector3Df[] Normals = new Worlds.Vector.Vector3Df[nNormals];
                                             for (int k = 0; k < nNormals; k++)
                                             {
                                                 if (normals[k].Name != "Vector")
@@ -2051,7 +2051,7 @@ namespace OpenBve.Parsers
                                                 double y = (double)normals[k].Data[1];
                                                 double z = (double)normals[k].Data[2];
                                                 Vectors.Normalize(ref x, ref y, ref z);
-                                                Normals[k] = new Vectors.Vector3Df((float)x, (float)y, (float)z);
+                                                Normals[k] = new Worlds.Vector.Vector3Df((float)x, (float)y, (float)z);
                                             }
                                             // collect faces
                                             for (int k = 0; k < nFaceNormals; k++)

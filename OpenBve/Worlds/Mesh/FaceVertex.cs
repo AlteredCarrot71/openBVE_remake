@@ -7,14 +7,14 @@ namespace OpenBve.Worlds.Mesh
         /// <summary>A reference to an element in the Vertex array of the contained Mesh structure.</summary>
         internal short Index;
         /// <summary>The normal to be used at the vertex.</summary>
-        internal Vectors.Vector3Df Normal;
+        internal Worlds.Vector.Vector3Df Normal;
         
         public FaceVertex(int Index)
         {
             this.Index = (short)Index;
-            this.Normal = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
+            this.Normal = new Worlds.Vector.Vector3Df(0.0f, 0.0f, 0.0f);
         }
-        public FaceVertex(int Index, Vectors.Vector3Df Normal)
+        public FaceVertex(int Index, Worlds.Vector.Vector3Df Normal)
         {
             this.Index = (short)Index;
             this.Normal = Normal;
@@ -42,7 +42,7 @@ namespace OpenBve.Worlds.Mesh
         {
             return obj is FaceVertex vertex &&
                    Index == vertex.Index &&
-                   EqualityComparer<Vectors.Vector3Df>.Default.Equals(Normal, vertex.Normal);
+                   EqualityComparer<Worlds.Vector.Vector3Df>.Default.Equals(Normal, vertex.Normal);
         }
 
         public override int GetHashCode()

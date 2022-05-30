@@ -87,7 +87,7 @@ namespace OpenBve
         }
         internal struct AnimatedObjectState
         {
-            internal Vectors.Vector3D Position;
+            internal Worlds.Vector.Vector3D Position;
             internal ObjectManager.StaticObject Object;
         }
         internal class AnimatedObject
@@ -96,15 +96,15 @@ namespace OpenBve
             internal AnimatedObjectState[] States;
             internal FunctionScripts.FunctionScript StateFunction;
             internal int CurrentState;
-            internal Vectors.Vector3D TranslateXDirection;
-            internal Vectors.Vector3D TranslateYDirection;
-            internal Vectors.Vector3D TranslateZDirection;
+            internal Worlds.Vector.Vector3D TranslateXDirection;
+            internal Worlds.Vector.Vector3D TranslateYDirection;
+            internal Worlds.Vector.Vector3D TranslateZDirection;
             internal FunctionScripts.FunctionScript TranslateXFunction;
             internal FunctionScripts.FunctionScript TranslateYFunction;
             internal FunctionScripts.FunctionScript TranslateZFunction;
-            internal Vectors.Vector3D RotateXDirection;
-            internal Vectors.Vector3D RotateYDirection;
-            internal Vectors.Vector3D RotateZDirection;
+            internal Worlds.Vector.Vector3D RotateXDirection;
+            internal Worlds.Vector.Vector3D RotateYDirection;
+            internal Worlds.Vector.Vector3D RotateZDirection;
             internal FunctionScripts.FunctionScript RotateXFunction;
             internal FunctionScripts.FunctionScript RotateYFunction;
             internal FunctionScripts.FunctionScript RotateZFunction;
@@ -119,7 +119,7 @@ namespace OpenBve
             internal double LEDInitialAngle;
             internal double LEDLastAngle;
             /// <summary>If LEDFunction is used, an array of five vectors representing the bottom-left, up-left, up-right, bottom-right and center coordinates of the LED square, or a null reference otherwise.</summary>
-            internal Vectors.Vector3D[] LEDVectors;
+            internal Worlds.Vector.Vector3D[] LEDVectors;
             internal FunctionScripts.FunctionScript LEDFunction;
             internal double RefreshRate;
             internal double CurrentTrackZOffset;
@@ -170,7 +170,7 @@ namespace OpenBve
                 Result.LEDLastAngle = this.LEDLastAngle;
                 if (this.LEDVectors != null)
                 {
-                    Result.LEDVectors = new Vectors.Vector3D[this.LEDVectors.Length];
+                    Result.LEDVectors = new Worlds.Vector.Vector3D[this.LEDVectors.Length];
                     for (int i = 0; i < this.LEDVectors.Length; i++)
                     {
                         Result.LEDVectors[i] = this.LEDVectors[i];
@@ -242,7 +242,7 @@ namespace OpenBve
             }
         }
 
-        internal static void UpdateAnimatedObject(ref AnimatedObject Object, bool IsPartOfTrain, TrainManager.Train Train, int CarIndex, int SectionIndex, double TrackPosition, Vectors.Vector3D Position, Vectors.Vector3D Direction, Vectors.Vector3D Up, Vectors.Vector3D Side, bool Overlay, bool UpdateFunctions, bool Show, double TimeElapsed)
+        internal static void UpdateAnimatedObject(ref AnimatedObject Object, bool IsPartOfTrain, TrainManager.Train Train, int CarIndex, int SectionIndex, double TrackPosition, Worlds.Vector.Vector3D Position, Worlds.Vector.Vector3D Direction, Worlds.Vector.Vector3D Up, Worlds.Vector.Vector3D Side, bool Overlay, bool UpdateFunctions, bool Show, double TimeElapsed)
         {
             int s = Object.CurrentState;
             int i = Object.ObjectIndex;
@@ -481,7 +481,7 @@ namespace OpenBve
                                 double cx = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].X + t * Object.LEDVectors[currentEdge].X;
                                 double cy = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Y + t * Object.LEDVectors[currentEdge].Y;
                                 double cz = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Z + t * Object.LEDVectors[currentEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Vectors.Vector3D(cx, cy, cz);
+                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Worlds.Vector.Vector3D(cx, cy, cz);
                                 v++;
                             }
                             {
@@ -498,7 +498,7 @@ namespace OpenBve
                                 double lx = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].X + t * Object.LEDVectors[lastEdge].X;
                                 double ly = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Y + t * Object.LEDVectors[lastEdge].Y;
                                 double lz = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Z + t * Object.LEDVectors[lastEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Vectors.Vector3D(lx, ly, lz);
+                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Worlds.Vector.Vector3D(lx, ly, lz);
                                 v++;
                             }
                         }
@@ -519,7 +519,7 @@ namespace OpenBve
                                 double cx = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].X + t * Object.LEDVectors[currentEdge].X;
                                 double cy = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Y + t * Object.LEDVectors[currentEdge].Y;
                                 double cz = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Z + t * Object.LEDVectors[currentEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = new Vectors.Vector3D(cx, cy, cz);
+                                Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = new Worlds.Vector.Vector3D(cx, cy, cz);
                                 Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = Object.LEDVectors[currentEdge];
                                 v += 2;
                             }
@@ -546,7 +546,7 @@ namespace OpenBve
                                 double ly = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Y + t * Object.LEDVectors[lastEdge % 4].Y;
                                 double lz = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Z + t * Object.LEDVectors[lastEdge % 4].Z;
                                 Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = Object.LEDVectors[(lastEdge + 3) % 4];
-                                Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = new Vectors.Vector3D(lx, ly, lz);
+                                Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = new Worlds.Vector.Vector3D(lx, ly, lz);
                                 v += 2;
                             }
                         }
@@ -586,7 +586,7 @@ namespace OpenBve
                                 double lx = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].X + t * Object.LEDVectors[lastEdge].X;
                                 double ly = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Y + t * Object.LEDVectors[lastEdge].Y;
                                 double lz = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Z + t * Object.LEDVectors[lastEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Vectors.Vector3D(lx, ly, lz);
+                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Worlds.Vector.Vector3D(lx, ly, lz);
                                 v++;
                             }
                             {
@@ -604,7 +604,7 @@ namespace OpenBve
                                 double cx = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].X + t * Object.LEDVectors[currentEdge].X;
                                 double cy = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Y + t * Object.LEDVectors[currentEdge].Y;
                                 double cz = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Z + t * Object.LEDVectors[currentEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Vectors.Vector3D(cx, cy, cz);
+                                Object.States[s].Object.Mesh.Vertices[v].Coordinates = new Worlds.Vector.Vector3D(cx, cy, cz);
                                 v++;
                             }
                         }
@@ -626,7 +626,7 @@ namespace OpenBve
                                 double cy = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Y + t * Object.LEDVectors[currentEdge % 4].Y;
                                 double cz = (1.0 - t) * Object.LEDVectors[(currentEdge + 3) % 4].Z + t * Object.LEDVectors[currentEdge % 4].Z;
                                 Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = Object.LEDVectors[(currentEdge + 3) % 4];
-                                Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = new Vectors.Vector3D(cx, cy, cz);
+                                Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = new Worlds.Vector.Vector3D(cx, cy, cz);
                                 v += 2;
                             }
                             for (int j = currentEdge - 1; j > lastEdge; j--)
@@ -651,7 +651,7 @@ namespace OpenBve
                                 double lx = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].X + t * Object.LEDVectors[lastEdge].X;
                                 double ly = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Y + t * Object.LEDVectors[lastEdge].Y;
                                 double lz = (1.0 - t) * Object.LEDVectors[(lastEdge + 3) % 4].Z + t * Object.LEDVectors[lastEdge].Z;
-                                Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = new Vectors.Vector3D(lx, ly, lz);
+                                Object.States[s].Object.Mesh.Vertices[v + 0].Coordinates = new Worlds.Vector.Vector3D(lx, ly, lz);
                                 Object.States[s].Object.Mesh.Vertices[v + 1].Coordinates = Object.LEDVectors[lastEdge % 4];
                                 v += 2;
                             }
@@ -833,11 +833,11 @@ namespace OpenBve
         // animated world object
         internal class AnimatedWorldObject
         {
-            internal Vectors.Vector3D Position;
+            internal Worlds.Vector.Vector3D Position;
             internal double TrackPosition;
-            internal Vectors.Vector3D Direction;
-            internal Vectors.Vector3D Up;
-            internal Vectors.Vector3D Side;
+            internal Worlds.Vector.Vector3D Direction;
+            internal Worlds.Vector.Vector3D Up;
+            internal Worlds.Vector.Vector3D Side;
             internal AnimatedObject Object;
             internal int SectionIndex;
             internal double Radius;
@@ -845,7 +845,7 @@ namespace OpenBve
         }
         internal static AnimatedWorldObject[] AnimatedWorldObjects = new AnimatedWorldObject[4];
         internal static int AnimatedWorldObjectsUsed = 0;
-        internal static void CreateAnimatedWorldObjects(AnimatedObject[] Prototypes, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
+        internal static void CreateAnimatedWorldObjects(AnimatedObject[] Prototypes, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
         {
             bool[] free = new bool[Prototypes.Length];
             bool anyfree = false;
@@ -862,11 +862,11 @@ namespace OpenBve
                     {
                         if (free[i])
                         {
-                            Vectors.Vector3D p = Position;
+                            Worlds.Vector.Vector3D p = Position;
                             Worlds.Transformation t = new OpenBve.Worlds.Transformation(BaseTransformation, AuxTransformation);
-                            Vectors.Vector3D s = t.X;
-                            Vectors.Vector3D u = t.Y;
-                            Vectors.Vector3D d = t.Z;
+                            Worlds.Vector.Vector3D s = t.X;
+                            Worlds.Vector.Vector3D u = t.Y;
+                            Worlds.Vector.Vector3D d = t.Z;
                             p.X += Prototypes[i].States[0].Position.X * s.X + Prototypes[i].States[0].Position.Y * u.X + Prototypes[i].States[0].Position.Z * d.X;
                             p.Y += Prototypes[i].States[0].Position.X * s.Y + Prototypes[i].States[0].Position.Y * u.Y + Prototypes[i].States[0].Position.Z * d.Y;
                             p.Z += Prototypes[i].States[0].Position.X * s.Z + Prototypes[i].States[0].Position.Y * u.Z + Prototypes[i].States[0].Position.Z * d.Z;
@@ -891,7 +891,7 @@ namespace OpenBve
                 }
             }
         }
-        internal static int CreateAnimatedWorldObject(AnimatedObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, double TrackPosition, double Brightness)
+        internal static int CreateAnimatedWorldObject(AnimatedObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, double TrackPosition, double Brightness)
         {
             int a = AnimatedWorldObjectsUsed;
             if (a >= AnimatedWorldObjects.Length)
@@ -1763,11 +1763,11 @@ namespace OpenBve
         }
 
         // create object
-        internal static void CreateObject(UnifiedObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition)
+        internal static void CreateObject(UnifiedObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition)
         {
             CreateObject(Prototype, Position, BaseTransformation, AuxTransformation, -1, AccurateObjectDisposal, StartingDistance, EndingDistance, BlockLength, TrackPosition, 1.0, false);
         }
-        internal static void CreateObject(UnifiedObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
+        internal static void CreateObject(UnifiedObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, int SectionIndex, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
         {
             if (Prototype is StaticObject)
             {
@@ -1782,11 +1782,11 @@ namespace OpenBve
         }
 
         // create static object
-        internal static int CreateStaticObject(StaticObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition)
+        internal static int CreateStaticObject(StaticObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition)
         {
             return CreateStaticObject(Prototype, Position, BaseTransformation, AuxTransformation, AccurateObjectDisposal, 0.0, StartingDistance, EndingDistance, BlockLength, TrackPosition, 1.0, false);
         }
-        internal static int CreateStaticObject(StaticObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double AccurateObjectDisposalZOffset, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
+        internal static int CreateStaticObject(StaticObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double AccurateObjectDisposalZOffset, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
         {
             int a = ObjectsUsed;
             if (a >= Objects.Length)
@@ -1818,7 +1818,7 @@ namespace OpenBve
             ObjectsUsed++;
             return a;
         }
-        internal static void ApplyStaticObjectData(ref StaticObject Object, StaticObject Prototype, Vectors.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double AccurateObjectDisposalZOffset, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
+        internal static void ApplyStaticObjectData(ref StaticObject Object, StaticObject Prototype, Worlds.Vector.Vector3D Position, Worlds.Transformation BaseTransformation, Worlds.Transformation AuxTransformation, bool AccurateObjectDisposal, double AccurateObjectDisposalZOffset, double StartingDistance, double EndingDistance, double BlockLength, double TrackPosition, double Brightness, bool DuplicateMaterials)
         {
             Object = new StaticObject();
             Object.StartingDistance = float.MaxValue;

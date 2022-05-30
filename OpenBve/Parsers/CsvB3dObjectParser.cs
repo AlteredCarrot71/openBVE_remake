@@ -76,7 +76,7 @@ namespace OpenBve.Parsers
             string[] Lines = System.IO.File.ReadAllLines(FileName, Encoding);
             // parse lines
             MeshBuilder Builder = new MeshBuilder();
-            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[4];
+            Worlds.Vector.Vector3Df[] Normals = new Worlds.Vector.Vector3Df[4];
             for (int i = 0; i < Lines.Length; i++)
             {
                 {
@@ -161,7 +161,7 @@ namespace OpenBve.Parsers
                                 }
                                 ApplyMeshBuilder(ref Object, Builder, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
                                 Builder = new MeshBuilder();
-                                Normals = new Vectors.Vector3Df[4];
+                                Normals = new Worlds.Vector.Vector3Df[4];
                             }
                             break;
                         case "addvertex":
@@ -215,10 +215,10 @@ namespace OpenBve.Parsers
                                 Array.Resize<Vertex>(ref Builder.Vertices, Builder.Vertices.Length + 1);
                                 while (Builder.Vertices.Length >= Normals.Length)
                                 {
-                                    Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
+                                    Array.Resize<Worlds.Vector.Vector3Df>(ref Normals, Normals.Length << 1);
                                 }
-                                Builder.Vertices[Builder.Vertices.Length - 1].Coordinates = new Vectors.Vector3D(vx, vy, vz);
-                                Normals[Builder.Vertices.Length - 1] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
+                                Builder.Vertices[Builder.Vertices.Length - 1].Coordinates = new Worlds.Vector.Vector3D(vx, vy, vz);
+                                Normals[Builder.Vertices.Length - 1] = new Worlds.Vector.Vector3Df((float)nx, (float)ny, (float)nz);
                             }
                             break;
                         case "addface":
@@ -285,7 +285,7 @@ namespace OpenBve.Parsers
                                         Builder.Faces[f].Vertices = new Worlds.Mesh.FaceVertex[Arguments.Length];
                                         while (Builder.Vertices.Length > Normals.Length)
                                         {
-                                            Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
+                                            Array.Resize<Worlds.Vector.Vector3Df>(ref Normals, Normals.Length << 1);
                                         }
                                         for (int j = 0; j < Arguments.Length; j++)
                                         {
@@ -927,14 +927,14 @@ namespace OpenBve.Parsers
         {
             int v = Builder.Vertices.Length;
             Array.Resize<Vertex>(ref Builder.Vertices, v + 8);
-            Builder.Vertices[v + 0].Coordinates = new Vectors.Vector3D(sx, sy, -sz);
-            Builder.Vertices[v + 1].Coordinates = new Vectors.Vector3D(sx, -sy, -sz);
-            Builder.Vertices[v + 2].Coordinates = new Vectors.Vector3D(-sx, -sy, -sz);
-            Builder.Vertices[v + 3].Coordinates = new Vectors.Vector3D(-sx, sy, -sz);
-            Builder.Vertices[v + 4].Coordinates = new Vectors.Vector3D(sx, sy, sz);
-            Builder.Vertices[v + 5].Coordinates = new Vectors.Vector3D(sx, -sy, sz);
-            Builder.Vertices[v + 6].Coordinates = new Vectors.Vector3D(-sx, -sy, sz);
-            Builder.Vertices[v + 7].Coordinates = new Vectors.Vector3D(-sx, sy, sz);
+            Builder.Vertices[v + 0].Coordinates = new Worlds.Vector.Vector3D(sx, sy, -sz);
+            Builder.Vertices[v + 1].Coordinates = new Worlds.Vector.Vector3D(sx, -sy, -sz);
+            Builder.Vertices[v + 2].Coordinates = new Worlds.Vector.Vector3D(-sx, -sy, -sz);
+            Builder.Vertices[v + 3].Coordinates = new Worlds.Vector.Vector3D(-sx, sy, -sz);
+            Builder.Vertices[v + 4].Coordinates = new Worlds.Vector.Vector3D(sx, sy, sz);
+            Builder.Vertices[v + 5].Coordinates = new Worlds.Vector.Vector3D(sx, -sy, sz);
+            Builder.Vertices[v + 6].Coordinates = new Worlds.Vector.Vector3D(-sx, -sy, sz);
+            Builder.Vertices[v + 7].Coordinates = new Worlds.Vector.Vector3D(-sx, sy, sz);
             int f = Builder.Faces.Length;
             Array.Resize<Worlds.Mesh.Face>(ref Builder.Faces, f + 6);
             Builder.Faces[f + 0].Vertices = new Worlds.Mesh.FaceVertex[] { new Worlds.Mesh.FaceVertex(v + 0), new Worlds.Mesh.FaceVertex(v + 1), new Worlds.Mesh.FaceVertex(v + 2), new Worlds.Mesh.FaceVertex(v + 3) };
@@ -958,7 +958,7 @@ namespace OpenBve.Parsers
             // initialization
             int v = Builder.Vertices.Length;
             Array.Resize<Vertex>(ref Builder.Vertices, v + 2 * n);
-            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[2 * n];
+            Worlds.Vector.Vector3Df[] Normals = new Worlds.Vector.Vector3Df[2 * n];
             double d = 2.0 * Math.PI / (double)n;
             double g = 0.5 * h;
             double t = 0.0;
@@ -974,14 +974,14 @@ namespace OpenBve.Parsers
                 double lz = dz * r2;
                 double ux = dx * r1;
                 double uz = dz * r1;
-                Builder.Vertices[v + 2 * i + 0].Coordinates = new Vectors.Vector3D(ux, g, uz);
-                Builder.Vertices[v + 2 * i + 1].Coordinates = new Vectors.Vector3D(lx, -g, lz);
+                Builder.Vertices[v + 2 * i + 0].Coordinates = new Worlds.Vector.Vector3D(ux, g, uz);
+                Builder.Vertices[v + 2 * i + 1].Coordinates = new Worlds.Vector.Vector3D(lx, -g, lz);
                 double nx = dx * ns, ny = 0.0, nz = dz * ns;
                 double sx, sy, sz;
                 Vectors.Cross(nx, ny, nz, 0.0, 1.0, 0.0, out sx, out sy, out sz);
                 Vectors.Rotate(ref nx, ref ny, ref nz, sx, sy, sz, cosa, sina);
-                Normals[2 * i + 0] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
-                Normals[2 * i + 1] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
+                Normals[2 * i + 0] = new Worlds.Vector.Vector3Df((float)nx, (float)ny, (float)nz);
+                Normals[2 * i + 1] = new Worlds.Vector.Vector3Df((float)nx, (float)ny, (float)nz);
                 t += d;
             }
             // faces

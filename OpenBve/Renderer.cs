@@ -102,14 +102,14 @@ namespace OpenBve
             internal ObjectList List;
             internal int OpenGlDisplayList;
             internal bool OpenGlDisplayListAvailable;
-            internal Vectors.Vector3D WorldPosition;
+            internal Worlds.Vector.Vector3D WorldPosition;
             internal bool Update;
             internal ObjectGroup()
             {
                 this.List = new ObjectList();
                 this.OpenGlDisplayList = 0;
                 this.OpenGlDisplayListAvailable = false;
-                this.WorldPosition = new Vectors.Vector3D(0.0, 0.0, 0.0);
+                this.WorldPosition = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
                 this.Update = true;
             }
         }
@@ -145,7 +145,7 @@ namespace OpenBve
         internal static bool OptionLighting = true;
         internal static Colors.ColorRGB OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
         internal static Colors.ColorRGB OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
-        internal static Vectors.Vector3Df OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+        internal static Worlds.Vector.Vector3Df OptionLightPosition = new Worlds.Vector.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
         internal static float OptionLightingResultingAmount = 1.0f;
         internal static bool OptionNormals = false;
         internal static bool OptionWireframe = false;
@@ -183,7 +183,7 @@ namespace OpenBve
             OptionLighting = true;
             OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
             OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
-            OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+            OptionLightPosition = new Worlds.Vector.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
             OptionLightingResultingAmount = 1.0f;
             OptionClock = false;
             OptionBrakeSystems = false;
@@ -1079,8 +1079,8 @@ namespace OpenBve
                         y1 = (float)(0.375 * World.BackgroundImageDistance);
                     }
                     const int n = 32;
-                    Vectors.Vector3Df[] bottom = new Vectors.Vector3Df[n];
-                    Vectors.Vector3Df[] top = new Vectors.Vector3Df[n];
+                    Worlds.Vector.Vector3Df[] bottom = new Worlds.Vector.Vector3Df[n];
+                    Worlds.Vector.Vector3Df[] top = new Worlds.Vector.Vector3Df[n];
                     double angleValue = 2.61799387799149 - 3.14159265358979 / (double)n;
                     double angleIncrement = 6.28318530717958 / (double)n;
                     /*
@@ -1092,8 +1092,8 @@ namespace OpenBve
                     {
                         float x = (float)(World.BackgroundImageDistance * Math.Cos(angleValue));
                         float z = (float)(World.BackgroundImageDistance * Math.Sin(angleValue));
-                        bottom[i] = new Vectors.Vector3Df(scale * x, scale * y0, scale * z);
-                        top[i] = new Vectors.Vector3Df(scale * x, scale * y1, scale * z);
+                        bottom[i] = new Worlds.Vector.Vector3Df(scale * x, scale * y0, scale * z);
+                        top[i] = new Worlds.Vector.Vector3Df(scale * x, scale * y1, scale * z);
                         angleValue += angleIncrement;
                     }
                     float textureStart = 0.5f * (float)Data.Repetition / (float)n;

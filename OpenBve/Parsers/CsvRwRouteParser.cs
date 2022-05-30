@@ -2310,7 +2310,7 @@ namespace OpenBve.Parsers
                                         double dx = Math.Cos(theta) * Math.Sin(phi);
                                         double dy = -Math.Sin(theta);
                                         double dz = Math.Cos(theta) * Math.Cos(phi);
-                                        Renderer.OptionLightPosition = new Vectors.Vector3Df((float)-dx, (float)-dy, (float)-dz);
+                                        Renderer.OptionLightPosition = new Worlds.Vector.Vector3Df((float)-dx, (float)-dy, (float)-dz);
                                     }
                                     break;
                                 // train
@@ -6542,7 +6542,7 @@ namespace OpenBve.Parsers
                 }
             }
             // create objects and track
-            Vectors.Vector3D Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
+            Worlds.Vector.Vector3D Position = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
             Worlds.Vector.Vector2D Direction = new Worlds.Vector.Vector2D(0.0, 1.0);
             TrackManager.CurrentTrack = new TrackManager.Track();
             TrackManager.CurrentTrack.Elements = new TrackManager.TrackElement[] { };
@@ -6594,8 +6594,8 @@ namespace OpenBve.Parsers
                 CurrentTrackLength++;
                 TrackManager.CurrentTrack.Elements[n] = WorldTrackElement;
                 TrackManager.CurrentTrack.Elements[n].WorldPosition = Position;
-                TrackManager.CurrentTrack.Elements[n].WorldDirection = new Vectors.Vector3D(Direction, Data.Blocks[i].Pitch);
-                TrackManager.CurrentTrack.Elements[n].WorldSide = new Vectors.Vector3D(Direction.Y, 0.0, -Direction.X);
+                TrackManager.CurrentTrack.Elements[n].WorldDirection = new Worlds.Vector.Vector3D(Direction, Data.Blocks[i].Pitch);
+                TrackManager.CurrentTrack.Elements[n].WorldSide = new Worlds.Vector.Vector3D(Direction.Y, 0.0, -Direction.X);
                 Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection.X, TrackManager.CurrentTrack.Elements[n].WorldDirection.Y, TrackManager.CurrentTrack.Elements[n].WorldDirection.Z, TrackManager.CurrentTrack.Elements[n].WorldSide.X, TrackManager.CurrentTrack.Elements[n].WorldSide.Y, TrackManager.CurrentTrack.Elements[n].WorldSide.Z, out TrackManager.CurrentTrack.Elements[n].WorldUp.X, out TrackManager.CurrentTrack.Elements[n].WorldUp.Y, out TrackManager.CurrentTrack.Elements[n].WorldUp.Z);
                 TrackManager.CurrentTrack.Elements[n].StartingTrackPosition = StartingDistance;
                 TrackManager.CurrentTrack.Elements[n].Events = new TrackManager.GeneralEvent[] { };
@@ -6724,7 +6724,7 @@ namespace OpenBve.Parsers
                         {
                             int m = TrackManager.CurrentTrack.Elements[n].Events.Length;
                             Array.Resize<TrackManager.GeneralEvent>(ref TrackManager.CurrentTrack.Elements[n].Events, m + 1);
-                            TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(0.0, TrackManager.SoundEvent.SoundIndexTrainPoint, false, false, true, new Vectors.Vector3D(0.0, 0.0, 0.0), 12.5);
+                            TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(0.0, TrackManager.SoundEvent.SoundIndexTrainPoint, false, false, true, new Worlds.Vector.Vector3D(0.0, 0.0, 0.0), 12.5);
                         }
                     }
                 }
@@ -6843,10 +6843,10 @@ namespace OpenBve.Parsers
                             switch (Data.Blocks[i].Sound[j].Type)
                             {
                                 case SoundType.TrainStatic:
-                                    TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(d, Data.Blocks[i].Sound[j].SoundIndex, true, true, false, new Vectors.Vector3D(0.0, 0.0, 0.0), 0.0);
+                                    TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(d, Data.Blocks[i].Sound[j].SoundIndex, true, true, false, new Worlds.Vector.Vector3D(0.0, 0.0, 0.0), 0.0);
                                     break;
                                 case SoundType.TrainDynamic:
-                                    TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(d, Data.Blocks[i].Sound[j].SoundIndex, false, false, true, new Vectors.Vector3D(0.0, 0.0, 0.0), Data.Blocks[i].Sound[j].Speed);
+                                    TrackManager.CurrentTrack.Elements[n].Events[m] = new TrackManager.SoundEvent(d, Data.Blocks[i].Sound[j].SoundIndex, false, false, true, new Worlds.Vector.Vector3D(0.0, 0.0, 0.0), Data.Blocks[i].Sound[j].Speed);
                                     break;
                             }
                         }
@@ -6859,8 +6859,8 @@ namespace OpenBve.Parsers
                     double cosag = Math.Cos(ag);
                     double sinag = Math.Sin(ag);
                     Worlds.Vector.Vector2D.Rotate(ref Direction, cosag, sinag);
-                    Vectors.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldDirection, cosag, sinag);
-                    Vectors.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldSide, cosag, sinag);
+                    Worlds.Vector.Vector3D.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldDirection, cosag, sinag);
+                    Worlds.Vector.Vector3D.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldSide, cosag, sinag);
                     Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection.X, TrackManager.CurrentTrack.Elements[n].WorldDirection.Y, TrackManager.CurrentTrack.Elements[n].WorldDirection.Z, TrackManager.CurrentTrack.Elements[n].WorldSide.X, TrackManager.CurrentTrack.Elements[n].WorldSide.Y, TrackManager.CurrentTrack.Elements[n].WorldSide.Z, out TrackManager.CurrentTrack.Elements[n].WorldUp.X, out TrackManager.CurrentTrack.Elements[n].WorldUp.Y, out TrackManager.CurrentTrack.Elements[n].WorldUp.Z);
                 }
                 // curves
@@ -6910,7 +6910,7 @@ namespace OpenBve.Parsers
                     {
                         if (Data.Structure.Ground[gi] != null)
                         {
-                            ObjectManager.CreateObject(Data.Structure.Ground[Data.Blocks[i].Cycle[ci]], Vectors.Vector3D.Add(Position, new Vectors.Vector3D(0.0, -Data.Blocks[i].Height, 0.0)), GroundTransformation, NullTransformation, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, StartingDistance);
+                            ObjectManager.CreateObject(Data.Structure.Ground[Data.Blocks[i].Cycle[ci]], Worlds.Vector.Vector3D.Add(Position, new Worlds.Vector.Vector3D(0.0, -Data.Blocks[i].Height, 0.0)), GroundTransformation, NullTransformation, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, StartingDistance);
                         }
                     }
                 }
@@ -6923,7 +6923,7 @@ namespace OpenBve.Parsers
                         double d = Data.Blocks[i].GroundFreeObj[j].TrackPosition - StartingDistance;
                         double dx = Data.Blocks[i].GroundFreeObj[j].X;
                         double dy = Data.Blocks[i].GroundFreeObj[j].Y;
-                        Vectors.Vector3D wpos = Vectors.Vector3D.Add(Position, new Vectors.Vector3D(Direction.X * d + Direction.Y * dx, dy - Data.Blocks[i].Height, Direction.Y * d - Direction.X * dx));
+                        Worlds.Vector.Vector3D wpos = Worlds.Vector.Vector3D.Add(Position, new Worlds.Vector.Vector3D(Direction.X * d + Direction.Y * dx, dy - Data.Blocks[i].Height, Direction.Y * d - Direction.X * dx));
                         double tpos = Data.Blocks[i].GroundFreeObj[j].TrackPosition;
                         ObjectManager.CreateObject(Data.Structure.FreeObj[sttype], wpos, GroundTransformation, new Worlds.Transformation(Data.Blocks[i].GroundFreeObj[j].Yaw, Data.Blocks[i].GroundFreeObj[j].Pitch, Data.Blocks[i].GroundFreeObj[j].Roll), Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos);
                     }
@@ -6935,7 +6935,7 @@ namespace OpenBve.Parsers
                     {
                         if (j > 0 && !Data.Blocks[i].Rail[j].RailStart) continue;
                         // rail
-                        Vectors.Vector3D pos;
+                        Worlds.Vector.Vector3D pos;
                         Worlds.Transformation RailTransformation;
                         double planar, updown;
                         if (j == 0)
@@ -6952,14 +6952,14 @@ namespace OpenBve.Parsers
                             // rails 1-infinity
                             double x = Data.Blocks[i].Rail[j].RailStartX;
                             double y = Data.Blocks[i].Rail[j].RailStartY;
-                            Vectors.Vector3D offset = new Vectors.Vector3D(Direction.Y * x, y, -Direction.X * x);
-                            pos = Vectors.Vector3D.Add(Position, offset);
+                            Worlds.Vector.Vector3D offset = new Worlds.Vector.Vector3D(Direction.Y * x, y, -Direction.X * x);
+                            pos = Worlds.Vector.Vector3D.Add(Position, offset);
                             double dh;
                             if (i < Data.Blocks.Length - 1 && Data.Blocks[i + 1].Rail.Length > j)
                             {
                                 // take orientation of upcoming block into account
                                 Worlds.Vector.Vector2D Direction2 = Direction;
-                                Vectors.Vector3D Position2 = Position;
+                                Worlds.Vector.Vector3D Position2 = Position;
                                 Position2.X += Direction.X * c;
                                 Position2.Y += h;
                                 Position2.Z += Direction.Y * c;
@@ -7011,16 +7011,16 @@ namespace OpenBve.Parsers
                                 Worlds.Transformation TrackTransformation2 = new Worlds.Transformation(TrackYaw2, TrackPitch2, 0.0);
                                 double x2 = Data.Blocks[i + 1].Rail[j].RailEndX;
                                 double y2 = Data.Blocks[i + 1].Rail[j].RailEndY;
-                                Vectors.Vector3D offset2 = new Vectors.Vector3D(Direction2.Y * x2, y2, -Direction2.X * x2);
-                                Vectors.Vector3D pos2 = Vectors.Vector3D.Add(Position2, offset2);
+                                Worlds.Vector.Vector3D offset2 = new Worlds.Vector.Vector3D(Direction2.Y * x2, y2, -Direction2.X * x2);
+                                Worlds.Vector.Vector3D pos2 = Worlds.Vector.Vector3D.Add(Position2, offset2);
                                 double rx = pos2.X - pos.X;
                                 double ry = pos2.Y - pos.Y;
                                 double rz = pos2.Z - pos.Z;
                                 Vectors.Normalize(ref rx, ref ry, ref rz);
-                                RailTransformation.Z = new Vectors.Vector3D(rx, ry, rz);
-                                RailTransformation.X = new Vectors.Vector3D(rz, 0.0, -rx);
+                                RailTransformation.Z = new Worlds.Vector.Vector3D(rx, ry, rz);
+                                RailTransformation.X = new Worlds.Vector.Vector3D(rz, 0.0, -rx);
                                 Vectors.Normalize(ref RailTransformation.X.X, ref RailTransformation.X.Z);
-                                RailTransformation.Y = Vectors.Cross(RailTransformation.Z, RailTransformation.X);
+                                RailTransformation.Y = Worlds.Vector.Vector3D.Cross(RailTransformation.Z, RailTransformation.X);
                                 double dx = Data.Blocks[i + 1].Rail[j].RailEndX - Data.Blocks[i].Rail[j].RailStartX;
                                 double dy = Data.Blocks[i + 1].Rail[j].RailEndY - Data.Blocks[i].Rail[j].RailStartY;
                                 planar = Math.Atan(dx / c);
@@ -7059,13 +7059,13 @@ namespace OpenBve.Parsers
                                     double dy = Data.Blocks[i + 1].Rail[j].RailEndY - Data.Blocks[i].Rail[j].RailStartY;
                                     dx = Data.Blocks[i].Rail[j].RailStartX + d / Data.BlockInterval * dx;
                                     dy = Data.Blocks[i].Rail[j].RailStartY + d / Data.BlockInterval * dy;
-                                    Game.PointsOfInterest[m].TrackOffset = new Vectors.Vector3D(x + dx, y + dy, 0.0);
+                                    Game.PointsOfInterest[m].TrackOffset = new Worlds.Vector.Vector3D(x + dx, y + dy, 0.0);
                                 }
                                 else
                                 {
                                     double dx = Data.Blocks[i].Rail[j].RailStartX;
                                     double dy = Data.Blocks[i].Rail[j].RailStartY;
-                                    Game.PointsOfInterest[m].TrackOffset = new Vectors.Vector3D(x + dx, y + dy, 0.0);
+                                    Game.PointsOfInterest[m].TrackOffset = new Worlds.Vector.Vector3D(x + dx, y + dy, 0.0);
                                 }
                                 Game.PointsOfInterest[m].TrackYaw = Data.Blocks[i].PointsOfInterest[k].Yaw + planar;
                                 Game.PointsOfInterest[m].TrackPitch = Data.Blocks[i].PointsOfInterest[k].Pitch + updown;
@@ -7104,7 +7104,7 @@ namespace OpenBve.Parsers
                                     double sx = Direction.Y;
                                     double sy = 0.0;
                                     double sz = -Direction.X;
-                                    Vectors.Vector3D wpos = Vectors.Vector3D.Add(pos, new Vectors.Vector3D(sx * dx + wx * dz, sy * dx + wy * dz, sz * dx + wz * dz));
+                                    Worlds.Vector.Vector3D wpos = Worlds.Vector.Vector3D.Add(pos, new Worlds.Vector.Vector3D(sx * dx + wx * dz, sy * dx + wy * dz, sz * dx + wz * dz));
                                     int type = Data.Blocks[i].RailPole[j].Type;
                                     ObjectManager.CreateObject(Data.Structure.Poles[m][type], wpos, RailTransformation, NullTransformation, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, StartingDistance);
                                 }
@@ -7156,7 +7156,7 @@ namespace OpenBve.Parsers
                                         double sz = -Direction.X;
                                         double ux, uy, uz;
                                         Vectors.Cross(wx, wy, wz, sx, sy, sz, out ux, out uy, out uz);
-                                        Vectors.Vector3D wpos = Vectors.Vector3D.Add(pos, new Vectors.Vector3D(sx * dx + ux * dy + wx * d, sy * dx + uy * dy + wy * d, sz * dx + uz * dy + wz * d));
+                                        Worlds.Vector.Vector3D wpos = Worlds.Vector.Vector3D.Add(pos, new Worlds.Vector.Vector3D(sx * dx + ux * dy + wx * d, sy * dx + uy * dy + wy * d, sz * dx + uz * dy + wz * d));
                                         SoundManager.PlaySound(Data.Blocks[i].Sound[k].SoundIndex, null, -1, wpos, SoundManager.Importance.AlwaysPlay, true, 1.0, 1.0);
                                     }
                                 }
@@ -7474,7 +7474,7 @@ namespace OpenBve.Parsers
                                 double dx = Data.Blocks[i].RailFreeObj[j][k].X;
                                 double dy = Data.Blocks[i].RailFreeObj[j][k].Y;
                                 double dz = Data.Blocks[i].RailFreeObj[j][k].TrackPosition - StartingDistance;
-                                Vectors.Vector3D wpos = pos;
+                                Worlds.Vector.Vector3D wpos = pos;
                                 wpos.X += dx * RailTransformation.X.X + dy * RailTransformation.Y.X + dz * RailTransformation.Z.X;
                                 wpos.Y += dx * RailTransformation.X.Y + dy * RailTransformation.Y.Y + dz * RailTransformation.Z.Y;
                                 wpos.Z += dx * RailTransformation.X.Z + dy * RailTransformation.Y.Z + dz * RailTransformation.Z.Z;
@@ -7512,7 +7512,7 @@ namespace OpenBve.Parsers
                                     double dx = Data.Blocks[i].Transponder[k].X;
                                     double dy = Data.Blocks[i].Transponder[k].Y;
                                     double dz = Data.Blocks[i].Transponder[k].TrackPosition - StartingDistance;
-                                    Vectors.Vector3D wpos = pos;
+                                    Worlds.Vector.Vector3D wpos = pos;
                                     wpos.X += dx * RailTransformation.X.X + dy * RailTransformation.Y.X + dz * RailTransformation.Z.X;
                                     wpos.Y += dx * RailTransformation.X.Y + dy * RailTransformation.Y.Y + dz * RailTransformation.Z.Y;
                                     wpos.Z += dx * RailTransformation.X.Z + dy * RailTransformation.Y.Z + dz * RailTransformation.Z.Z;
@@ -7550,7 +7550,7 @@ namespace OpenBve.Parsers
                                 {
                                     // post
                                     double dx = Data.Blocks[i].Signal[k].X;
-                                    Vectors.Vector3D wpos = pos;
+                                    Worlds.Vector.Vector3D wpos = pos;
                                     wpos.X += dx * RailTransformation.X.X + dz * RailTransformation.Z.X;
                                     wpos.Y += dx * RailTransformation.X.Y + dz * RailTransformation.Z.Y;
                                     wpos.Z += dx * RailTransformation.X.Z + dz * RailTransformation.Z.Z;
@@ -7563,7 +7563,7 @@ namespace OpenBve.Parsers
                                     // signal object
                                     double dx = Data.Blocks[i].Signal[k].X;
                                     double dy = Data.Blocks[i].Signal[k].Y;
-                                    Vectors.Vector3D wpos = pos;
+                                    Worlds.Vector.Vector3D wpos = pos;
                                     wpos.X += dx * RailTransformation.X.X + dy * RailTransformation.Y.X + dz * RailTransformation.Z.X;
                                     wpos.Y += dx * RailTransformation.X.Y + dy * RailTransformation.Y.Y + dz * RailTransformation.Z.Y;
                                     wpos.Z += dx * RailTransformation.X.Z + dy * RailTransformation.Y.Z + dz * RailTransformation.Z.Z;
@@ -7750,7 +7750,7 @@ namespace OpenBve.Parsers
                                 {
                                     double dx = 2.2 * (double)Data.Blocks[i].Limit[k].Direction;
                                     double dz = Data.Blocks[i].Limit[k].TrackPosition - StartingDistance;
-                                    Vectors.Vector3D wpos = pos;
+                                    Worlds.Vector.Vector3D wpos = pos;
                                     wpos.X += dx * RailTransformation.X.X + dz * RailTransformation.Z.X;
                                     wpos.Y += dx * RailTransformation.X.Y + dz * RailTransformation.Z.Y;
                                     wpos.Z += dx * RailTransformation.X.Z + dz * RailTransformation.Z.Z;
@@ -7832,7 +7832,7 @@ namespace OpenBve.Parsers
                                 {
                                     double dx = 1.8 * (double)Data.Blocks[i].Stop[k].Direction;
                                     double dz = Data.Blocks[i].Stop[k].TrackPosition - StartingDistance;
-                                    Vectors.Vector3D wpos = pos;
+                                    Worlds.Vector.Vector3D wpos = pos;
                                     wpos.X += dx * RailTransformation.X.X + dz * RailTransformation.Z.X;
                                     wpos.Y += dx * RailTransformation.X.Y + dz * RailTransformation.Z.Y;
                                     wpos.Z += dx * RailTransformation.X.Z + dz * RailTransformation.Z.Z;
@@ -7902,7 +7902,7 @@ namespace OpenBve.Parsers
                     {
                         Game.PointsOfInterest[n].Text = Game.Stations[i].Name;
                         Game.PointsOfInterest[n].TrackPosition = Game.Stations[i].Stops[0].TrackPosition;
-                        Game.PointsOfInterest[n].TrackOffset = new Vectors.Vector3D(0.0, 2.8, 0.0);
+                        Game.PointsOfInterest[n].TrackOffset = new Worlds.Vector.Vector3D(0.0, 2.8, 0.0);
                         if (Game.Stations[i].OpenLeftDoors & !Game.Stations[i].OpenRightDoors)
                         {
                             Game.PointsOfInterest[n].TrackOffset.X = -2.5;
@@ -8138,10 +8138,10 @@ namespace OpenBve.Parsers
             int length = TrackManager.CurrentTrack.Elements.Length;
             int newLength = (length - 1) * subdivisions + 1;
             double[] midpointsTrackPositions = new double[newLength];
-            Vectors.Vector3D[] midpointsWorldPositions = new Vectors.Vector3D[newLength];
-            Vectors.Vector3D[] midpointsWorldDirections = new Vectors.Vector3D[newLength];
-            Vectors.Vector3D[] midpointsWorldUps = new Vectors.Vector3D[newLength];
-            Vectors.Vector3D[] midpointsWorldSides = new Vectors.Vector3D[newLength];
+            Worlds.Vector.Vector3D[] midpointsWorldPositions = new Worlds.Vector.Vector3D[newLength];
+            Worlds.Vector.Vector3D[] midpointsWorldDirections = new Worlds.Vector.Vector3D[newLength];
+            Worlds.Vector.Vector3D[] midpointsWorldUps = new Worlds.Vector.Vector3D[newLength];
+            Worlds.Vector.Vector3D[] midpointsWorldSides = new Worlds.Vector.Vector3D[newLength];
             double[] midpointsCant = new double[newLength];
             for (int i = 0; i < newLength; i++)
             {
@@ -8196,9 +8196,9 @@ namespace OpenBve.Parsers
                     {
                         double p = 0.00000001 * TrackManager.CurrentTrack.Elements[i - 1].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition;
                         TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                        Vectors.Vector3D d1 = TrackManager.CurrentTrack.Elements[i].WorldDirection;
-                        Vectors.Vector3D d2 = follower.WorldDirection;
-                        Vectors.Vector3D d = Vectors.Vector3D.Subtract(d1, d2);
+                        Worlds.Vector.Vector3D d1 = TrackManager.CurrentTrack.Elements[i].WorldDirection;
+                        Worlds.Vector.Vector3D d2 = follower.WorldDirection;
+                        Worlds.Vector.Vector3D d = Worlds.Vector.Vector3D.Subtract(d1, d2);
                         double t = d.X * d.X + d.Z * d.Z;
                         const double e = 0.0001;
                         if (t > e)
@@ -8215,11 +8215,11 @@ namespace OpenBve.Parsers
                 if (isTurn[i])
                 {
                     // estimate radius
-                    Vectors.Vector3D AP = TrackManager.CurrentTrack.Elements[i - 1].WorldPosition;
-                    Vectors.Vector3D AS = TrackManager.CurrentTrack.Elements[i - 1].WorldSide;
-                    Vectors.Vector3D BP = TrackManager.CurrentTrack.Elements[i + 1].WorldPosition;
-                    Vectors.Vector3D BS = TrackManager.CurrentTrack.Elements[i + 1].WorldSide;
-                    Vectors.Vector3D S = Vectors.Vector3D.Subtract(AS, BS);
+                    Worlds.Vector.Vector3D AP = TrackManager.CurrentTrack.Elements[i - 1].WorldPosition;
+                    Worlds.Vector.Vector3D AS = TrackManager.CurrentTrack.Elements[i - 1].WorldSide;
+                    Worlds.Vector.Vector3D BP = TrackManager.CurrentTrack.Elements[i + 1].WorldPosition;
+                    Worlds.Vector.Vector3D BS = TrackManager.CurrentTrack.Elements[i + 1].WorldSide;
+                    Worlds.Vector.Vector3D S = Worlds.Vector.Vector3D.Subtract(AS, BS);
                     double rx;
                     if (S.X * S.X > 0.000001)
                     {
@@ -8287,7 +8287,7 @@ namespace OpenBve.Parsers
                             p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                             TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                             TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                            Vectors.Vector3D d = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                            Worlds.Vector.Vector3D d = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
                             double bestT = d.X * d.X + d.Y * d.Y + d.Z * d.Z;
                             int bestJ = 0;
                             int n = 1000;
@@ -8295,7 +8295,7 @@ namespace OpenBve.Parsers
                             for (int j = 1; j < n - 1; j++)
                             {
                                 TrackManager.UpdateTrackFollower(ref follower, TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition - (double)j * a, true, false);
-                                d = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                                d = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
                                 double t = d.X * d.X + d.Y * d.Y + d.Z * d.Z;
                                 if (t < bestT)
                                 {
@@ -8317,9 +8317,9 @@ namespace OpenBve.Parsers
                             p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                             TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                             TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                            Vectors.Vector3D AB = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
-                            Vectors.Vector3D AC = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
-                            Vectors.Vector3D BC = Vectors.Vector3D.Subtract(follower.WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
+                            Worlds.Vector.Vector3D AB = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                            Worlds.Vector.Vector3D AC = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
+                            Worlds.Vector.Vector3D BC = Worlds.Vector.Vector3D.Subtract(follower.WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
                             double sa = Math.Sqrt(BC.X * BC.X + BC.Z * BC.Z);
                             double sb = Math.Sqrt(AC.X * AC.X + AC.Z * AC.Z);
                             double sc = Math.Sqrt(AB.X * AB.X + AB.Z * AB.Z);
@@ -8357,7 +8357,7 @@ namespace OpenBve.Parsers
                                     p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                                     TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                                     TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                                    d = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                                    d = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
                                     double t = d.X * d.X + d.Y * d.Y + d.Z * d.Z;
                                     if (t < bestT)
                                     {
@@ -8378,7 +8378,7 @@ namespace OpenBve.Parsers
                                 p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                                 TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                                 TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                                d = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                                d = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
                                 bestT = d.X * d.X + d.Y * d.Y + d.Z * d.Z;
                                 bestJ = 0;
                                 n = 1000;
@@ -8386,7 +8386,7 @@ namespace OpenBve.Parsers
                                 for (int j = 1; j < n - 1; j++)
                                 {
                                     TrackManager.UpdateTrackFollower(ref follower, TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition - (double)j * a, true, false);
-                                    d = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
+                                    d = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, follower.WorldPosition);
                                     double t = d.X * d.X + d.Y * d.Y + d.Z * d.Z;
                                     if (t < bestT)
                                     {
@@ -8409,9 +8409,9 @@ namespace OpenBve.Parsers
                             p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                             TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                             TrackManager.UpdateTrackFollower(ref follower, p, true, false);
-                            Vectors.Vector3D d1 = Vectors.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
+                            Worlds.Vector.Vector3D d1 = Worlds.Vector.Vector3D.Subtract(TrackManager.CurrentTrack.Elements[i + 1].WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
                             double a1 = Math.Atan(d1.Y / Math.Sqrt(d1.X * d1.X + d1.Z * d1.Z));
-                            Vectors.Vector3D d2 = Vectors.Vector3D.Subtract(follower.WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
+                            Worlds.Vector.Vector3D d2 = Worlds.Vector.Vector3D.Subtract(follower.WorldPosition, TrackManager.CurrentTrack.Elements[i].WorldPosition);
                             double a2 = Math.Atan(d2.Y / Math.Sqrt(d2.X * d2.X + d2.Z * d2.Z));
                             double b = a2 - a1;
                             if (b * b > 0.00000001)

@@ -5,9 +5,9 @@ namespace OpenBve.Worlds
     /// <summary>Represents a vertex consisting of 3D coordinates and 2D texture coordinates.</summary>
     public struct Vertex
     {
-        internal Vectors.Vector3D Coordinates;
+        internal Worlds.Vector.Vector3D Coordinates;
         internal Vector.Vector2Df TextureCoordinates;
-        public Vertex(Vectors.Vector3D Coordinates, Vector.Vector2Df TextureCoordinates)
+        public Vertex(Worlds.Vector.Vector3D Coordinates, Vector.Vector2Df TextureCoordinates)
         {
             this.Coordinates = Coordinates;
             this.TextureCoordinates = TextureCoordinates;
@@ -30,7 +30,7 @@ namespace OpenBve.Worlds
         public override bool Equals(object obj)
         {
             return obj is Vertex vertex &&
-                   EqualityComparer<Vectors.Vector3D>.Default.Equals(Coordinates, vertex.Coordinates) &&
+                   EqualityComparer<Worlds.Vector.Vector3D>.Default.Equals(Coordinates, vertex.Coordinates) &&
                    EqualityComparer<Vector.Vector2Df>.Default.Equals(TextureCoordinates, vertex.TextureCoordinates);
         }
 

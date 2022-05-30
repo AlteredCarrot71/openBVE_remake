@@ -4,24 +4,24 @@ namespace OpenBve.Worlds
 {
     public struct Transformation
     {
-        internal Vectors.Vector3D X;
-        internal Vectors.Vector3D Y;
-        internal Vectors.Vector3D Z;
+        internal Worlds.Vector.Vector3D X;
+        internal Worlds.Vector.Vector3D Y;
+        internal Worlds.Vector.Vector3D Z;
         public Transformation(double Yaw, double Pitch, double Roll)
         {
             if (Yaw == 0.0 & Pitch == 0.0 & Roll == 0.0)
             {
-                this.X = new Vectors.Vector3D(1.0, 0.0, 0.0);
-                this.Y = new Vectors.Vector3D(0.0, 1.0, 0.0);
-                this.Z = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                this.X = new Worlds.Vector.Vector3D(1.0, 0.0, 0.0);
+                this.Y = new Worlds.Vector.Vector3D(0.0, 1.0, 0.0);
+                this.Z = new Worlds.Vector.Vector3D(0.0, 0.0, 1.0);
             }
             else if (Pitch == 0.0 & Roll == 0.0)
             {
                 double cosYaw = Math.Cos(Yaw);
                 double sinYaw = Math.Sin(Yaw);
-                this.X = new Vectors.Vector3D(cosYaw, 0.0, -sinYaw);
-                this.Y = new Vectors.Vector3D(0.0, 1.0, 0.0);
-                this.Z = new Vectors.Vector3D(sinYaw, 0.0, cosYaw);
+                this.X = new Worlds.Vector.Vector3D(cosYaw, 0.0, -sinYaw);
+                this.Y = new Worlds.Vector.Vector3D(0.0, 1.0, 0.0);
+                this.Z = new Worlds.Vector.Vector3D(sinYaw, 0.0, cosYaw);
             }
             else
             {
@@ -40,9 +40,9 @@ namespace OpenBve.Worlds
                 Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
                 Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
                 Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
-                this.X = new Vectors.Vector3D(sx, sy, sz);
-                this.Y = new Vectors.Vector3D(ux, uy, uz);
-                this.Z = new Vectors.Vector3D(dx, dy, dz);
+                this.X = new Worlds.Vector.Vector3D(sx, sy, sz);
+                this.Y = new Worlds.Vector.Vector3D(ux, uy, uz);
+                this.Z = new Worlds.Vector.Vector3D(dx, dy, dz);
             }
         }
         public Transformation(Transformation Transformation, double Yaw, double Pitch, double Roll)
@@ -62,18 +62,18 @@ namespace OpenBve.Worlds
             Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
             Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
             Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
-            this.X = new Vectors.Vector3D(sx, sy, sz);
-            this.Y = new Vectors.Vector3D(ux, uy, uz);
-            this.Z = new Vectors.Vector3D(dx, dy, dz);
+            this.X = new Worlds.Vector.Vector3D(sx, sy, sz);
+            this.Y = new Worlds.Vector.Vector3D(ux, uy, uz);
+            this.Z = new Worlds.Vector.Vector3D(dx, dy, dz);
         }
         public Transformation(Transformation BaseTransformation, Transformation AuxTransformation)
         {
-            Vectors.Vector3D x = BaseTransformation.X;
-            Vectors.Vector3D y = BaseTransformation.Y;
-            Vectors.Vector3D z = BaseTransformation.Z;
-            Vectors.Vector3D s = AuxTransformation.X;
-            Vectors.Vector3D u = AuxTransformation.Y;
-            Vectors.Vector3D d = AuxTransformation.Z;
+            Worlds.Vector.Vector3D x = BaseTransformation.X;
+            Worlds.Vector.Vector3D y = BaseTransformation.Y;
+            Worlds.Vector.Vector3D z = BaseTransformation.Z;
+            Worlds.Vector.Vector3D s = AuxTransformation.X;
+            Worlds.Vector.Vector3D u = AuxTransformation.Y;
+            Worlds.Vector.Vector3D d = AuxTransformation.Z;
             Vectors.Rotate(ref x.X, ref x.Y, ref x.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
             Vectors.Rotate(ref y.X, ref y.Y, ref y.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
             Vectors.Rotate(ref z.X, ref z.Y, ref z.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);

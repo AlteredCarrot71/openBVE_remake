@@ -234,13 +234,13 @@ namespace OpenBve
         #region relative camera
         internal struct CameraAlignment
         {
-            internal Vectors.Vector3D Position;
+            internal Worlds.Vector.Vector3D Position;
             internal double Yaw;
             internal double Pitch;
             internal double Roll;
             internal double TrackPosition;
             internal double Zoom;
-            internal CameraAlignment(Vectors.Vector3D Position, double Yaw, double Pitch, double Roll, double TrackPosition, double Zoom)
+            internal CameraAlignment(Worlds.Vector.Vector3D Position, double Yaw, double Pitch, double Roll, double TrackPosition, double Zoom)
             {
                 this.Position = Position;
                 this.Yaw = Yaw;
@@ -271,16 +271,16 @@ namespace OpenBve
         #endregion
 
         #region camera restriction
-        internal static Vectors.Vector3D CameraRestrictionBottomLeft = new Vectors.Vector3D(-1.0, -1.0, 1.0);
-        internal static Vectors.Vector3D CameraRestrictionTopRight = new Vectors.Vector3D(1.0, 1.0, 1.0);
+        internal static Worlds.Vector.Vector3D CameraRestrictionBottomLeft = new Worlds.Vector.Vector3D(-1.0, -1.0, 1.0);
+        internal static Worlds.Vector.Vector3D CameraRestrictionTopRight = new Worlds.Vector.Vector3D(1.0, 1.0, 1.0);
         internal static CameraRestrictionMode CameraRestriction = Worlds.CameraRestrictionMode.NotAvailable;
         #endregion
 
         #region absolute camera
-        internal static Vectors.Vector3D AbsoluteCameraPosition;
-        internal static Vectors.Vector3D AbsoluteCameraDirection;
-        internal static Vectors.Vector3D AbsoluteCameraUp;
-        internal static Vectors.Vector3D AbsoluteCameraSide;
+        internal static Worlds.Vector.Vector3D AbsoluteCameraPosition;
+        internal static Worlds.Vector.Vector3D AbsoluteCameraDirection;
+        internal static Worlds.Vector.Vector3D AbsoluteCameraUp;
+        internal static Worlds.Vector.Vector3D AbsoluteCameraSide;
         #endregion
 
         #region camera restriction
@@ -378,7 +378,7 @@ namespace OpenBve
         {
             if (World.CameraRestriction == CameraRestrictionMode.On)
             {
-                Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
+                Worlds.Vector.Vector3D[] p = new Worlds.Vector.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
                 Worlds.Vector.Vector2D[] r = new Worlds.Vector.Vector2D[2];
                 for (int j = 0; j < 2; j++)
                 {
@@ -535,7 +535,7 @@ namespace OpenBve
                     double cx = px + sx * ox + ux * oy + dx * oz;
                     double cy = py + sy * ox + uy * oy + dy * oz;
                     double cz = pz + sz * ox + uz * oy + dz * oz;
-                    AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
+                    AbsoluteCameraPosition = new Worlds.Vector.Vector3D(cx, cy, cz);
                     dx = tx - cx;
                     dy = ty - cy;
                     dz = tz - cz;
@@ -544,8 +544,8 @@ namespace OpenBve
                     dx *= ti;
                     dy *= ti;
                     dz *= ti;
-                    AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
-                    AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
+                    AbsoluteCameraDirection = new Worlds.Vector.Vector3D(dx, dy, dz);
+                    AbsoluteCameraSide = new Worlds.Vector.Vector3D(dz, 0.0, -dx);
                     Vectors.Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
                     Vectors.Cross(dx, dy, dz, AbsoluteCameraSide.X, AbsoluteCameraSide.Y, AbsoluteCameraSide.Z, out AbsoluteCameraUp.X, out AbsoluteCameraUp.Y, out AbsoluteCameraUp.Z);
                     UpdateViewingDistances();
@@ -826,10 +826,10 @@ namespace OpenBve
                     }
                 }
                 // finish
-                AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
-                AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
-                AbsoluteCameraUp = new Vectors.Vector3D(ux, uy, uz);
-                AbsoluteCameraSide = new Vectors.Vector3D(sx, sy, sz);
+                AbsoluteCameraPosition = new Worlds.Vector.Vector3D(cx, cy, cz);
+                AbsoluteCameraDirection = new Worlds.Vector.Vector3D(dx, dy, dz);
+                AbsoluteCameraUp = new Worlds.Vector.Vector3D(ux, uy, uz);
+                AbsoluteCameraSide = new Worlds.Vector.Vector3D(sx, sy, sz);
             }
         }
         private static void AdjustAlignment(ref double Source, double Direction, ref double Speed, double TimeElapsed)

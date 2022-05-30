@@ -78,7 +78,7 @@ namespace OpenBve.Worlds.Mesh
                     {
                         if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
                         {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(mx, my, mz);
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Worlds.Vector.Vector3Df(mx, my, mz);
                         }
                     }
                 }
@@ -88,7 +88,7 @@ namespace OpenBve.Worlds.Mesh
                     {
                         if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
                         {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(0.0f, 1.0f, 0.0f);
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Worlds.Vector.Vector3Df(0.0f, 1.0f, 0.0f);
                         }
                     }
                 }

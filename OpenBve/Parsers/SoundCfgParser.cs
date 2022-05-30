@@ -22,7 +22,7 @@ namespace OpenBve.Parsers
 
         internal static void LoadDefaultPluginSounds(TrainManager.Train train, string trainFolder)
         {
-            Vectors.Vector3D position = new Vectors.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
+            Worlds.Vector.Vector3D position = new Worlds.Vector.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
             const double radius = 2.0;
             train.Cars[train.DriverCar].Sounds.Plugin = new TrainManager.CarSound[] {
                 TryLoadSound(Interface.GetCombinedFileName(trainFolder, "ats.wav"), position, radius),
@@ -89,12 +89,12 @@ namespace OpenBve.Parsers
         private static void LoadBve2Sound(string TrainPath, TrainManager.Train train)
         {
             // set sound positions and radii
-            Vectors.Vector3D front = new Vectors.Vector3D(0.0, 0.0, 0.5 * train.Cars[train.DriverCar].Length);
-            Vectors.Vector3D center = new Vectors.Vector3D(0.0, 0.0, 0.0);
-            Vectors.Vector3D left = new Vectors.Vector3D(-1.3, 0.0, 0.0);
-            Vectors.Vector3D right = new Vectors.Vector3D(1.3, 0.0, 0.0);
-            Vectors.Vector3D cab = new Vectors.Vector3D(-train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ - 0.5);
-            Vectors.Vector3D panel = new Vectors.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
+            Worlds.Vector.Vector3D front = new Worlds.Vector.Vector3D(0.0, 0.0, 0.5 * train.Cars[train.DriverCar].Length);
+            Worlds.Vector.Vector3D center = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
+            Worlds.Vector.Vector3D left = new Worlds.Vector.Vector3D(-1.3, 0.0, 0.0);
+            Worlds.Vector.Vector3D right = new Worlds.Vector.Vector3D(1.3, 0.0, 0.0);
+            Worlds.Vector.Vector3D cab = new Worlds.Vector.Vector3D(-train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ - 0.5);
+            Worlds.Vector.Vector3D panel = new Worlds.Vector.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
             double large = 30.0;
             double medium = 10.0;
             double small = 5.0;
@@ -119,8 +119,8 @@ namespace OpenBve.Parsers
             // load sounds for all cars
             for (int i = 0; i < train.Cars.Length; i++)
             {
-                Vectors.Vector3D frontaxle = new Vectors.Vector3D(0.0, 0.0, train.Cars[i].FrontAxlePosition);
-                Vectors.Vector3D rearaxle = new Vectors.Vector3D(0.0, 0.0, train.Cars[i].RearAxlePosition);
+                Worlds.Vector.Vector3D frontaxle = new Worlds.Vector.Vector3D(0.0, 0.0, train.Cars[i].FrontAxlePosition);
+                Worlds.Vector.Vector3D rearaxle = new Worlds.Vector.Vector3D(0.0, 0.0, train.Cars[i].RearAxlePosition);
                 train.Cars[i].Sounds.Air = TryLoadSound(Interface.GetCombinedFileName(TrainPath, "Air.wav"), center, small);
                 train.Cars[i].Sounds.AirHigh = TryLoadSound(Interface.GetCombinedFileName(TrainPath, "AirHigh.wav"), center, small);
                 train.Cars[i].Sounds.AirZero = TryLoadSound(Interface.GetCombinedFileName(TrainPath, "AirZero.wav"), center, small);
@@ -199,12 +199,12 @@ namespace OpenBve.Parsers
         private static void LoadBve4Sound(string FileName, string TrainPath, System.Text.Encoding Encoding, TrainManager.Train train)
         {
             // set sound positions and radii
-            Vectors.Vector3D center = new Vectors.Vector3D(0.0, 0.0, 0.0);
-            Vectors.Vector3D left = new Vectors.Vector3D(-1.3, 0.0, 0.0);
-            Vectors.Vector3D right = new Vectors.Vector3D(1.3, 0.0, 0.0);
-            Vectors.Vector3D front = new Vectors.Vector3D(0.0, 0.0, 0.5 * train.Cars[train.DriverCar].Length);
-            Vectors.Vector3D cab = new Vectors.Vector3D(-train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ - 0.5);
-            Vectors.Vector3D panel = new Vectors.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
+            Worlds.Vector.Vector3D center = new Worlds.Vector.Vector3D(0.0, 0.0, 0.0);
+            Worlds.Vector.Vector3D left = new Worlds.Vector.Vector3D(-1.3, 0.0, 0.0);
+            Worlds.Vector.Vector3D right = new Worlds.Vector.Vector3D(1.3, 0.0, 0.0);
+            Worlds.Vector.Vector3D front = new Worlds.Vector.Vector3D(0.0, 0.0, 0.5 * train.Cars[train.DriverCar].Length);
+            Worlds.Vector.Vector3D cab = new Worlds.Vector.Vector3D(-train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ - 0.5);
+            Worlds.Vector.Vector3D panel = new Worlds.Vector.Vector3D(train.Cars[train.DriverCar].DriverX, train.Cars[train.DriverCar].DriverY, train.Cars[train.DriverCar].DriverZ + 1.0);
             double large = 30.0;
             double medium = 10.0;
             double small = 5.0;
@@ -388,8 +388,8 @@ namespace OpenBve.Parsers
                                 {
                                     for (int c = 0; c < train.Cars.Length; c++)
                                     {
-                                        Vectors.Vector3D frontaxle = new Vectors.Vector3D(0.0, 0.0, train.Cars[c].FrontAxlePosition);
-                                        Vectors.Vector3D rearaxle = new Vectors.Vector3D(0.0, 0.0, train.Cars[c].RearAxlePosition);
+                                        Worlds.Vector.Vector3D frontaxle = new Worlds.Vector.Vector3D(0.0, 0.0, train.Cars[c].FrontAxlePosition);
+                                        Worlds.Vector.Vector3D rearaxle = new Worlds.Vector.Vector3D(0.0, 0.0, train.Cars[c].RearAxlePosition);
                                         train.Cars[c].Sounds.PointFrontAxle = TryLoadSound(Interface.GetCombinedFileName(TrainPath, b), frontaxle, small);
                                         train.Cars[c].Sounds.PointRearAxle = TryLoadSound(Interface.GetCombinedFileName(TrainPath, b), rearaxle, small);
                                     }
@@ -941,7 +941,7 @@ namespace OpenBve.Parsers
         }
 
         // try load sound
-        private static TrainManager.CarSound TryLoadSound(string FileName, Vectors.Vector3D Position, double Radius)
+        private static TrainManager.CarSound TryLoadSound(string FileName, Worlds.Vector.Vector3D Position, double Radius)
         {
             TrainManager.CarSound s;
             s = TrainManager.CarSound.Empty;
@@ -956,7 +956,7 @@ namespace OpenBve.Parsers
             }
             return s;
         }
-        private static TrainManager.CarSound[] TryLoadSoundArray(string Folder, string FileStart, string FileEnd, Vectors.Vector3D Position, double Radius)
+        private static TrainManager.CarSound[] TryLoadSoundArray(string Folder, string FileStart, string FileEnd, Worlds.Vector.Vector3D Position, double Radius)
         {
             System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
             TrainManager.CarSound[] Sounds = new TrainManager.CarSound[] { };

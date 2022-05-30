@@ -170,6 +170,8 @@
     <Compile Include="Worlds\Vectors.cs" />
     <Compile Include="Worlds\Vector\Vector2D.cs" />
     <Compile Include="Worlds\Vector\Vector2Df.cs" />
+    <Compile Include="Worlds\Vector\Vector3D.cs" />
+    <Compile Include="Worlds\Vector\Vector3Df.cs" />
     <Compile Include="Worlds\Vertex.cs" />
     <EmbeddedResource Include="formImage.resx">
       <SubType>Designer</SubType>
