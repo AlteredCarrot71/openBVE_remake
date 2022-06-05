@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using ReTao.OpenGl;
 using ReTao.Sdl;
 using System;
@@ -688,7 +689,7 @@ namespace OpenBve
                             World.MouseGrabEnabled = !World.MouseGrabEnabled;
                             if (World.MouseGrabEnabled)
                             {
-                                World.MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+                                World.MouseGrabTarget = new Vector2(0.0, 0.0);
                                 Sdl.SDL_WM_GrabInput(Sdl.SDL_GRAB_ON);
                                 Game.AddMessage(Interface.GetInterfaceString("notification_mousegrab_on"), Game.MessageDependency.None, Interface.GameMode.Expert, Game.MessageColor.Blue, Game.SecondsSinceMidnight + 5.0);
                             }
@@ -707,7 +708,7 @@ namespace OpenBve
                         }
                         else if (World.MouseGrabEnabled)
                         {
-                            World.MouseGrabTarget = new Vectors.Vector2D((double)Event.motion.xrel, (double)Event.motion.yrel);
+                            World.MouseGrabTarget = new Vector2((double)Event.motion.xrel, (double)Event.motion.yrel);
                         }
                         break;
                 }
@@ -2368,7 +2369,7 @@ namespace OpenBve
             {
                 Sdl.SDL_WM_GrabInput(Sdl.SDL_GRAB_ON);
             }
-            World.MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+            World.MouseGrabTarget = new Vector2(0.0, 0.0);
             World.MouseGrabIgnoreOnce = true;
             World.InitializeCameraRestriction();
             if (Renderer.OptionBackfaceCulling)

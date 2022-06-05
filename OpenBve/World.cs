@@ -1,5 +1,6 @@
-﻿using System;
+﻿using OpenBveApi.Math;
 using OpenBve.Worlds;
+using System;
 
 namespace OpenBve
 {
@@ -444,7 +445,7 @@ namespace OpenBve
         #region mouse grab
         internal static bool MouseGrabEnabled = false;
         internal static bool MouseGrabIgnoreOnce = false;
-        internal static Vectors.Vector2D MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+        internal static Vector2 MouseGrabTarget = new Vector2(0.0, 0.0);
         internal static void UpdateMouseGrab(double TimeElapsed)
         {
             if (MouseGrabEnabled)
@@ -460,7 +461,7 @@ namespace OpenBve
                 }
                 CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
                 CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
-                MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+                MouseGrabTarget = new Vector2(0.0, 0.0);
             }
         }
         #endregion
@@ -622,7 +623,7 @@ namespace OpenBve
             if (World.CameraRestriction == CameraRestrictionMode.On)
             {
                 Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
-                Vectors.Vector2D[] r = new Vectors.Vector2D[2];
+                Vector2[] r = new Vector2[2];
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates
@@ -1258,7 +1259,7 @@ namespace OpenBve
         }
         #endregion
 
-        #region vector rotate
+        #region vector like rotate
         internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
@@ -1278,13 +1279,6 @@ namespace OpenBve
             double y = (cosa + oc * dy * dy) * (double)py + (oc * dx * dy + sina * dz) * (double)px + (oc * dy * dz - sina * dx) * (double)pz;
             double z = (cosa + oc * dz * dz) * (double)pz + (oc * dx * dz - sina * dy) * (double)px + (oc * dy * dz + sina * dx) * (double)py;
             px = (float)x; py = (float)y; pz = (float)z;
-        }
-        internal static void Rotate(ref Vectors.Vector2D Vector, double cosa, double sina)
-        {
-            double u = Vector.X * cosa - Vector.Y * sina;
-            double v = Vector.X * sina + Vector.Y * cosa;
-            Vector.X = u;
-            Vector.Y = v;
         }
         internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
         {
@@ -1332,7 +1326,7 @@ namespace OpenBve
             Vector.X = (float)u;
             Vector.Z = (float)v;
         }
-        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vectors.Vector2D Direction, double cosa, double sina)
+        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vector2 Direction, double cosa, double sina)
         {
             double dx = Direction.X, dy = Direction.Y;
             double x = Vector.X, y = Vector.Y, z = Vector.Z;
@@ -1372,16 +1366,6 @@ namespace OpenBve
         #endregion
 
         #region vector like normalize
-        internal static void Normalize(ref double x, ref double y)
-        {
-            double t = x * x + y * y;
-            if (t != 0.0)
-            {
-                t = 1.0 / Math.Sqrt(t);
-                x *= t;
-                y *= t;
-            }
-        }
         internal static void Normalize(ref double x, ref double y, ref double z)
         {
             double t = x * x + y * y + z * z;

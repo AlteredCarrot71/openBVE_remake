@@ -5,14 +5,15 @@ namespace OpenBveApi.Math
     /// <summary>Represents a two-dimensional vector.</summary>
     public struct Vector2
     {
-        // --- members ---
+        #region members
         /// <summary>The x-coordinate.</summary>
-        public double X;
+        public double X { get; set; }
 
         /// <summary>The y-coordinate.</summary>
-        public double Y;
+        public double Y { get; set; }
+        #endregion
 
-        // --- constructors ---
+        #region constructor
         /// <summary>Creates a new two-dimensional vector.</summary>
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
@@ -21,8 +22,9 @@ namespace OpenBveApi.Math
             this.X = x;
             this.Y = y;
         }
+        #endregion
 
-        // --- operators ---
+        #region operators
         /// <summary>Checks whether the two specified vectors are equal.</summary>
         /// <param name="a">The first vector.</param>
         /// <param name="b">The second vector.</param>
@@ -44,8 +46,9 @@ namespace OpenBveApi.Math
             if (a.Y != b.Y) return true;
             return false;
         }
+        #endregion
 
-        // --- read-only fields ---
+        #region read-only fields
         /// <summary>Represents a null vector.</summary>
         public static readonly Vector2 Null = new Vector2(0.0, 0.0);
 
@@ -60,7 +63,36 @@ namespace OpenBveApi.Math
 
         /// <summary>Represents a vector pointing down.</summary>
         public static readonly Vector2 Down = new Vector2(0.0, 1.0);
+        #endregion
 
+        #region methods
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="cosa"></param>
+        /// <param name="sina"></param>
+        public void Rotate(double cosa, double sina)
+        {
+            this.X = (this.X * cosa) - (this.Y * sina);
+            this.Y = (this.X * sina) + (this.Y * cosa);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Normalize()
+        {
+            double t = (this.X * this.X) + (this.Y * this.Y);
+            if (t != 0.0)
+            {
+                t = 1.0 / System.Math.Sqrt(t);
+                this.X *= t;
+                this.Y *= t;
+            }
+        }
+        #endregion
+
+        #region common override
         /// <summary>Check whether the specified vectors are equal.</summary>
         public override bool Equals(object obj)
         {
@@ -72,5 +104,6 @@ namespace OpenBveApi.Math
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }
