@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using OpenBve.Parsers;
 using System;
 
@@ -111,8 +112,8 @@ namespace OpenBve
             internal Damping RotateXDamping;
             internal Damping RotateYDamping;
             internal Damping RotateZDamping;
-            internal Vectors.Vector2D TextureShiftXDirection;
-            internal Vectors.Vector2D TextureShiftYDirection;
+            internal Vector2 TextureShiftXDirection;
+            internal Vector2 TextureShiftYDirection;
             internal FunctionScripts.FunctionScript TextureShiftXFunction;
             internal FunctionScripts.FunctionScript TextureShiftYFunction;
             internal bool LEDClockwiseWinding;

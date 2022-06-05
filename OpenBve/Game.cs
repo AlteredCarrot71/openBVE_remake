@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using System;
 
 namespace OpenBve
@@ -701,7 +702,7 @@ namespace OpenBve
             internal string Text;
             internal double Timeout;
             internal MessageColor Color;
-            internal Vectors.Vector2D RendererPosition;
+            internal Vector2 RendererPosition;
             internal double RendererAlpha;
         }
         internal struct ScoreLog
@@ -714,7 +715,7 @@ namespace OpenBve
         internal static ScoreLog[] ScoreLogs = new ScoreLog[64];
         internal static int ScoreLogCount = 0;
         internal static ScoreMessage[] ScoreMessages = new ScoreMessage[] { };
-        internal static Vectors.Vector2D ScoreMessagesRendererSize = new Vectors.Vector2D(16.0, 16.0);
+        internal static Vector2 ScoreMessagesRendererSize = new Vector2(16.0, 16.0);
         internal static string LogRouteName = "";
         internal static string LogTrainName = "";
         internal static DateTime LogDateTime = DateTime.Now;
@@ -731,7 +732,7 @@ namespace OpenBve
                 ScoreMessages[n].Value = Value;
                 ScoreMessages[n].Text = Interface.GetScoreText(TextToken) + ": " + Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 ScoreMessages[n].Timeout = SecondsSinceMidnight + Duration;
-                ScoreMessages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
+                ScoreMessages[n].RendererPosition = new Vector2(0.0, 0.0);
                 ScoreMessages[n].RendererAlpha = 0.0;
                 if (Value < 0.0)
                 {
@@ -768,7 +769,7 @@ namespace OpenBve
                 ScoreMessages[n].Value = 0;
                 ScoreMessages[n].Text = Text.Length != 0 ? Text : "══════════";
                 ScoreMessages[n].Timeout = SecondsSinceMidnight + Duration;
-                ScoreMessages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
+                ScoreMessages[n].RendererPosition = new Vector2(0.0, 0.0);
                 ScoreMessages[n].RendererAlpha = 0.0;
                 ScoreMessages[n].Color = MessageColor.White;
             }
@@ -2324,11 +2325,11 @@ namespace OpenBve
             internal MessageDependency Depencency;
             internal double Timeout;
             internal MessageColor Color;
-            internal Vectors.Vector2D RendererPosition;
+            internal Vector2 RendererPosition;
             internal double RendererAlpha;
         }
         internal static Message[] Messages = new Message[] { };
-        internal static Vectors.Vector2D MessagesRendererSize = new Vectors.Vector2D(16.0, 16.0);
+        internal static Vector2 MessagesRendererSize = new Vector2(16.0, 16.0);
         internal static void AddMessage(string Text, MessageDependency Depencency, Interface.GameMode Mode, MessageColor Color, double Timeout)
         {
             if (Interface.CurrentOptions.GameMode <= Mode)
@@ -2347,7 +2348,7 @@ namespace OpenBve
                 Messages[n].Depencency = Depencency;
                 Messages[n].Timeout = Timeout;
                 Messages[n].Color = Color;
-                Messages[n].RendererPosition = new Vectors.Vector2D(0.0, 0.0);
+                Messages[n].RendererPosition = new Vector2(0.0, 0.0);
                 Messages[n].RendererAlpha = 0.0;
             }
         }

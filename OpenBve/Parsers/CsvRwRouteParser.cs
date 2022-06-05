@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6543,7 +6544,7 @@ namespace OpenBve.Parsers
             }
             // create objects and track
             Vectors.Vector3D Position = new Vectors.Vector3D(0.0, 0.0, 0.0);
-            Vectors.Vector2D Direction = new Vectors.Vector2D(0.0, 1.0);
+            Vector2 Direction = new Vector2(0.0, 1.0);
             TrackManager.CurrentTrack = new TrackManager.Track();
             TrackManager.CurrentTrack.Elements = new TrackManager.TrackElement[] { };
             double CurrentSpeedLimit = double.PositiveInfinity;
@@ -6958,7 +6959,7 @@ namespace OpenBve.Parsers
                             if (i < Data.Blocks.Length - 1 && Data.Blocks[i + 1].Rail.Length > j)
                             {
                                 // take orientation of upcoming block into account
-                                Vectors.Vector2D Direction2 = Direction;
+                                Vector2 Direction2 = Direction;
                                 Vectors.Vector3D Position2 = Position;
                                 Position2.X += Direction.X * c;
                                 Position2.Y += h;

@@ -1,5 +1,6 @@
-﻿using System;
+﻿using OpenBveApi.Math;
 using OpenBve.Worlds;
+using System;
 
 namespace OpenBve
 {
@@ -444,7 +445,7 @@ namespace OpenBve
         #region mouse grab
         internal static bool MouseGrabEnabled = false;
         internal static bool MouseGrabIgnoreOnce = false;
-        internal static Vectors.Vector2D MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+        internal static Vector2 MouseGrabTarget = new Vector2(0.0, 0.0);
         internal static void UpdateMouseGrab(double TimeElapsed)
         {
             if (MouseGrabEnabled)
@@ -460,7 +461,7 @@ namespace OpenBve
                 }
                 CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
                 CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
-                MouseGrabTarget = new Vectors.Vector2D(0.0, 0.0);
+                MouseGrabTarget = new Vector2(0.0, 0.0);
             }
         }
         #endregion
@@ -622,7 +623,7 @@ namespace OpenBve
             if (World.CameraRestriction == CameraRestrictionMode.On)
             {
                 Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
-                Vectors.Vector2D[] r = new Vectors.Vector2D[2];
+                Vector2[] r = new Vector2[2];
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates
@@ -1325,7 +1326,7 @@ namespace OpenBve
             Vector.X = (float)u;
             Vector.Z = (float)v;
         }
-        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vectors.Vector2D Direction, double cosa, double sina)
+        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vector2 Direction, double cosa, double sina)
         {
             double dx = Direction.X, dy = Direction.Y;
             double x = Vector.X, y = Vector.Y, z = Vector.Z;
