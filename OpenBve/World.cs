@@ -1258,7 +1258,7 @@ namespace OpenBve
         }
         #endregion
 
-        #region vector rotate
+        #region vector like rotate
         internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
@@ -1278,13 +1278,6 @@ namespace OpenBve
             double y = (cosa + oc * dy * dy) * (double)py + (oc * dx * dy + sina * dz) * (double)px + (oc * dy * dz - sina * dx) * (double)pz;
             double z = (cosa + oc * dz * dz) * (double)pz + (oc * dx * dz - sina * dy) * (double)px + (oc * dy * dz + sina * dx) * (double)py;
             px = (float)x; py = (float)y; pz = (float)z;
-        }
-        internal static void Rotate(ref Vectors.Vector2D Vector, double cosa, double sina)
-        {
-            double u = Vector.X * cosa - Vector.Y * sina;
-            double v = Vector.X * sina + Vector.Y * cosa;
-            Vector.X = u;
-            Vector.Y = v;
         }
         internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
         {
@@ -1372,16 +1365,6 @@ namespace OpenBve
         #endregion
 
         #region vector like normalize
-        internal static void Normalize(ref double x, ref double y)
-        {
-            double t = x * x + y * y;
-            if (t != 0.0)
-            {
-                t = 1.0 / Math.Sqrt(t);
-                x *= t;
-                y *= t;
-            }
-        }
         internal static void Normalize(ref double x, ref double y, ref double z)
         {
             double t = x * x + y * y + z * z;

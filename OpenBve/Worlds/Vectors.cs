@@ -7,12 +7,30 @@ namespace OpenBve.Worlds
         /// <summary>Represents a 2D vector of System.Double coordinates.</summary>
         public struct Vector2D
         {
-            internal double X;
-            internal double Y;
+            public double X { get; set; }
+            public double Y { get; set; }
+            
             public Vector2D(double X, double Y)
             {
                 this.X = X;
                 this.Y = Y;
+            }
+
+            public void Rotate(double cosa, double sina)
+            {
+                this.X = (this.X * cosa) - (this.Y * sina);
+                this.Y = (this.X * sina) + (this.Y * cosa);
+            }
+
+            public void Normalize()
+            {
+                double t = (this.X * this.X) + (this.Y * this.Y);
+                if (t != 0.0)
+                {
+                    t = 1.0 / Math.Sqrt(t);
+                    this.X *= t;
+                    this.Y *= t;
+                }
             }
         }
         /// <summary>Represents a 2D vector of System.Single coordinates.</summary>

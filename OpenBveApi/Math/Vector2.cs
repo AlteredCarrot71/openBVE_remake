@@ -3,17 +3,17 @@
 namespace OpenBveApi.Math
 {
     /// <summary>Represents a two-dimensional vector.</summary>
-    public class Vector2
+    public struct Vector2
     {
         #region members
         /// <summary>The x-coordinate.</summary>
-        public double X { get; private set; }
+        public double X { get; set; }
 
         /// <summary>The y-coordinate.</summary>
-        public double Y { get; private set; }
+        public double Y { get; set; }
         #endregion
 
-        #region constructors
+        #region constructor
         /// <summary>Creates a new two-dimensional vector.</summary>
         /// <param name="x">The x-coordinate.</param>
         /// <param name="y">The y-coordinate.</param>
