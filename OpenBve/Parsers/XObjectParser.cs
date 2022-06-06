@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -1962,7 +1963,7 @@ namespace OpenBve.Parsers
                                                 }
                                                 double u = (double)textureCoords[k].Data[0];
                                                 double v = (double)textureCoords[k].Data[1];
-                                                Vertices[k].TextureCoordinates = new Vectors.Vector2Df((float)u, (float)v);
+                                                Vertices[k].TextureCoordinates = new Vector2(u, v);
                                             }
                                         }
                                         break;

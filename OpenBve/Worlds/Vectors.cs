@@ -5,17 +5,6 @@ namespace OpenBve.Worlds
 {
     public class Vectors
     {
-        /// <summary>Represents a 2D vector of System.Single coordinates.</summary>
-        public struct Vector2Df
-        {
-            internal float X;
-            internal float Y;
-            public Vector2Df(float X, float Y)
-            {
-                this.X = X;
-                this.Y = Y;
-            }
-        }
         /// <summary>Represents a 3D vector of System.Double coordinates.</summary>
         public struct Vector3D
         {

@@ -11,13 +11,13 @@ namespace OpenBve
         internal struct Vertex
         {
             internal Vectors.Vector3D Coordinates;
-            internal Vectors.Vector2Df TextureCoordinates;
+            internal Vector2 TextureCoordinates;
             internal Vertex(double X, double Y, double Z)
             {
                 this.Coordinates = new Vectors.Vector3D(X, Y, Z);
-                this.TextureCoordinates = new Vectors.Vector2Df(0.0f, 0.0f);
+                this.TextureCoordinates = new Vector2(0.0, 0.0);
             }
-            internal Vertex(Vectors.Vector3D Coordinates, Vectors.Vector2Df TextureCoordinates)
+            internal Vertex(Vectors.Vector3D Coordinates, Vector2 TextureCoordinates)
             {
                 this.Coordinates = Coordinates;
                 this.TextureCoordinates = TextureCoordinates;

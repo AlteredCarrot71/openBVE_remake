@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using System;
 
 namespace OpenBve.Parsers
@@ -1366,10 +1367,10 @@ namespace OpenBve.Parsers
             v[1] = new Vectors.Vector3D(-sx, sy, 0);
             v[2] = new Vectors.Vector3D(sx, sy, 0);
             v[3] = new Vectors.Vector3D(sx, -sy, 0);
-            World.Vertex t0 = new World.Vertex(v[0], new Vectors.Vector2Df(0.0f, 1.0f));
-            World.Vertex t1 = new World.Vertex(v[1], new Vectors.Vector2Df(0.0f, 0.0f));
-            World.Vertex t2 = new World.Vertex(v[2], new Vectors.Vector2Df(1.0f, 0.0f));
-            World.Vertex t3 = new World.Vertex(v[3], new Vectors.Vector2Df(1.0f, 1.0f));
+            World.Vertex t0 = new World.Vertex(v[0], new Vector2(0.0, 1.0));
+            World.Vertex t1 = new World.Vertex(v[1], new Vector2(0.0, 0.0));
+            World.Vertex t2 = new World.Vertex(v[2], new Vector2(1.0, 0.0));
+            World.Vertex t3 = new World.Vertex(v[3], new Vector2(1.0, 1.0));
             Object.Mesh.Vertices = new World.Vertex[] { t0, t1, t2, t3 };
             Object.Mesh.Faces = new World.MeshFace[] { new World.MeshFace(new int[] { 0, 1, 2, 3 }) };
             Object.Mesh.Materials = new World.MeshMaterial[1];

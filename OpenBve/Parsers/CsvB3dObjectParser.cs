@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Math;
+using OpenBve.Worlds;
 using System;
 
 namespace OpenBve.Parsers
@@ -899,7 +900,7 @@ namespace OpenBve.Parsers
                                 }
                                 if (j >= 0 & j < Builder.Vertices.Length)
                                 {
-                                    Builder.Vertices[j].TextureCoordinates = new Vectors.Vector2Df(x, y);
+                                    Builder.Vertices[j].TextureCoordinates = new Vector2(x, y);
                                 }
                                 else
                                 {
