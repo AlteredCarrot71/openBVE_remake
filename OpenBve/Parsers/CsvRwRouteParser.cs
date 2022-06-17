@@ -6597,7 +6597,7 @@ namespace OpenBve.Parsers
                 TrackManager.CurrentTrack.Elements[n].WorldPosition = Position;
                 TrackManager.CurrentTrack.Elements[n].WorldDirection = new Vectors.Vector3D(Direction, Data.Blocks[i].Pitch);
                 TrackManager.CurrentTrack.Elements[n].WorldSide = new Vectors.Vector3D(Direction.Y, 0.0, -Direction.X);
-                Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection.X, TrackManager.CurrentTrack.Elements[n].WorldDirection.Y, TrackManager.CurrentTrack.Elements[n].WorldDirection.Z, TrackManager.CurrentTrack.Elements[n].WorldSide.X, TrackManager.CurrentTrack.Elements[n].WorldSide.Y, TrackManager.CurrentTrack.Elements[n].WorldSide.Z, out TrackManager.CurrentTrack.Elements[n].WorldUp.X, out TrackManager.CurrentTrack.Elements[n].WorldUp.Y, out TrackManager.CurrentTrack.Elements[n].WorldUp.Z);
+                TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
                 TrackManager.CurrentTrack.Elements[n].StartingTrackPosition = StartingDistance;
                 TrackManager.CurrentTrack.Elements[n].Events = new TrackManager.GeneralEvent[] { };
                 TrackManager.CurrentTrack.Elements[n].AdhesionMultiplier = Data.Blocks[i].AdhesionMultiplier;
@@ -6860,9 +6860,9 @@ namespace OpenBve.Parsers
                     double cosag = Math.Cos(ag);
                     double sinag = Math.Sin(ag);
                     Direction.Rotate(cosag, sinag);
-                    World.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldDirection, cosag, sinag);
-                    World.RotatePlane(ref TrackManager.CurrentTrack.Elements[n].WorldSide, cosag, sinag);
-                    Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection.X, TrackManager.CurrentTrack.Elements[n].WorldDirection.Y, TrackManager.CurrentTrack.Elements[n].WorldDirection.Z, TrackManager.CurrentTrack.Elements[n].WorldSide.X, TrackManager.CurrentTrack.Elements[n].WorldSide.Y, TrackManager.CurrentTrack.Elements[n].WorldSide.Z, out TrackManager.CurrentTrack.Elements[n].WorldUp.X, out TrackManager.CurrentTrack.Elements[n].WorldUp.Y, out TrackManager.CurrentTrack.Elements[n].WorldUp.Z);
+                    TrackManager.CurrentTrack.Elements[n].WorldDirection.RotatePlane(cosag, sinag);
+                    TrackManager.CurrentTrack.Elements[n].WorldSide.RotatePlane(cosag, sinag);
+                    TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
                 }
                 // curves
                 double a = 0.0;
@@ -8352,9 +8352,9 @@ namespace OpenBve.Parsers
                                     double cosg = Math.Cos(g);
                                     double sing = Math.Sin(g);
                                     TrackManager.CurrentTrack.Elements[i] = originalTrackElement;
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, 0.0, 1.0, 0.0, cosg, sing);
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, 0.0, 1.0, 0.0, cosg, sing);
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldSide.X, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Y, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldSide.X, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Y, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Z, 0.0, 1.0, 0.0, cosg, sing);
                                     p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
                                     TrackManager.UpdateTrackFollower(ref follower, p - 1.0, true, false);
                                     TrackManager.UpdateTrackFollower(ref follower, p, true, false);
@@ -8371,9 +8371,9 @@ namespace OpenBve.Parsers
                                     double cosg = Math.Cos(newAngle);
                                     double sing = Math.Sin(newAngle);
                                     TrackManager.CurrentTrack.Elements[i] = originalTrackElement;
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, 0.0, 1.0, 0.0, cosg, sing);
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, 0.0, 1.0, 0.0, cosg, sing);
-                                    World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldSide.X, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Y, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, 0.0, 1.0, 0.0, cosg, sing);
+                                    Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldSide.X, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Y, ref TrackManager.CurrentTrack.Elements[i].WorldSide.Z, 0.0, 1.0, 0.0, cosg, sing);
                                 }
                                 // iterate again to further shorten track element length
                                 p = 0.00000001 * TrackManager.CurrentTrack.Elements[i].StartingTrackPosition + 0.99999999 * TrackManager.CurrentTrack.Elements[i + 1].StartingTrackPosition;
@@ -8419,8 +8419,8 @@ namespace OpenBve.Parsers
                             {
                                 double cosa = Math.Cos(b);
                                 double sina = Math.Sin(b);
-                                World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, TrackManager.CurrentTrack.Elements[i].WorldSide.X, TrackManager.CurrentTrack.Elements[i].WorldSide.Y, TrackManager.CurrentTrack.Elements[i].WorldSide.Z, cosa, sina);
-                                World.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, TrackManager.CurrentTrack.Elements[i].WorldSide.X, TrackManager.CurrentTrack.Elements[i].WorldSide.Y, TrackManager.CurrentTrack.Elements[i].WorldSide.Z, cosa, sina);
+                                Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldDirection.X, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Y, ref TrackManager.CurrentTrack.Elements[i].WorldDirection.Z, TrackManager.CurrentTrack.Elements[i].WorldSide.X, TrackManager.CurrentTrack.Elements[i].WorldSide.Y, TrackManager.CurrentTrack.Elements[i].WorldSide.Z, cosa, sina);
+                                Vectors.Rotate(ref TrackManager.CurrentTrack.Elements[i].WorldUp.X, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Y, ref TrackManager.CurrentTrack.Elements[i].WorldUp.Z, TrackManager.CurrentTrack.Elements[i].WorldSide.X, TrackManager.CurrentTrack.Elements[i].WorldSide.Y, TrackManager.CurrentTrack.Elements[i].WorldSide.Z, cosa, sina);
                             }
                         }
                     }

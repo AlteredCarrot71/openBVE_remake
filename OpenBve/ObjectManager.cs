@@ -274,7 +274,7 @@ namespace OpenBve
                     x = Object.TranslateXFunction.LastResult;
                 }
                 double rx = Object.TranslateXDirection.X, ry = Object.TranslateXDirection.Y, rz = Object.TranslateXDirection.Z;
-                World.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
+                Vectors.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
                 Position.X += x * rx;
                 Position.Y += x * ry;
                 Position.Z += x * rz;
@@ -291,7 +291,7 @@ namespace OpenBve
                     y = Object.TranslateYFunction.LastResult;
                 }
                 double rx = Object.TranslateYDirection.X, ry = Object.TranslateYDirection.Y, rz = Object.TranslateYDirection.Z;
-                World.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
+                Vectors.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
                 Position.X += y * rx;
                 Position.Y += y * ry;
                 Position.Z += y * rz;
@@ -308,7 +308,7 @@ namespace OpenBve
                     z = Object.TranslateZFunction.LastResult;
                 }
                 double rx = Object.TranslateZDirection.X, ry = Object.TranslateZDirection.Y, rz = Object.TranslateZDirection.Z;
-                World.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
+                Vectors.Rotate(ref rx, ref ry, ref rz, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
                 Position.X += z * rx;
                 Position.Y += z * ry;
                 Position.Z += z * rz;
@@ -670,15 +670,15 @@ namespace OpenBve
                 // rotate
                 if (rotateX)
                 {
-                    World.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateXDirection.X, Object.RotateXDirection.Y, Object.RotateXDirection.Z, cosX, sinX);
+                    Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateXDirection.X, Object.RotateXDirection.Y, Object.RotateXDirection.Z, cosX, sinX);
                 }
                 if (rotateY)
                 {
-                    World.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateYDirection.X, Object.RotateYDirection.Y, Object.RotateYDirection.Z, cosY, sinY);
+                    Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateYDirection.X, Object.RotateYDirection.Y, Object.RotateYDirection.Z, cosY, sinY);
                 }
                 if (rotateZ)
                 {
-                    World.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateZDirection.X, Object.RotateZDirection.Y, Object.RotateZDirection.Z, cosZ, sinZ);
+                    Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Object.RotateZDirection.X, Object.RotateZDirection.Y, Object.RotateZDirection.Z, cosZ, sinZ);
                 }
                 // translate
                 if (Overlay & World.CameraRestriction != World.CameraRestrictionMode.NotAvailable)
@@ -686,7 +686,8 @@ namespace OpenBve
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X += Object.States[s].Position.X - Position.X;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y += Object.States[s].Position.Y - Position.Y;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z += Object.States[s].Position.Z - Position.Z;
-                    World.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
+                    Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
+                    //ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Rotate(World.AbsoluteCameraDirection, World.AbsoluteCameraUp, World.AbsoluteCameraSide);
                     double dx = -Math.Tan(World.CameraCurrentAlignment.Yaw) - World.CameraCurrentAlignment.Position.X;
                     double dy = -Math.Tan(World.CameraCurrentAlignment.Pitch) - World.CameraCurrentAlignment.Position.Y;
                     double dz = -World.CameraCurrentAlignment.Position.Z;
@@ -699,7 +700,7 @@ namespace OpenBve
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X += Object.States[s].Position.X;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y += Object.States[s].Position.Y;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z += Object.States[s].Position.Z;
-                    World.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
+                    Vectors.Rotate(ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y, ref ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z, Direction.X, Direction.Y, Direction.Z, Up.X, Up.Y, Up.Z, Side.X, Side.Y, Side.Z);
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.X += Position.X;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Y += Position.Y;
                     ObjectManager.Objects[i].Mesh.Vertices[k].Coordinates.Z += Position.Z;

@@ -627,7 +627,8 @@ namespace OpenBve
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates
-                    World.Rotate(ref p[j].X, ref p[j].Y, ref p[j].Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
+                    //Vectors.Rotate(ref p[j].X, ref p[j].Y, ref p[j].Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
+                    p[j].Rotate(World.AbsoluteCameraDirection, World.AbsoluteCameraUp, World.AbsoluteCameraSide);
                     double rx = -Math.Tan(World.CameraCurrentAlignment.Yaw) - World.CameraCurrentAlignment.Position.X;
                     double ry = -Math.Tan(World.CameraCurrentAlignment.Pitch) - World.CameraCurrentAlignment.Position.Y;
                     double rz = -World.CameraCurrentAlignment.Position.Z;
@@ -776,22 +777,21 @@ namespace OpenBve
                     double ox = World.CameraCurrentAlignment.Position.X;
                     double oy = World.CameraCurrentAlignment.Position.Y;
                     double oz = World.CameraCurrentAlignment.Position.Z;
-                    double cx = px + sx * ox + ux * oy + dx * oz;
-                    double cy = py + sy * ox + uy * oy + dy * oz;
-                    double cz = pz + sz * ox + uz * oy + dz * oz;
+                    double cx = px + (sx * ox) + (ux * oy) + (dx * oz);
+                    double cy = py + (sy * ox) + (uy * oy) + (dy * oz);
+                    double cz = pz + (sz * ox) + (uz * oy) + (dz * oz);
                     AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
                     dx = tx - cx;
                     dy = ty - cy;
                     dz = tz - cz;
-                    double t = Math.Sqrt(dx * dx + dy * dy + dz * dz);
-                    double ti = 1.0 / t;
-                    dx *= ti;
-                    dy *= ti;
-                    dz *= ti;
+                    double t = 1.0 / Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
+                    dx *= t;
+                    dy *= t;
+                    dz *= t;
                     AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
                     AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
                     Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
-                    Vectors.Cross(dx, dy, dz, AbsoluteCameraSide.X, AbsoluteCameraSide.Y, AbsoluteCameraSide.Z, out AbsoluteCameraUp.X, out AbsoluteCameraUp.Y, out AbsoluteCameraUp.Z);
+                    AbsoluteCameraUp = Vectors.Cross(new Vectors.Vector3D(dx, dy, dz), AbsoluteCameraSide);
                     UpdateViewingDistances();
                     if (CameraMode == CameraViewMode.FlyByZooming)
                     {
@@ -926,8 +926,8 @@ namespace OpenBve
                                 double a = TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverPitch;
                                 double cosa = Math.Cos(-a);
                                 double sina = Math.Sin(-a);
-                                World.Rotate(ref dx2, ref dy2, ref dz2, sx, sy, sz, cosa, sina);
-                                World.Rotate(ref ux2, ref uy2, ref uz2, sx, sy, sz, cosa, sina);
+                                Vectors.Rotate(ref dx2, ref dy2, ref dz2, sx, sy, sz, cosa, sina);
+                                Vectors.Rotate(ref ux2, ref uy2, ref uz2, sx, sy, sz, cosa, sina);
                             }
                         }
                     }
@@ -976,8 +976,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-bodyPitch);
                             double sina = Math.Sin(-bodyPitch);
-                            World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                            World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                            Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                            Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                         }
                     }
                     {
@@ -991,8 +991,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-bodyRoll);
                             double sina = Math.Sin(-bodyRoll);
-                            World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                            World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                            Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                            Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                         }
                     }
                     {
@@ -1006,8 +1006,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(headYaw);
                             double sina = Math.Sin(headYaw);
-                            World.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
-                            World.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
+                            Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
+                            Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
                         }
                     }
                     {
@@ -1021,8 +1021,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-headPitch);
                             double sina = Math.Sin(-headPitch);
-                            World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                            World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                            Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                            Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                         }
                     }
                     {
@@ -1036,8 +1036,8 @@ namespace OpenBve
                         {
                             double cosa = Math.Cos(-headRoll);
                             double sina = Math.Sin(-headRoll);
-                            World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                            World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                            Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                            Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                         }
                     }
                 }
@@ -1051,22 +1051,22 @@ namespace OpenBve
                     {
                         double cosa = Math.Cos(totalYaw);
                         double sina = Math.Sin(totalYaw);
-                        World.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
-                        World.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
+                        Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosa, sina);
+                        Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosa, sina);
                     }
                     if (totalPitch != 0.0)
                     {
                         double cosa = Math.Cos(-totalPitch);
                         double sina = Math.Sin(-totalPitch);
-                        World.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
-                        World.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
+                        Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosa, sina);
+                        Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosa, sina);
                     }
                     if (totalRoll != 0.0)
                     {
                         double cosa = Math.Cos(-totalRoll);
                         double sina = Math.Sin(-totalRoll);
-                        World.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
-                        World.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
+                        Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosa, sina);
+                        Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosa, sina);
                     }
                 }
                 // finish
@@ -1209,12 +1209,12 @@ namespace OpenBve
                     double sinPitch = Math.Sin(-Pitch);
                     double cosRoll = Math.Cos(-Roll);
                     double sinRoll = Math.Sin(-Roll);
-                    Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
-                    Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
-                    Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
-                    Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
-                    Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
-                    Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
+                    Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
+                    Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
+                    Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
+                    Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
+                    Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
+                    Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
                     this.X = new Vectors.Vector3D(sx, sy, sz);
                     this.Y = new Vectors.Vector3D(ux, uy, uz);
                     this.Z = new Vectors.Vector3D(dx, dy, dz);
@@ -1231,12 +1231,12 @@ namespace OpenBve
                 double sinPitch = Math.Sin(-Pitch);
                 double cosRoll = Math.Cos(Roll);
                 double sinRoll = Math.Sin(Roll);
-                Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
-                Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
-                Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
-                Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
-                Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
-                Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
+                Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
+                Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
+                Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
+                Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
+                Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
+                Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
                 this.X = new Vectors.Vector3D(sx, sy, sz);
                 this.Y = new Vectors.Vector3D(ux, uy, uz);
                 this.Z = new Vectors.Vector3D(dx, dy, dz);
@@ -1249,9 +1249,12 @@ namespace OpenBve
                 Vectors.Vector3D s = AuxTransformation.X;
                 Vectors.Vector3D u = AuxTransformation.Y;
                 Vectors.Vector3D d = AuxTransformation.Z;
-                Rotate(ref x.X, ref x.Y, ref x.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
-                Rotate(ref y.X, ref y.Y, ref y.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
-                Rotate(ref z.X, ref z.Y, ref z.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                //Vectors.Rotate(ref x.X, ref x.Y, ref x.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                //Vectors.Rotate(ref y.X, ref y.Y, ref y.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                //Vectors.Rotate(ref z.X, ref z.Y, ref z.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
+                x.Rotate(d, u, s);
+                y.Rotate(d, u, s);
+                z.Rotate(d, u, s);
                 this.X = x;
                 this.Y = y;
                 this.Z = z;
@@ -1260,16 +1263,6 @@ namespace OpenBve
         #endregion
 
         #region vector like rotate
-        internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
-        {
-            double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
-            dx *= t; dy *= t; dz *= t;
-            double oc = 1.0 - cosa;
-            double x = (cosa + oc * dx * dx) * px + (oc * dx * dy - sina * dz) * py + (oc * dx * dz + sina * dy) * pz;
-            double y = (cosa + oc * dy * dy) * py + (oc * dx * dy + sina * dz) * px + (oc * dy * dz - sina * dx) * pz;
-            double z = (cosa + oc * dz * dz) * pz + (oc * dx * dz - sina * dy) * px + (oc * dy * dz + sina * dx) * py;
-            px = x; py = y; pz = z;
-        }
         internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
@@ -1288,14 +1281,6 @@ namespace OpenBve
             z = sz * (double)px + uz * (double)py + dz * (double)pz;
             px = (float)x; py = (float)y; pz = (float)z;
         }
-        internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
-        {
-            double x, y, z;
-            x = sx * px + ux * py + dx * pz;
-            y = sy * px + uy * py + dy * pz;
-            z = sz * px + uz * py + dz * pz;
-            px = x; py = y; pz = z;
-        }
         internal static void Rotate(ref float px, ref float py, ref float pz, Transformation t)
         {
             double x, y, z;
@@ -1311,57 +1296,6 @@ namespace OpenBve
             y = t.X.Y * px + t.Y.Y * py + t.Z.Y * pz;
             z = t.X.Z * px + t.Y.Z * py + t.Z.Z * pz;
             px = x; py = y; pz = z;
-        }
-        internal static void RotatePlane(ref Vectors.Vector3D Vector, double cosa, double sina)
-        {
-            double u = Vector.X * cosa - Vector.Z * sina;
-            double v = Vector.X * sina + Vector.Z * cosa;
-            Vector.X = u;
-            Vector.Z = v;
-        }
-        internal static void RotatePlane(ref Vectors.Vector3Df Vector, double cosa, double sina)
-        {
-            double u = (double)Vector.X * cosa - (double)Vector.Z * sina;
-            double v = (double)Vector.X * sina + (double)Vector.Z * cosa;
-            Vector.X = (float)u;
-            Vector.Z = (float)v;
-        }
-        internal static void RotateUpDown(ref Vectors.Vector3D Vector, Vector2 Direction, double cosa, double sina)
-        {
-            double dx = Direction.X, dy = Direction.Y;
-            double x = Vector.X, y = Vector.Y, z = Vector.Z;
-            double u = dy * x - dx * z;
-            double v = dx * x + dy * z;
-            Vector.X = dy * u + dx * v * cosa - dx * y * sina;
-            Vector.Y = y * cosa + v * sina;
-            Vector.Z = -dx * u + dy * v * cosa - dy * y * sina;
-        }
-        internal static void RotateUpDown(ref Vectors.Vector3D Vector, double dx, double dy, double cosa, double sina)
-        {
-            double x = Vector.X, y = Vector.Y, z = Vector.Z;
-            double u = dy * x - dx * z;
-            double v = dx * x + dy * z;
-            Vector.X = dy * u + dx * v * cosa - dx * y * sina;
-            Vector.Y = y * cosa + v * sina;
-            Vector.Z = -dx * u + dy * v * cosa - dy * y * sina;
-        }
-        internal static void RotateUpDown(ref Vectors.Vector3Df Vector, double dx, double dy, double cosa, double sina)
-        {
-            double x = (double)Vector.X, y = (double)Vector.Y, z = (double)Vector.Z;
-            double u = dy * x - dx * z;
-            double v = dx * x + dy * z;
-            Vector.X = (float)(dy * u + dx * v * cosa - dx * y * sina);
-            Vector.Y = (float)(y * cosa + v * sina);
-            Vector.Z = (float)(-dx * u + dy * v * cosa - dy * y * sina);
-        }
-        internal static void RotateUpDown(ref double px, ref double py, ref double pz, double dx, double dz, double cosa, double sina)
-        {
-            double x = px, y = py, z = pz;
-            double u = dz * x - dx * z;
-            double v = dx * x + dz * z;
-            px = dz * u + dx * v * cosa - dx * y * sina;
-            py = y * cosa + v * sina;
-            pz = -dx * u + dz * v * cosa - dz * y * sina;
         }
         #endregion
 

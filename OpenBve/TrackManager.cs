@@ -869,11 +869,11 @@ namespace OpenBve
                         World.Normalize(ref D.X, ref D.Y, ref D.Z);
                         double cosa = Math.Cos(a);
                         double sina = Math.Sin(a);
-                        World.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
+                        Vectors.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
                         Follower.WorldPosition.X = CurrentTrack.Elements[i].WorldPosition.X + c * D.X;
                         Follower.WorldPosition.Y = CurrentTrack.Elements[i].WorldPosition.Y + h;
                         Follower.WorldPosition.Z = CurrentTrack.Elements[i].WorldPosition.Z + c * D.Z;
-                        World.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
+                        Vectors.Rotate(ref D.X, ref D.Y, ref D.Z, 0.0, 1.0, 0.0, cosa, sina);
                         Follower.WorldDirection.X = D.X;
                         Follower.WorldDirection.Y = p;
                         Follower.WorldDirection.Z = D.Z;
@@ -881,8 +881,8 @@ namespace OpenBve
                         double cos2a = Math.Cos(2.0 * a);
                         double sin2a = Math.Sin(2.0 * a);
                         Follower.WorldSide = CurrentTrack.Elements[i].WorldSide;
-                        World.Rotate(ref Follower.WorldSide.X, ref Follower.WorldSide.Y, ref Follower.WorldSide.Z, 0.0, 1.0, 0.0, cos2a, sin2a);
-                        Vectors.Cross(Follower.WorldDirection.X, Follower.WorldDirection.Y, Follower.WorldDirection.Z, Follower.WorldSide.X, Follower.WorldSide.Y, Follower.WorldSide.Z, out Follower.WorldUp.X, out Follower.WorldUp.Y, out Follower.WorldUp.Z);
+                        Vectors.Rotate(ref Follower.WorldSide.X, ref Follower.WorldSide.Y, ref Follower.WorldSide.Z, 0.0, 1.0, 0.0, cos2a, sin2a);
+                        Follower.WorldUp = Vectors.Cross(Follower.WorldDirection, Follower.WorldSide);
                         Follower.CurveRadius = CurrentTrack.Elements[i].CurveRadius;
                     }
                     else

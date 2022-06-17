@@ -980,7 +980,7 @@ namespace OpenBve.Parsers
                 double nx = dx * ns, ny = 0.0, nz = dz * ns;
                 double sx, sy, sz;
                 Vectors.Cross(nx, ny, nz, 0.0, 1.0, 0.0, out sx, out sy, out sz);
-                World.Rotate(ref nx, ref ny, ref nz, sx, sy, sz, cosa, sina);
+                Vectors.Rotate(ref nx, ref ny, ref nz, sx, sy, sz, cosa, sina);
                 Normals[2 * i + 0] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
                 Normals[2 * i + 1] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
                 t += d;
@@ -1124,7 +1124,7 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int i = 0; i < Builder.Vertices.Length; i++)
             {
-                World.Rotate(ref Builder.Vertices[i].Coordinates.X, ref Builder.Vertices[i].Coordinates.Y, ref Builder.Vertices[i].Coordinates.Z, x, y, z, cosa, sina);
+                Vectors.Rotate(ref Builder.Vertices[i].Coordinates.X, ref Builder.Vertices[i].Coordinates.Y, ref Builder.Vertices[i].Coordinates.Z, x, y, z, cosa, sina);
             }
             for (int i = 0; i < Builder.Faces.Length; i++)
             {
@@ -1140,7 +1140,7 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int j = 0; j < Object.Mesh.Vertices.Length; j++)
             {
-                World.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, x, y, z, cosa, sina);
+                Vectors.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, x, y, z, cosa, sina);
             }
             for (int j = 0; j < Object.Mesh.Faces.Length; j++)
             {
@@ -1191,8 +1191,6 @@ namespace OpenBve.Parsers
                 Object.Mesh.Vertices[j].Coordinates.Y += sy * n;
                 Object.Mesh.Vertices[j].Coordinates.Z += sz * n;
             }
-            double ux, uy, uz;
-            Vectors.Cross(sx, sy, sz, dx, dy, dz, out ux, out uy, out uz);
             for (int j = 0; j < Object.Mesh.Faces.Length; j++)
             {
                 for (int k = 0; k < Object.Mesh.Faces[j].Vertices.Length; k++)
@@ -1202,7 +1200,7 @@ namespace OpenBve.Parsers
                         double nx = (double)Object.Mesh.Faces[j].Vertices[k].Normal.X;
                         double ny = (double)Object.Mesh.Faces[j].Vertices[k].Normal.Y;
                         double nz = (double)Object.Mesh.Faces[j].Vertices[k].Normal.Z;
-                        double n = r * (sx * nx + sy * ny + sz * nz);
+                        double n = r * ((sx * nx) + (sy * ny) + (sz * nz));
                         nx -= dx * n;
                         ny -= dy * n;
                         nz -= dz * n;
