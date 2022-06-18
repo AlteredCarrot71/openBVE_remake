@@ -6,7 +6,6 @@ namespace OpenBve.Parsers
 {
     internal static class CsvB3dObjectParser
     {
-
         // structures
         private class Material
         {
@@ -977,12 +976,11 @@ namespace OpenBve.Parsers
                 double uz = dz * r1;
                 Builder.Vertices[v + 2 * i + 0].Coordinates = new Vectors.Vector3D(ux, g, uz);
                 Builder.Vertices[v + 2 * i + 1].Coordinates = new Vectors.Vector3D(lx, -g, lz);
-                double nx = dx * ns, ny = 0.0, nz = dz * ns;
-                double sx, sy, sz;
-                Vectors.Cross(nx, ny, nz, 0.0, 1.0, 0.0, out sx, out sy, out sz);
-                Vectors.Rotate(ref nx, ref ny, ref nz, sx, sy, sz, cosa, sina);
-                Normals[2 * i + 0] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
-                Normals[2 * i + 1] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
+                Vectors.Vector3D tnormal = new Vectors.Vector3D(dx * ns, 0.0, dz * ns);
+                Vectors.Vector3D tside = Vectors.Cross(tnormal, Vectors.Vector3D.Down);
+                tnormal.Rotate(tside, cosa, sina);
+                Normals[2 * i + 0] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);
+                Normals[2 * i + 1] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);
                 t += d;
             }
             // faces
@@ -1124,21 +1122,13 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int i = 0; i < Builder.Vertices.Length; i++)
             {
-                Vectors.Rotate( ref Builder.Vertices[i].Coordinates.X, 
-                                ref Builder.Vertices[i].Coordinates.Y, 
-                                ref Builder.Vertices[i].Coordinates.Z, 
-                                x, y, z, 
-                                cosa, sina);
+                Builder.Vertices[i].Coordinates.Rotate(new Vectors.Vector3D(x, y, z), cosa, sina);
             }
             for (int i = 0; i < Builder.Faces.Length; i++)
             {
                 for (int j = 0; j < Builder.Faces[i].Vertices.Length; j++)
                 {
-                    Vectors.Rotate( ref Builder.Faces[i].Vertices[j].Normal.X, 
-                                    ref Builder.Faces[i].Vertices[j].Normal.Y, 
-                                    ref Builder.Faces[i].Vertices[j].Normal.Z, 
-                                    x, y, z, 
-                                    cosa, sina);
+                    Builder.Faces[i].Vertices[j].Normal.Rotate(new Vectors.Vector3D(x, y, z), cosa, sina);
                 }
             }
         }
@@ -1148,21 +1138,13 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int j = 0; j < Object.Mesh.Vertices.Length; j++)
             {
-                Vectors.Rotate( ref Object.Mesh.Vertices[j].Coordinates.X, 
-                                ref Object.Mesh.Vertices[j].Coordinates.Y, 
-                                ref Object.Mesh.Vertices[j].Coordinates.Z, 
-                                x, y, z, 
-                                cosa, sina);
+                Object.Mesh.Vertices[j].Coordinates.Rotate(new Vectors.Vector3D(x, y, z), cosa, sina);
             }
             for (int j = 0; j < Object.Mesh.Faces.Length; j++)
             {
                 for (int k = 0; k < Object.Mesh.Faces[j].Vertices.Length; k++)
                 {
-                    Vectors.Rotate( ref Object.Mesh.Faces[j].Vertices[k].Normal.X, 
-                                    ref Object.Mesh.Faces[j].Vertices[k].Normal.Y, 
-                                    ref Object.Mesh.Faces[j].Vertices[k].Normal.Z, 
-                                    x, y, z, 
-                                    cosa, sina);
+                    Object.Mesh.Faces[j].Vertices[k].Normal.Rotate(new Vectors.Vector3D(x, y, z), cosa, sina);
                 }
             }
         }
@@ -1314,6 +1296,5 @@ namespace OpenBve.Parsers
                 }
             }
         }
-
     }
 }

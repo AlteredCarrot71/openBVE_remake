@@ -7028,7 +7028,7 @@ namespace OpenBve.Parsers
                                 Vectors.Normalize(ref rx, ref ry, ref rz);
                                 RailTransformation.Z = new Vectors.Vector3D(rx, ry, rz);
                                 RailTransformation.X = new Vectors.Vector3D(rz, 0.0, -rx);
-                                Vectors.Normalize(ref RailTransformation.X.X, ref RailTransformation.X.Y, ref RailTransformation.X.Z);
+                                RailTransformation.X.Normalize();
                                 RailTransformation.Y = Vectors.Cross(RailTransformation.Z, RailTransformation.X);
                                 double dx = Data.Blocks[i + 1].Rail[j].RailEndX - Data.Blocks[i].Rail[j].RailStartX;
                                 double dy = Data.Blocks[i + 1].Rail[j].RailEndY - Data.Blocks[i].Rail[j].RailStartY;

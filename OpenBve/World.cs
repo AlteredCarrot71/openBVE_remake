@@ -790,7 +790,7 @@ namespace OpenBve
                     dz *= t;
                     AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
                     AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
-                    Vectors.Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
+                    AbsoluteCameraSide.Normalize();
                     AbsoluteCameraUp = Vectors.Cross(new Vectors.Vector3D(dx, dy, dz), AbsoluteCameraSide);
                     UpdateViewingDistances();
                     if (CameraMode == CameraViewMode.FlyByZooming)
