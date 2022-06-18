@@ -790,7 +790,7 @@ namespace OpenBve
                     dz *= t;
                     AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
                     AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
-                    Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
+                    Vectors.Normalize(ref AbsoluteCameraSide.X, ref AbsoluteCameraSide.Y, ref AbsoluteCameraSide.Z);
                     AbsoluteCameraUp = Vectors.Cross(new Vectors.Vector3D(dx, dy, dz), AbsoluteCameraSide);
                     UpdateViewingDistances();
                     if (CameraMode == CameraViewMode.FlyByZooming)
@@ -876,7 +876,7 @@ namespace OpenBve
                     double rx = f.WorldPosition.X - cx + World.CameraTrackFollower.WorldSide.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
                     double ry = f.WorldPosition.Y - cy + World.CameraTrackFollower.WorldSide.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
                     double rz = f.WorldPosition.Z - cz + World.CameraTrackFollower.WorldSide.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
-                    World.Normalize(ref rx, ref ry, ref rz);
+                    Vectors.Normalize(ref rx, ref ry, ref rz);
                     double t = dz * (sy * ux - sx * uy) + dy * (-sz * ux + sx * uz) + dx * (sz * uy - sy * uz);
                     if (t != 0.0)
                     {
@@ -1263,24 +1263,6 @@ namespace OpenBve
         #endregion
 
         #region vector like rotate
-        internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double cosa, double sina)
-        {
-            double t = 1.0 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
-            dx *= t; dy *= t; dz *= t;
-            double oc = 1.0 - cosa;
-            double x = (cosa + oc * dx * dx) * (double)px + (oc * dx * dy - sina * dz) * (double)py + (oc * dx * dz + sina * dy) * (double)pz;
-            double y = (cosa + oc * dy * dy) * (double)py + (oc * dx * dy + sina * dz) * (double)px + (oc * dy * dz - sina * dx) * (double)pz;
-            double z = (cosa + oc * dz * dz) * (double)pz + (oc * dx * dz - sina * dy) * (double)px + (oc * dy * dz + sina * dx) * (double)py;
-            px = (float)x; py = (float)y; pz = (float)z;
-        }
-        internal static void Rotate(ref float px, ref float py, ref float pz, double dx, double dy, double dz, double ux, double uy, double uz, double sx, double sy, double sz)
-        {
-            double x, y, z;
-            x = sx * (double)px + ux * (double)py + dx * (double)pz;
-            y = sy * (double)px + uy * (double)py + dy * (double)pz;
-            z = sz * (double)px + uz * (double)py + dz * (double)pz;
-            px = (float)x; py = (float)y; pz = (float)z;
-        }
         internal static void Rotate(ref float px, ref float py, ref float pz, Transformation t)
         {
             double x, y, z;
@@ -1296,20 +1278,6 @@ namespace OpenBve
             y = t.X.Y * px + t.Y.Y * py + t.Z.Y * pz;
             z = t.X.Z * px + t.Y.Z * py + t.Z.Z * pz;
             px = x; py = y; pz = z;
-        }
-        #endregion
-
-        #region vector like normalize
-        internal static void Normalize(ref double x, ref double y, ref double z)
-        {
-            double t = x * x + y * y + z * z;
-            if (t != 0.0)
-            {
-                t = 1.0 / Math.Sqrt(t);
-                x *= t;
-                y *= t;
-                z *= t;
-            }
         }
         #endregion
 

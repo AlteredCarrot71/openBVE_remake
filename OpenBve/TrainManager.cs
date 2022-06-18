@@ -987,7 +987,7 @@ namespace OpenBve
 				 * line is to the rails, the more flange noise there will be.
 				 * */
                 Vectors.Vector3D d = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition);
-                World.Normalize(ref d.X, ref d.Y, ref d.Z);
+                d.Normalize();
                 double b0 = d.X * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].RearAxle.Follower.WorldSide.Z;
                 double b1 = d.X * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.X + d.Y * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Y + d.Z * Train.Cars[CarIndex].FrontAxle.Follower.WorldSide.Z;
                 double spd = Math.Abs(Train.Cars[CarIndex].Specs.CurrentSpeed);

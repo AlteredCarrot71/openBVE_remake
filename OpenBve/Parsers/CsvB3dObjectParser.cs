@@ -212,7 +212,7 @@ namespace OpenBve.Parsers
                                     Interface.AddMessage(Interface.MessageType.Error, false, "Invalid argument nZ in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
                                     nz = 0.0;
                                 }
-                                World.Normalize(ref nx, ref ny, ref nz);
+                                Vectors.Normalize(ref nx, ref ny, ref nz);
                                 Array.Resize<World.Vertex>(ref Builder.Vertices, Builder.Vertices.Length + 1);
                                 while (Builder.Vertices.Length >= Normals.Length)
                                 {
@@ -534,8 +534,8 @@ namespace OpenBve.Parsers
                                     Interface.AddMessage(Interface.MessageType.Error, false, "Invalid argument Ratio in " + Command + " at line " + (i + 1).ToString(Culture) + " in file " + FileName);
                                     r = 0.0;
                                 }
-                                World.Normalize(ref dx, ref dy, ref dz);
-                                World.Normalize(ref sx, ref sy, ref sz);
+                                Vectors.Normalize(ref dx, ref dy, ref dz);
+                                Vectors.Normalize(ref sx, ref sy, ref sz);
                                 ApplyShear(Builder, dx, dy, dz, sx, sy, sz, r);
                                 if (cmd == "shearall")
                                 {
@@ -1124,13 +1124,21 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int i = 0; i < Builder.Vertices.Length; i++)
             {
-                Vectors.Rotate(ref Builder.Vertices[i].Coordinates.X, ref Builder.Vertices[i].Coordinates.Y, ref Builder.Vertices[i].Coordinates.Z, x, y, z, cosa, sina);
+                Vectors.Rotate( ref Builder.Vertices[i].Coordinates.X, 
+                                ref Builder.Vertices[i].Coordinates.Y, 
+                                ref Builder.Vertices[i].Coordinates.Z, 
+                                x, y, z, 
+                                cosa, sina);
             }
             for (int i = 0; i < Builder.Faces.Length; i++)
             {
                 for (int j = 0; j < Builder.Faces[i].Vertices.Length; j++)
                 {
-                    World.Rotate(ref Builder.Faces[i].Vertices[j].Normal.X, ref Builder.Faces[i].Vertices[j].Normal.Y, ref Builder.Faces[i].Vertices[j].Normal.Z, x, y, z, cosa, sina);
+                    Vectors.Rotate( ref Builder.Faces[i].Vertices[j].Normal.X, 
+                                    ref Builder.Faces[i].Vertices[j].Normal.Y, 
+                                    ref Builder.Faces[i].Vertices[j].Normal.Z, 
+                                    x, y, z, 
+                                    cosa, sina);
                 }
             }
         }
@@ -1140,13 +1148,21 @@ namespace OpenBve.Parsers
             double sina = Math.Sin(a);
             for (int j = 0; j < Object.Mesh.Vertices.Length; j++)
             {
-                Vectors.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, x, y, z, cosa, sina);
+                Vectors.Rotate( ref Object.Mesh.Vertices[j].Coordinates.X, 
+                                ref Object.Mesh.Vertices[j].Coordinates.Y, 
+                                ref Object.Mesh.Vertices[j].Coordinates.Z, 
+                                x, y, z, 
+                                cosa, sina);
             }
             for (int j = 0; j < Object.Mesh.Faces.Length; j++)
             {
                 for (int k = 0; k < Object.Mesh.Faces[j].Vertices.Length; k++)
                 {
-                    World.Rotate(ref Object.Mesh.Faces[j].Vertices[k].Normal.X, ref Object.Mesh.Faces[j].Vertices[k].Normal.Y, ref Object.Mesh.Faces[j].Vertices[k].Normal.Z, x, y, z, cosa, sina);
+                    Vectors.Rotate( ref Object.Mesh.Faces[j].Vertices[k].Normal.X, 
+                                    ref Object.Mesh.Faces[j].Vertices[k].Normal.Y, 
+                                    ref Object.Mesh.Faces[j].Vertices[k].Normal.Z, 
+                                    x, y, z, 
+                                    cosa, sina);
                 }
             }
         }
@@ -1174,7 +1190,7 @@ namespace OpenBve.Parsers
                         nx -= dx * n;
                         ny -= dy * n;
                         nz -= dz * n;
-                        World.Normalize(ref nx, ref ny, ref nz);
+                        Vectors.Normalize(ref nx, ref ny, ref nz);
                         Builder.Faces[j].Vertices[k].Normal.X = (float)nx;
                         Builder.Faces[j].Vertices[k].Normal.Y = (float)ny;
                         Builder.Faces[j].Vertices[k].Normal.Z = (float)nz;
@@ -1204,7 +1220,7 @@ namespace OpenBve.Parsers
                         nx -= dx * n;
                         ny -= dy * n;
                         nz -= dz * n;
-                        World.Normalize(ref nx, ref ny, ref nz);
+                        Vectors.Normalize(ref nx, ref ny, ref nz);
                         Object.Mesh.Faces[j].Vertices[k].Normal.X = (float)nx;
                         Object.Mesh.Faces[j].Vertices[k].Normal.Y = (float)ny;
                         Object.Mesh.Faces[j].Vertices[k].Normal.Z = (float)nz;
