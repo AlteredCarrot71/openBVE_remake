@@ -37,6 +37,11 @@ namespace OpenBve.Worlds
             {
                 return new Vector3D(A.X - B.X, A.Y - B.Y, A.Z - B.Z);
             }
+            /// <summary>Returns the cross of two vectors.</summary>
+            public static Vector3D Cross(Vector3D A, Vector3D B)
+            {
+                return new Vector3D((A.Y * B.Z) - (A.Z * B.Y), (A.Z * B.X) - (A.X * B.Z), (A.X * B.Y) - (A.Y * B.X));
+            }
 
             public void RotatePlane(double cosa, double sina)
             {
@@ -168,9 +173,9 @@ namespace OpenBve.Worlds
         
         public struct Transformation
         {
-            internal Vector3D X;
-            internal Vector3D Y;
-            internal Vector3D Z;
+            public Vector3D X;
+            public Vector3D Y;
+            public Vector3D Z;
 
             public Transformation(double Yaw, double Pitch, double Roll)
             {
@@ -248,15 +253,6 @@ namespace OpenBve.Worlds
             }
         }
 
-        public static Vector3D Cross(Vector3D A, Vector3D B)
-        {
-            Vector3D C;
-            C.X = (A.Y * B.Z) - (A.Z * B.Y);
-            C.Y = (A.Z * B.X) - (A.X * B.Z);
-            C.Z = (A.X * B.Y) - (A.Y * B.X);
-            return C;
-        }
-        
         public static void Cross(double ax, double ay, double az, double bx, double by, double bz, out double cx, out double cy, out double cz)
         {
             cx = (ay * bz) - (az * by);

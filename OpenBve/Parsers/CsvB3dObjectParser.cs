@@ -977,7 +977,7 @@ namespace OpenBve.Parsers
                 Builder.Vertices[v + 2 * i + 0].Coordinates = new Vectors.Vector3D(ux, g, uz);
                 Builder.Vertices[v + 2 * i + 1].Coordinates = new Vectors.Vector3D(lx, -g, lz);
                 Vectors.Vector3D tnormal = new Vectors.Vector3D(dx * ns, 0.0, dz * ns);
-                Vectors.Vector3D tside = Vectors.Cross(tnormal, Vectors.Vector3D.Down);
+                Vectors.Vector3D tside = Vectors.Vector3D.Cross(tnormal, Vectors.Vector3D.Down);
                 tnormal.Rotate(tside, cosa, sina);
                 Normals[2 * i + 0] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);
                 Normals[2 * i + 1] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);

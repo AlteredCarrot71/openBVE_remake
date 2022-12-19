@@ -881,7 +881,7 @@ namespace OpenBve
                         double sin2a = Math.Sin(2.0 * a);
                         Follower.WorldSide = CurrentTrack.Elements[i].WorldSide;
                         Follower.WorldSide.Rotate(Vectors.Vector3D.Down, cos2a, sin2a);
-                        Follower.WorldUp = Vectors.Cross(Follower.WorldDirection, Follower.WorldSide);
+                        Follower.WorldUp = Vectors.Vector3D.Cross(Follower.WorldDirection, Follower.WorldSide);
                         Follower.CurveRadius = CurrentTrack.Elements[i].CurveRadius;
                     }
                     else

@@ -6597,7 +6597,7 @@ namespace OpenBve.Parsers
                 TrackManager.CurrentTrack.Elements[n].WorldPosition = Position;
                 TrackManager.CurrentTrack.Elements[n].WorldDirection = new Vectors.Vector3D(Direction, Data.Blocks[i].Pitch);
                 TrackManager.CurrentTrack.Elements[n].WorldSide = new Vectors.Vector3D(Direction.Y, 0.0, -Direction.X);
-                TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
+                TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Vector3D.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
                 TrackManager.CurrentTrack.Elements[n].StartingTrackPosition = StartingDistance;
                 TrackManager.CurrentTrack.Elements[n].Events = new TrackManager.GeneralEvent[] { };
                 TrackManager.CurrentTrack.Elements[n].AdhesionMultiplier = Data.Blocks[i].AdhesionMultiplier;
@@ -6862,7 +6862,7 @@ namespace OpenBve.Parsers
                     Direction.Rotate(cosag, sinag);
                     TrackManager.CurrentTrack.Elements[n].WorldDirection.RotatePlane(cosag, sinag);
                     TrackManager.CurrentTrack.Elements[n].WorldSide.RotatePlane(cosag, sinag);
-                    TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
+                    TrackManager.CurrentTrack.Elements[n].WorldUp = Vectors.Vector3D.Cross(TrackManager.CurrentTrack.Elements[n].WorldDirection, TrackManager.CurrentTrack.Elements[n].WorldSide);
                 }
                 // curves
                 double a = 0.0;
@@ -7029,7 +7029,7 @@ namespace OpenBve.Parsers
                                 RailTransformation.Z = new Vectors.Vector3D(rx, ry, rz);
                                 RailTransformation.X = new Vectors.Vector3D(rz, 0.0, -rx);
                                 RailTransformation.X.Normalize();
-                                RailTransformation.Y = Vectors.Cross(RailTransformation.Z, RailTransformation.X);
+                                RailTransformation.Y = Vectors.Vector3D.Cross(RailTransformation.Z, RailTransformation.X);
                                 double dx = Data.Blocks[i + 1].Rail[j].RailEndX - Data.Blocks[i].Rail[j].RailStartX;
                                 double dy = Data.Blocks[i + 1].Rail[j].RailEndY - Data.Blocks[i].Rail[j].RailStartY;
                                 planar = Math.Atan(dx / c);
