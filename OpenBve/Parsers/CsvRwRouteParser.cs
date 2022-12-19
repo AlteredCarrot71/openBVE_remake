@@ -6898,9 +6898,9 @@ namespace OpenBve.Parsers
                 }
                 double TrackYaw = Math.Atan2(Direction.X, Direction.Y);
                 double TrackPitch = Math.Atan(Data.Blocks[i].Pitch);
-                World.Transformation GroundTransformation = new World.Transformation(TrackYaw, 0.0, 0.0);
-                World.Transformation TrackTransformation = new World.Transformation(TrackYaw, TrackPitch, 0.0);
-                World.Transformation NullTransformation = new World.Transformation(0.0, 0.0, 0.0);
+                Vectors.Transformation GroundTransformation = new Vectors.Transformation(TrackYaw, 0.0, 0.0);
+                Vectors.Transformation TrackTransformation = new Vectors.Transformation(TrackYaw, TrackPitch, 0.0);
+                Vectors.Transformation NullTransformation = new Vectors.Transformation(0.0, 0.0, 0.0);
                 // ground
                 if (!PreviewOnly)
                 {
@@ -6934,7 +6934,7 @@ namespace OpenBve.Parsers
                         double dy = Data.Blocks[i].GroundFreeObj[j].Y;
                         Vectors.Vector3D wpos = Vectors.Vector3D.Add(Position, new Vectors.Vector3D(Direction.X * d + Direction.Y * dx, dy - Data.Blocks[i].Height, Direction.Y * d - Direction.X * dx));
                         double tpos = Data.Blocks[i].GroundFreeObj[j].TrackPosition;
-                        ObjectManager.CreateObject(Data.Structure.FreeObj[sttype], wpos, GroundTransformation, new World.Transformation(Data.Blocks[i].GroundFreeObj[j].Yaw, Data.Blocks[i].GroundFreeObj[j].Pitch, Data.Blocks[i].GroundFreeObj[j].Roll), Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos);
+                        ObjectManager.CreateObject(Data.Structure.FreeObj[sttype], wpos, GroundTransformation, new Vectors.Transformation(Data.Blocks[i].GroundFreeObj[j].Yaw, Data.Blocks[i].GroundFreeObj[j].Pitch, Data.Blocks[i].GroundFreeObj[j].Roll), Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos);
                     }
                 }
                 // rail-aligned objects
@@ -6945,7 +6945,7 @@ namespace OpenBve.Parsers
                         if (j > 0 && !Data.Blocks[i].Rail[j].RailStart) continue;
                         // rail
                         Vectors.Vector3D pos;
-                        World.Transformation RailTransformation;
+                        Vectors.Transformation RailTransformation;
                         double planar, updown;
                         if (j == 0)
                         {
@@ -6953,7 +6953,7 @@ namespace OpenBve.Parsers
                             pos = Position;
                             planar = 0.0;
                             updown = 0.0;
-                            RailTransformation = new World.Transformation(TrackTransformation, planar, updown, 0.0);
+                            RailTransformation = new Vectors.Transformation(TrackTransformation, planar, updown, 0.0);
                             pos = Position;
                         }
                         else
@@ -7016,8 +7016,8 @@ namespace OpenBve.Parsers
                                 }
                                 double TrackYaw2 = Math.Atan2(Direction2.X, Direction2.Y);
                                 double TrackPitch2 = Math.Atan(Data.Blocks[i + 1].Pitch);
-                                World.Transformation GroundTransformation2 = new World.Transformation(TrackYaw2, 0.0, 0.0);
-                                World.Transformation TrackTransformation2 = new World.Transformation(TrackYaw2, TrackPitch2, 0.0);
+                                Vectors.Transformation GroundTransformation2 = new Vectors.Transformation(TrackYaw2, 0.0, 0.0);
+                                Vectors.Transformation TrackTransformation2 = new Vectors.Transformation(TrackYaw2, TrackPitch2, 0.0);
                                 double x2 = Data.Blocks[i + 1].Rail[j].RailEndX;
                                 double y2 = Data.Blocks[i + 1].Rail[j].RailEndY;
                                 Vectors.Vector3D offset2 = new Vectors.Vector3D(Direction2.Y * x2, y2, -Direction2.X * x2);
@@ -7041,7 +7041,7 @@ namespace OpenBve.Parsers
                                 planar = 0.0;
                                 dh = 0.0;
                                 updown = 0.0;
-                                RailTransformation = new World.Transformation(TrackTransformation, 0.0, 0.0, 0.0);
+                                RailTransformation = new Vectors.Transformation(TrackTransformation, 0.0, 0.0, 0.0);
                             }
                         }
                         if (Data.Blocks[i].RailType[j] < Data.Structure.Rail.Length)
@@ -7488,7 +7488,7 @@ namespace OpenBve.Parsers
                                 wpos.Y += dx * RailTransformation.X.Y + dy * RailTransformation.Y.Y + dz * RailTransformation.Z.Y;
                                 wpos.Z += dx * RailTransformation.X.Z + dy * RailTransformation.Y.Z + dz * RailTransformation.Z.Z;
                                 double tpos = Data.Blocks[i].RailFreeObj[j][k].TrackPosition;
-                                ObjectManager.CreateObject(Data.Structure.FreeObj[sttype], wpos, RailTransformation, new World.Transformation(Data.Blocks[i].RailFreeObj[j][k].Yaw, Data.Blocks[i].RailFreeObj[j][k].Pitch, Data.Blocks[i].RailFreeObj[j][k].Roll), -1, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
+                                ObjectManager.CreateObject(Data.Structure.FreeObj[sttype], wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].RailFreeObj[j][k].Yaw, Data.Blocks[i].RailFreeObj[j][k].Pitch, Data.Blocks[i].RailFreeObj[j][k].Roll), -1, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
                             }
                         }
                         // transponder objects
@@ -7529,11 +7529,11 @@ namespace OpenBve.Parsers
                                     if (Data.Blocks[i].Transponder[k].ShowDefaultObject)
                                     {
                                         double b = 0.25 + 0.75 * GetBrightness(ref Data, tpos);
-                                        ObjectManager.CreateObject(obj, wpos, RailTransformation, new World.Transformation(Data.Blocks[i].Transponder[k].Yaw, Data.Blocks[i].Transponder[k].Pitch, Data.Blocks[i].Transponder[k].Roll), -1, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, b, false);
+                                        ObjectManager.CreateObject(obj, wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].Transponder[k].Yaw, Data.Blocks[i].Transponder[k].Pitch, Data.Blocks[i].Transponder[k].Roll), -1, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, b, false);
                                     }
                                     else
                                     {
-                                        ObjectManager.CreateObject(obj, wpos, RailTransformation, new World.Transformation(Data.Blocks[i].Transponder[k].Yaw, Data.Blocks[i].Transponder[k].Pitch, Data.Blocks[i].Transponder[k].Roll), Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos);
+                                        ObjectManager.CreateObject(obj, wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].Transponder[k].Yaw, Data.Blocks[i].Transponder[k].Pitch, Data.Blocks[i].Transponder[k].Roll), Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos);
                                     }
                                 }
                             }
@@ -7580,7 +7580,7 @@ namespace OpenBve.Parsers
                                     if (sd is AnimatedObjectSignalData)
                                     {
                                         AnimatedObjectSignalData aosd = (AnimatedObjectSignalData)sd;
-                                        ObjectManager.CreateObject(aosd.Objects, wpos, RailTransformation, new World.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
+                                        ObjectManager.CreateObject(aosd.Objects, wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
                                     }
                                     else if (sd is CompatibilitySignalData)
                                     {
@@ -7608,7 +7608,7 @@ namespace OpenBve.Parsers
                                             }
                                             aoc.Objects[0].StateFunction = FunctionScripts.GetFunctionScriptFromPostfixNotation(expr);
                                             aoc.Objects[0].RefreshRate = 1.0 + 0.01 * Game.Generator.NextDouble();
-                                            ObjectManager.CreateObject(aoc, wpos, RailTransformation, new World.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, brightness, false);
+                                            ObjectManager.CreateObject(aoc, wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, brightness, false);
                                         }
                                     }
                                     else if (sd is Bve4SignalData)
@@ -7671,7 +7671,7 @@ namespace OpenBve.Parsers
                                             }
                                             aoc.Objects[0].StateFunction = FunctionScripts.GetFunctionScriptFromPostfixNotation(expr);
                                             aoc.Objects[0].RefreshRate = 1.0 + 0.01 * Game.Generator.NextDouble();
-                                            ObjectManager.CreateObject(aoc, wpos, RailTransformation, new World.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
+                                            ObjectManager.CreateObject(aoc, wpos, RailTransformation, new Vectors.Transformation(Data.Blocks[i].Signal[k].Yaw, Data.Blocks[i].Signal[k].Pitch, Data.Blocks[i].Signal[k].Roll), Data.Blocks[i].Signal[k].Section, Data.AccurateObjectDisposal, StartingDistance, EndingDistance, Data.BlockInterval, tpos, 1.0, false);
                                         }
                                     }
                                 }

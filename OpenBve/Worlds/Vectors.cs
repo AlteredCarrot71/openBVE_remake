@@ -88,7 +88,7 @@ namespace OpenBve.Worlds
 
             public static Vector3D Forward = new Vector3D(0.0, 0.0, 1.0);
         }
-        /// <summary>Represents a 3D vector of System.Single coordinates.</summary>
+        /// <summary>Represents a 3D vector of System.Float coordinates.</summary>
         public struct Vector3Df
         {
             internal float X;
@@ -145,6 +145,88 @@ namespace OpenBve.Worlds
                 }
             }
         }
+        
+        public struct Transformation
+        {
+            internal Vector3D X;
+            internal Vector3D Y;
+            internal Vector3D Z;
+
+            public Transformation(double Yaw, double Pitch, double Roll)
+            {
+                if (Yaw == 0.0 & Pitch == 0.0 & Roll == 0.0)
+                {
+                    this.X = Vector3D.Right;
+                    this.Y = Vector3D.Down;
+                    this.Z = Vector3D.Forward;
+                }
+                else if (Pitch == 0.0 & Roll == 0.0)
+                {
+                    double cosYaw = Math.Cos(Yaw);
+                    double sinYaw = Math.Sin(Yaw);
+                    this.X = new Vector3D(cosYaw, 0.0, -sinYaw);
+                    this.Y = new Vector3D(0.0, 1.0, 0.0);
+                    this.Z = new Vector3D(sinYaw, 0.0, cosYaw);
+                }
+                else
+                {
+                    double cosYaw = Math.Cos(Yaw);
+                    double sinYaw = Math.Sin(Yaw);
+                    double cosPitch = Math.Cos(-Pitch);
+                    double sinPitch = Math.Sin(-Pitch);
+                    double cosRoll = Math.Cos(-Roll);
+                    double sinRoll = Math.Sin(-Roll);
+                    Vector3D s = Vector3D.Right;
+                    Vector3D u = Vector3D.Down;
+                    Vector3D d = Vector3D.Forward;
+                    s.Rotate(u, cosYaw, sinYaw);
+                    d.Rotate(u, cosYaw, sinYaw);
+                    u.Rotate(s, cosPitch, sinPitch);
+                    d.Rotate(s, cosPitch, sinPitch);
+                    s.Rotate(d, cosRoll, sinRoll);
+                    u.Rotate(d, cosRoll, sinRoll);
+                    this.X = s;
+                    this.Y = u;
+                    this.Z = d;
+                }
+            }
+            public Transformation(Transformation Transformation, double Yaw, double Pitch, double Roll)
+            {
+                double cosYaw = Math.Cos(Yaw);
+                double sinYaw = Math.Sin(Yaw);
+                double cosPitch = Math.Cos(-Pitch);
+                double sinPitch = Math.Sin(-Pitch);
+                double cosRoll = Math.Cos(Roll);
+                double sinRoll = Math.Sin(Roll);
+                Vector3D s = Transformation.X;
+                Vector3D u = Transformation.Y;
+                Vector3D d = Transformation.Z;
+                s.Rotate(u, cosYaw, sinYaw);
+                d.Rotate(u, cosYaw, sinYaw);
+                u.Rotate(s, cosPitch, sinPitch);
+                d.Rotate(s, cosPitch, sinPitch);
+                s.Rotate(d, cosRoll, sinRoll);
+                u.Rotate(d, cosRoll, sinRoll);
+                this.X = s;
+                this.Y = u;
+                this.Z = d;
+            }
+            public Transformation(Transformation BaseTransformation, Transformation AuxTransformation)
+            {
+                Vector3D x = BaseTransformation.X;
+                Vector3D y = BaseTransformation.Y;
+                Vector3D z = BaseTransformation.Z;
+                Vector3D s = AuxTransformation.X;
+                Vector3D u = AuxTransformation.Y;
+                Vector3D d = AuxTransformation.Z;
+                x.Rotate(d, u, s);
+                y.Rotate(d, u, s);
+                z.Rotate(d, u, s);
+                this.X = x;
+                this.Y = y;
+                this.Z = z;
+            }
+        }
 
         public static Vector3D Cross(Vector3D A, Vector3D B)
         {
@@ -162,7 +244,7 @@ namespace OpenBve.Worlds
             cz = (ax * by) - (ay * bx);
         }
 
-        internal static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
+        public static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
             dx *= t; dy *= t; dz *= t;
@@ -170,6 +252,24 @@ namespace OpenBve.Worlds
             double x = ((cosa + (oc * dx * dx)) * px) + (((oc * dx * dy) - (sina * dz)) * py) + (((oc * dx * dz) + (sina * dy)) * pz);
             double y = ((cosa + (oc * dy * dy)) * py) + (((oc * dx * dy) + (sina * dz)) * px) + (((oc * dy * dz) - (sina * dx)) * pz);
             double z = ((cosa + (oc * dz * dz)) * pz) + (((oc * dx * dz) - (sina * dy)) * px) + (((oc * dy * dz) + (sina * dx)) * py);
+            px = x; py = y; pz = z;
+        }
+
+        public static void Rotate(ref float px, ref float py, ref float pz, Transformation t)
+        {
+            double x, y, z;
+            x = t.X.X * (double)px + t.Y.X * (double)py + t.Z.X * (double)pz;
+            y = t.X.Y * (double)px + t.Y.Y * (double)py + t.Z.Y * (double)pz;
+            z = t.X.Z * (double)px + t.Y.Z * (double)py + t.Z.Z * (double)pz;
+            px = (float)x; py = (float)y; pz = (float)z;
+        }
+        
+        public static void Rotate(ref double px, ref double py, ref double pz, Transformation t)
+        {
+            double x, y, z;
+            x = t.X.X * px + t.Y.X * py + t.Z.X * pz;
+            y = t.X.Y * px + t.Y.Y * py + t.Z.Y * pz;
+            z = t.X.Z * px + t.Y.Z * py + t.Z.Z * pz;
             px = x; py = y; pz = z;
         }
 
