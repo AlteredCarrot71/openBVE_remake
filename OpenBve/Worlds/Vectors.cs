@@ -69,6 +69,16 @@ namespace OpenBve.Worlds
                 this.Y = y;
                 this.Z = z;
             }
+            public void Rotate(Transformation t)
+            {
+                double x, y, z;
+                x = t.X.X * this.X + t.Y.X * this.Y + t.Z.X * this.Z;
+                y = t.X.Y * this.X + t.Y.Y * this.Y + t.Z.Y * this.Z;
+                z = t.X.Z * this.X + t.Y.Z * this.Y + t.Z.Z * this.Z;
+                this.X = x; 
+                this.Y = y; 
+                this.Z = z;
+            }
 
             public void Normalize()
             {
@@ -128,6 +138,16 @@ namespace OpenBve.Worlds
                 x = (Side.X * (double)this.X) + (Up.X * (double)this.Y) + (Direction.X * (double)this.Z);
                 y = (Side.Y * (double)this.X) + (Up.Y * (double)this.Y) + (Direction.Y * (double)this.Z);
                 z = (Side.Z * (double)this.X) + (Up.Z * (double)this.Y) + (Direction.Z * (double)this.Z);
+                this.X = (float)x; 
+                this.Y = (float)y; 
+                this.Z = (float)z;
+            }
+            public void Rotate(Transformation t)
+            {
+                double x, y, z;
+                x = t.X.X * (double)this.X + t.Y.X * (double)this.Y + t.Z.X * (double)this.Z;
+                y = t.X.Y * (double)this.X + t.Y.Y * (double)this.Y + t.Z.Y * (double)this.Z;
+                z = t.X.Z * (double)this.X + t.Y.Z * (double)this.Y + t.Z.Z * (double)this.Z;
                 this.X = (float)x; 
                 this.Y = (float)y; 
                 this.Z = (float)z;
@@ -252,24 +272,6 @@ namespace OpenBve.Worlds
             double x = ((cosa + (oc * dx * dx)) * px) + (((oc * dx * dy) - (sina * dz)) * py) + (((oc * dx * dz) + (sina * dy)) * pz);
             double y = ((cosa + (oc * dy * dy)) * py) + (((oc * dx * dy) + (sina * dz)) * px) + (((oc * dy * dz) - (sina * dx)) * pz);
             double z = ((cosa + (oc * dz * dz)) * pz) + (((oc * dx * dz) - (sina * dy)) * px) + (((oc * dy * dz) + (sina * dx)) * py);
-            px = x; py = y; pz = z;
-        }
-
-        public static void Rotate(ref float px, ref float py, ref float pz, Transformation t)
-        {
-            double x, y, z;
-            x = t.X.X * (double)px + t.Y.X * (double)py + t.Z.X * (double)pz;
-            y = t.X.Y * (double)px + t.Y.Y * (double)py + t.Z.Y * (double)pz;
-            z = t.X.Z * (double)px + t.Y.Z * (double)py + t.Z.Z * (double)pz;
-            px = (float)x; py = (float)y; pz = (float)z;
-        }
-        
-        public static void Rotate(ref double px, ref double py, ref double pz, Transformation t)
-        {
-            double x, y, z;
-            x = t.X.X * px + t.Y.X * py + t.Z.X * pz;
-            y = t.X.Y * px + t.Y.Y * py + t.Z.Y * pz;
-            z = t.X.Z * px + t.Y.Z * py + t.Z.Z * pz;
             px = x; py = y; pz = z;
         }
 

@@ -1832,7 +1832,7 @@ namespace OpenBve
                 Object.Mesh.Vertices[j] = Prototype.Mesh.Vertices[j];
                 if (AccurateObjectDisposal)
                 {
-                    Vectors.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, AuxTransformation);
+                    Object.Mesh.Vertices[j].Coordinates.Rotate(AuxTransformation);
                     if (Object.Mesh.Vertices[j].Coordinates.Z < Object.StartingDistance)
                     {
                         Object.StartingDistance = (float)Object.Mesh.Vertices[j].Coordinates.Z;
@@ -1843,8 +1843,8 @@ namespace OpenBve
                     }
                     Object.Mesh.Vertices[j].Coordinates = Prototype.Mesh.Vertices[j].Coordinates;
                 }
-                Vectors.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, AuxTransformation);
-                Vectors.Rotate(ref Object.Mesh.Vertices[j].Coordinates.X, ref Object.Mesh.Vertices[j].Coordinates.Y, ref Object.Mesh.Vertices[j].Coordinates.Z, BaseTransformation);
+                Object.Mesh.Vertices[j].Coordinates.Rotate(AuxTransformation);
+                Object.Mesh.Vertices[j].Coordinates.Rotate(BaseTransformation);
                 Object.Mesh.Vertices[j].Coordinates.X += Position.X;
                 Object.Mesh.Vertices[j].Coordinates.Y += Position.Y;
                 Object.Mesh.Vertices[j].Coordinates.Z += Position.Z;
@@ -1869,8 +1869,8 @@ namespace OpenBve
                     double nz = Object.Mesh.Faces[j].Vertices[k].Normal.Z;
                     if (nx * nx + ny * ny + nz * nz != 0.0)
                     {
-                        Vectors.Rotate(ref Object.Mesh.Faces[j].Vertices[k].Normal.X, ref Object.Mesh.Faces[j].Vertices[k].Normal.Y, ref Object.Mesh.Faces[j].Vertices[k].Normal.Z, AuxTransformation);
-                        Vectors.Rotate(ref Object.Mesh.Faces[j].Vertices[k].Normal.X, ref Object.Mesh.Faces[j].Vertices[k].Normal.Y, ref Object.Mesh.Faces[j].Vertices[k].Normal.Z, BaseTransformation);
+                        Object.Mesh.Faces[j].Vertices[k].Normal.Rotate(AuxTransformation);
+                        Object.Mesh.Faces[j].Vertices[k].Normal.Rotate(BaseTransformation);
                     }
                 }
             }
