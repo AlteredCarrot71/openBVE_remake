@@ -5,7 +5,6 @@ namespace OpenBve
 {
     internal static class TrackManager
     {
-
         // events
         internal enum EventTriggerType
         {
@@ -1090,6 +1089,5 @@ namespace OpenBve
                 }
             }
         }
-
     }
 }

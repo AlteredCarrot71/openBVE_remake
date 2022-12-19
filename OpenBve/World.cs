@@ -1182,13 +1182,14 @@ namespace OpenBve
             internal Vectors.Vector3D X;
             internal Vectors.Vector3D Y;
             internal Vectors.Vector3D Z;
+
             internal Transformation(double Yaw, double Pitch, double Roll)
             {
                 if (Yaw == 0.0 & Pitch == 0.0 & Roll == 0.0)
                 {
-                    this.X = new Vectors.Vector3D(1.0, 0.0, 0.0);
-                    this.Y = new Vectors.Vector3D(0.0, 1.0, 0.0);
-                    this.Z = new Vectors.Vector3D(0.0, 0.0, 1.0);
+                    this.X = Vectors.Vector3D.Right;
+                    this.Y = Vectors.Vector3D.Down;
+                    this.Z = Vectors.Vector3D.Forward;
                 }
                 else if (Pitch == 0.0 & Roll == 0.0)
                 {
@@ -1200,46 +1201,46 @@ namespace OpenBve
                 }
                 else
                 {
-                    double sx = 1.0, sy = 0.0, sz = 0.0;
-                    double ux = 0.0, uy = 1.0, uz = 0.0;
-                    double dx = 0.0, dy = 0.0, dz = 1.0;
                     double cosYaw = Math.Cos(Yaw);
                     double sinYaw = Math.Sin(Yaw);
                     double cosPitch = Math.Cos(-Pitch);
                     double sinPitch = Math.Sin(-Pitch);
                     double cosRoll = Math.Cos(-Roll);
                     double sinRoll = Math.Sin(-Roll);
-                    Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
-                    Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
-                    Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
-                    Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
-                    Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
-                    Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
-                    this.X = new Vectors.Vector3D(sx, sy, sz);
-                    this.Y = new Vectors.Vector3D(ux, uy, uz);
-                    this.Z = new Vectors.Vector3D(dx, dy, dz);
+                    Vectors.Vector3D s = Vectors.Vector3D.Right;
+                    Vectors.Vector3D u = Vectors.Vector3D.Down;
+                    Vectors.Vector3D d = Vectors.Vector3D.Forward;
+                    s.Rotate(u, cosYaw, sinYaw);
+                    d.Rotate(u, cosYaw, sinYaw);
+                    u.Rotate(s, cosPitch, sinPitch);
+                    d.Rotate(s, cosPitch, sinPitch);
+                    s.Rotate(d, cosRoll, sinRoll);
+                    u.Rotate(d, cosRoll, sinRoll);
+                    this.X = s;
+                    this.Y = u;
+                    this.Z = d;
                 }
             }
             internal Transformation(Transformation Transformation, double Yaw, double Pitch, double Roll)
             {
-                double sx = Transformation.X.X, sy = Transformation.X.Y, sz = Transformation.X.Z;
-                double ux = Transformation.Y.X, uy = Transformation.Y.Y, uz = Transformation.Y.Z;
-                double dx = Transformation.Z.X, dy = Transformation.Z.Y, dz = Transformation.Z.Z;
                 double cosYaw = Math.Cos(Yaw);
                 double sinYaw = Math.Sin(Yaw);
                 double cosPitch = Math.Cos(-Pitch);
                 double sinPitch = Math.Sin(-Pitch);
                 double cosRoll = Math.Cos(Roll);
                 double sinRoll = Math.Sin(Roll);
-                Vectors.Rotate(ref sx, ref sy, ref sz, ux, uy, uz, cosYaw, sinYaw);
-                Vectors.Rotate(ref dx, ref dy, ref dz, ux, uy, uz, cosYaw, sinYaw);
-                Vectors.Rotate(ref ux, ref uy, ref uz, sx, sy, sz, cosPitch, sinPitch);
-                Vectors.Rotate(ref dx, ref dy, ref dz, sx, sy, sz, cosPitch, sinPitch);
-                Vectors.Rotate(ref sx, ref sy, ref sz, dx, dy, dz, cosRoll, sinRoll);
-                Vectors.Rotate(ref ux, ref uy, ref uz, dx, dy, dz, cosRoll, sinRoll);
-                this.X = new Vectors.Vector3D(sx, sy, sz);
-                this.Y = new Vectors.Vector3D(ux, uy, uz);
-                this.Z = new Vectors.Vector3D(dx, dy, dz);
+                Vectors.Vector3D s = Transformation.X;
+                Vectors.Vector3D u = Transformation.Y;
+                Vectors.Vector3D d = Transformation.Z;
+                s.Rotate(u, cosYaw, sinYaw);
+                d.Rotate(u, cosYaw, sinYaw);
+                u.Rotate(s, cosPitch, sinPitch);
+                d.Rotate(s, cosPitch, sinPitch);
+                s.Rotate(d, cosRoll, sinRoll);
+                u.Rotate(d, cosRoll, sinRoll);
+                this.X = s;
+                this.Y = u;
+                this.Z = d;
             }
             internal Transformation(Transformation BaseTransformation, Transformation AuxTransformation)
             {
@@ -1249,9 +1250,6 @@ namespace OpenBve
                 Vectors.Vector3D s = AuxTransformation.X;
                 Vectors.Vector3D u = AuxTransformation.Y;
                 Vectors.Vector3D d = AuxTransformation.Z;
-                //Vectors.Rotate(ref x.X, ref x.Y, ref x.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
-                //Vectors.Rotate(ref y.X, ref y.Y, ref y.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
-                //Vectors.Rotate(ref z.X, ref z.Y, ref z.Z, d.X, d.Y, d.Z, u.X, u.Y, u.Z, s.X, s.Y, s.Z);
                 x.Rotate(d, u, s);
                 y.Rotate(d, u, s);
                 z.Rotate(d, u, s);

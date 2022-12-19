@@ -6,7 +6,6 @@ namespace OpenBve
 {
     internal static class TrainManager
     {
-
         // axle
         internal struct Axle
         {
@@ -4588,6 +4587,5 @@ namespace OpenBve
                 UpdateAtmosphericConstants(Train);
             }
         }
-
     }
 }

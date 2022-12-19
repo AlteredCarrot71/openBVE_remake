@@ -2048,11 +2048,9 @@ namespace OpenBve.Parsers
                                                     Interface.AddMessage(Interface.MessageType.Error, false, "z is expected to be a float in normals[" + k.ToString(Culture) + "] in MeshNormals in Mesh in x object file " + FileName);
                                                     return false;
                                                 }
-                                                double x = (double)normals[k].Data[0];
-                                                double y = (double)normals[k].Data[1];
-                                                double z = (double)normals[k].Data[2];
-                                                Vectors.Normalize(ref x, ref y, ref z);
-                                                Normals[k] = new Vectors.Vector3Df((float)x, (float)y, (float)z);
+                                                Vectors.Vector3Df r = new Vectors.Vector3Df((float)normals[k].Data[0], (float)normals[k].Data[1], (float)normals[k].Data[2]);
+                                                r.Normalize();
+                                                Normals[k] = r;
                                             }
                                             // collect faces
                                             for (int k = 0; k < nFaceNormals; k++)

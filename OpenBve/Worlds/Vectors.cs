@@ -81,8 +81,12 @@ namespace OpenBve.Worlds
                     this.Z *= t;
                 }
             }
-            
+
+            public static Vector3D Right = new Vector3D(1.0, 0.0, 0.0);
+
             public static Vector3D Down = new Vector3D(0.0, 1.0, 0.0);
+
+            public static Vector3D Forward = new Vector3D(0.0, 0.0, 1.0);
         }
         /// <summary>Represents a 3D vector of System.Single coordinates.</summary>
         public struct Vector3Df
@@ -127,6 +131,18 @@ namespace OpenBve.Worlds
                 this.X = (float)x; 
                 this.Y = (float)y; 
                 this.Z = (float)z;
+            }
+
+            public void Normalize()
+            {
+                float t = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z);
+                if (t != 0.0)
+                {
+                    t = (float)((float)1.0 / Math.Sqrt(t));
+                    this.X *= t;
+                    this.Y *= t;
+                    this.Z *= t;
+                }
             }
         }
 
