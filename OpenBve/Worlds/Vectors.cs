@@ -43,6 +43,23 @@ namespace OpenBve.Worlds
                 return new Vector3D((A.Y * B.Z) - (A.Z * B.Y), (A.Z * B.X) - (A.X * B.Z), (A.X * B.Y) - (A.Y * B.X));
             }
 
+            public static Vector3D operator +(Vector3D a, Vector3D b)
+            {
+                return new Vector3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+            }
+            public static Vector3D operator -(Vector3D a, Vector3D b)
+            {
+                return new Vector3D(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+            }
+            public static Vector3D operator *(Vector3D a, double b)
+            {
+                return new Vector3D(a.X * b, a.Y * b, a.Z * b);
+            }
+            public static Vector3D operator *(double a, Vector3D b)
+            {
+                return new Vector3D(a * b.X, a * b.Y, a * b.Z);
+            }
+
             public void RotatePlane(double cosa, double sina)
             {
                 double x = (this.X * cosa) - (this.Z * sina);
@@ -77,9 +94,9 @@ namespace OpenBve.Worlds
             public void Rotate(Transformation t)
             {
                 double x, y, z;
-                x = t.X.X * this.X + t.Y.X * this.Y + t.Z.X * this.Z;
-                y = t.X.Y * this.X + t.Y.Y * this.Y + t.Z.Y * this.Z;
-                z = t.X.Z * this.X + t.Y.Z * this.Y + t.Z.Z * this.Z;
+                x = (t.X.X * this.X) + (t.Y.X * this.Y) + (t.Z.X * this.Z);
+                y = (t.X.Y * this.X) + (t.Y.Y * this.Y) + (t.Z.Y * this.Z);
+                z = (t.X.Z * this.X) + (t.Y.Z * this.Y) + (t.Z.Z * this.Z);
                 this.X = x; 
                 this.Y = y; 
                 this.Z = z;
@@ -96,6 +113,8 @@ namespace OpenBve.Worlds
                     this.Z *= t;
                 }
             }
+
+            public static Vector3D Null = new Vector3D(0.0, 0.0, 0.0);
 
             public static Vector3D Right = new Vector3D(1.0, 0.0, 0.0);
 
@@ -150,9 +169,9 @@ namespace OpenBve.Worlds
             public void Rotate(Transformation t)
             {
                 double x, y, z;
-                x = t.X.X * (double)this.X + t.Y.X * (double)this.Y + t.Z.X * (double)this.Z;
-                y = t.X.Y * (double)this.X + t.Y.Y * (double)this.Y + t.Z.Y * (double)this.Z;
-                z = t.X.Z * (double)this.X + t.Y.Z * (double)this.Y + t.Z.Z * (double)this.Z;
+                x = (t.X.X * (double)this.X) + (t.Y.X * (double)this.Y) + (t.Z.X * (double)this.Z);
+                y = (t.X.Y * (double)this.X) + (t.Y.Y * (double)this.Y) + (t.Z.Y * (double)this.Z);
+                z = (t.X.Z * (double)this.X) + (t.Y.Z * (double)this.Y) + (t.Z.Z * (double)this.Z);
                 this.X = (float)x; 
                 this.Y = (float)y; 
                 this.Z = (float)z;

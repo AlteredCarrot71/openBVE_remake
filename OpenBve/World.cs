@@ -656,28 +656,25 @@ namespace OpenBve
         internal static void UpdateAbsoluteCamera(double TimeElapsed)
         {
             // zoom
-            double zm = World.CameraCurrentAlignment.Zoom;
-            AdjustAlignment(ref World.CameraCurrentAlignment.Zoom, World.CameraAlignmentDirection.Zoom, ref World.CameraAlignmentSpeed.Zoom, TimeElapsed, true);
-            if (zm != World.CameraCurrentAlignment.Zoom)
+            double zm = CameraCurrentAlignment.Zoom;
+            AdjustAlignment(ref CameraCurrentAlignment.Zoom, CameraAlignmentDirection.Zoom, ref CameraAlignmentSpeed.Zoom, TimeElapsed, true);
+            if (zm != CameraCurrentAlignment.Zoom)
             {
                 ApplyZoom();
             }
             if (CameraMode == CameraViewMode.FlyBy | CameraMode == CameraViewMode.FlyByZooming)
             {
                 // fly-by
-                AdjustAlignment(ref World.CameraCurrentAlignment.Position.X, World.CameraAlignmentDirection.Position.X, ref World.CameraAlignmentSpeed.Position.X, TimeElapsed);
-                AdjustAlignment(ref World.CameraCurrentAlignment.Position.Y, World.CameraAlignmentDirection.Position.Y, ref World.CameraAlignmentSpeed.Position.Y, TimeElapsed);
-                double tr = World.CameraCurrentAlignment.TrackPosition;
-                AdjustAlignment(ref World.CameraCurrentAlignment.TrackPosition, World.CameraAlignmentDirection.TrackPosition, ref World.CameraAlignmentSpeed.TrackPosition, TimeElapsed);
-                if (tr != World.CameraCurrentAlignment.TrackPosition)
+                AdjustAlignment(ref CameraCurrentAlignment.Position.X, CameraAlignmentDirection.Position.X, ref CameraAlignmentSpeed.Position.X, TimeElapsed);
+                AdjustAlignment(ref CameraCurrentAlignment.Position.Y, CameraAlignmentDirection.Position.Y, ref CameraAlignmentSpeed.Position.Y, TimeElapsed);
+                double tr = CameraCurrentAlignment.TrackPosition;
+                AdjustAlignment(ref CameraCurrentAlignment.TrackPosition, CameraAlignmentDirection.TrackPosition, ref CameraAlignmentSpeed.TrackPosition, TimeElapsed);
+                if (tr != CameraCurrentAlignment.TrackPosition)
                 {
-                    TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, World.CameraCurrentAlignment.TrackPosition, true, false);
+                    TrackManager.UpdateTrackFollower(ref CameraTrackFollower, CameraCurrentAlignment.TrackPosition, true, false);
                     UpdateViewingDistances();
                 }
                 // camera
-                double px = World.CameraTrackFollower.WorldPosition.X;
-                double py = World.CameraTrackFollower.WorldPosition.Y;
-                double pz = World.CameraTrackFollower.WorldPosition.Z;
                 // position to focus on
                 double tx, ty, tz;
                 double zoomMultiplier;
@@ -691,13 +688,8 @@ namespace OpenBve
                     {
                         if (train.State == TrainManager.TrainState.Available)
                         {
-                            double x = 0.5 * (train.Cars[0].FrontAxle.Follower.WorldPosition.X + train.Cars[0].RearAxle.Follower.WorldPosition.X);
-                            double y = 0.5 * (train.Cars[0].FrontAxle.Follower.WorldPosition.Y + train.Cars[0].RearAxle.Follower.WorldPosition.Y) + heightFactor * train.Cars[0].Height;
-                            double z = 0.5 * (train.Cars[0].FrontAxle.Follower.WorldPosition.Z + train.Cars[0].RearAxle.Follower.WorldPosition.Z);
-                            double dx = x - px;
-                            double dy = y - py;
-                            double dz = z - pz;
-                            double d = dx * dx + dy * dy + dz * dz;
+                            Vectors.Vector3D FollowerPosition = (0.5 * (train.Cars[0].FrontAxle.Follower.WorldPosition + train.Cars[0].RearAxle.Follower.WorldPosition)) - CameraTrackFollower.WorldPosition;
+                            double d = (FollowerPosition.X * FollowerPosition.X) + (FollowerPosition.Y * FollowerPosition.Y) + (FollowerPosition.Z * FollowerPosition.Z);
                             if (d < bestDistanceSquared)
                             {
                                 secondBestTrain = bestTrain;
@@ -719,32 +711,15 @@ namespace OpenBve
                         double secondBestDistance = Math.Sqrt(secondBestDistanceSquared);
                         if (secondBestTrain != null && secondBestDistance - bestDistance <= maxDistance)
                         {
-                            double x1 = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.X + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.X);
-                            double y1 = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Y + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.Y) + heightFactor * bestTrain.Cars[0].Height;
-                            double z1 = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Z + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.Z);
-                            double d1;
-                            {
-                                double dx = x1 - px;
-                                double dy = y1 - py;
-                                double dz = z1 - pz;
-                                d1 = dx * dx + dy * dy + dz * dz;
-                            }
-                            double x2 = 0.5 * (secondBestTrain.Cars[0].FrontAxle.Follower.WorldPosition.X + secondBestTrain.Cars[0].RearAxle.Follower.WorldPosition.X);
-                            double y2 = 0.5 * (secondBestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Y + secondBestTrain.Cars[0].RearAxle.Follower.WorldPosition.Y) + heightFactor * secondBestTrain.Cars[0].Height;
-                            double z2 = 0.5 * (secondBestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Z + secondBestTrain.Cars[0].RearAxle.Follower.WorldPosition.Z);
-                            double d2;
-                            {
-                                double dx = x2 - px;
-                                double dy = y2 - py;
-                                double dz = z2 - pz;
-                                d2 = dx * dx + dy * dy + dz * dz;
-                            }
+                            Vectors.Vector3D BestTrainPosition = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition + bestTrain.Cars[0].RearAxle.Follower.WorldPosition);
+                            Vectors.Vector3D SecondBestTrainPosition = 0.5 * (secondBestTrain.Cars[0].FrontAxle.Follower.WorldPosition + secondBestTrain.Cars[0].RearAxle.Follower.WorldPosition);
+
                             double t = 0.5 - (secondBestDistance - bestDistance) / (2.0 * maxDistance);
                             if (t < 0.0) t = 0.0;
                             t = 2.0 * t * t; /* in order to change the shape of the interpolation curve */
-                            tx = (1.0 - t) * x1 + t * x2;
-                            ty = (1.0 - t) * y1 + t * y2;
-                            tz = (1.0 - t) * z1 + t * z2;
+                            tx = (1.0 - t) * BestTrainPosition.X + t * SecondBestTrainPosition.X;
+                            ty = (1.0 - t) * BestTrainPosition.Y + t * SecondBestTrainPosition.Y;
+                            tz = (1.0 - t) * BestTrainPosition.Z + t * SecondBestTrainPosition.Z;
                             zoomMultiplier = 1.0 - 2.0 * t;
                         }
                         else
@@ -765,21 +740,21 @@ namespace OpenBve
                 }
                 // camera
                 {
-                    double dx = World.CameraTrackFollower.WorldDirection.X;
-                    double dy = World.CameraTrackFollower.WorldDirection.Y;
-                    double dz = World.CameraTrackFollower.WorldDirection.Z;
-                    double ux = World.CameraTrackFollower.WorldUp.X;
-                    double uy = World.CameraTrackFollower.WorldUp.Y;
-                    double uz = World.CameraTrackFollower.WorldUp.Z;
-                    double sx = World.CameraTrackFollower.WorldSide.X;
-                    double sy = World.CameraTrackFollower.WorldSide.Y;
-                    double sz = World.CameraTrackFollower.WorldSide.Z;
-                    double ox = World.CameraCurrentAlignment.Position.X;
-                    double oy = World.CameraCurrentAlignment.Position.Y;
-                    double oz = World.CameraCurrentAlignment.Position.Z;
-                    double cx = px + (sx * ox) + (ux * oy) + (dx * oz);
-                    double cy = py + (sy * ox) + (uy * oy) + (dy * oz);
-                    double cz = pz + (sz * ox) + (uz * oy) + (dz * oz);
+                    double dx = CameraTrackFollower.WorldDirection.X;
+                    double dy = CameraTrackFollower.WorldDirection.Y;
+                    double dz = CameraTrackFollower.WorldDirection.Z;
+                    double ux = CameraTrackFollower.WorldUp.X;
+                    double uy = CameraTrackFollower.WorldUp.Y;
+                    double uz = CameraTrackFollower.WorldUp.Z;
+                    double sx = CameraTrackFollower.WorldSide.X;
+                    double sy = CameraTrackFollower.WorldSide.Y;
+                    double sz = CameraTrackFollower.WorldSide.Z;
+                    double ox = CameraCurrentAlignment.Position.X;
+                    double oy = CameraCurrentAlignment.Position.Y;
+                    double oz = CameraCurrentAlignment.Position.Z;
+                    double cx = CameraTrackFollower.WorldPosition.X + (sx * ox) + (ux * oy) + (dx * oz);
+                    double cy = CameraTrackFollower.WorldPosition.Y + (sy * ox) + (uy * oy) + (dy * oz);
+                    double cz = CameraTrackFollower.WorldPosition.Z + (sz * ox) + (uz * oy) + (dz * oz);
                     AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
                     dx = tx - cx;
                     dy = ty - cy;
@@ -820,25 +795,25 @@ namespace OpenBve
                 // non-fly-by
                 {
                     // current alignment
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Position.X, World.CameraAlignmentDirection.Position.X, ref World.CameraAlignmentSpeed.Position.X, TimeElapsed);
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Position.Y, World.CameraAlignmentDirection.Position.Y, ref World.CameraAlignmentSpeed.Position.Y, TimeElapsed);
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Position.Z, World.CameraAlignmentDirection.Position.Z, ref World.CameraAlignmentSpeed.Position.Z, TimeElapsed);
-                    if ((CameraMode == CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & CameraRestriction == CameraRestrictionMode.On)
+                    AdjustAlignment(ref CameraCurrentAlignment.Position.X, CameraAlignmentDirection.Position.X, ref CameraAlignmentSpeed.Position.X, TimeElapsed);
+                    AdjustAlignment(ref CameraCurrentAlignment.Position.Y, CameraAlignmentDirection.Position.Y, ref CameraAlignmentSpeed.Position.Y, TimeElapsed);
+                    AdjustAlignment(ref CameraCurrentAlignment.Position.Z, CameraAlignmentDirection.Position.Z, ref CameraAlignmentSpeed.Position.Z, TimeElapsed);
+                    if ((CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead) & CameraRestriction == CameraRestrictionMode.On)
                     {
                         if (CameraCurrentAlignment.Position.Z > 0.75)
                         {
                             CameraCurrentAlignment.Position.Z = 0.75;
                         }
                     }
-                    bool q = World.CameraAlignmentSpeed.Yaw != 0.0 | World.CameraAlignmentSpeed.Pitch != 0.0 | World.CameraAlignmentSpeed.Roll != 0.0;
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Yaw, World.CameraAlignmentDirection.Yaw, ref World.CameraAlignmentSpeed.Yaw, TimeElapsed);
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Pitch, World.CameraAlignmentDirection.Pitch, ref World.CameraAlignmentSpeed.Pitch, TimeElapsed);
-                    AdjustAlignment(ref World.CameraCurrentAlignment.Roll, World.CameraAlignmentDirection.Roll, ref World.CameraAlignmentSpeed.Roll, TimeElapsed);
-                    double tr = World.CameraCurrentAlignment.TrackPosition;
-                    AdjustAlignment(ref World.CameraCurrentAlignment.TrackPosition, World.CameraAlignmentDirection.TrackPosition, ref World.CameraAlignmentSpeed.TrackPosition, TimeElapsed);
-                    if (tr != World.CameraCurrentAlignment.TrackPosition)
+                    bool q = CameraAlignmentSpeed.Yaw != 0.0 | CameraAlignmentSpeed.Pitch != 0.0 | CameraAlignmentSpeed.Roll != 0.0;
+                    AdjustAlignment(ref CameraCurrentAlignment.Yaw, CameraAlignmentDirection.Yaw, ref CameraAlignmentSpeed.Yaw, TimeElapsed);
+                    AdjustAlignment(ref CameraCurrentAlignment.Pitch, CameraAlignmentDirection.Pitch, ref CameraAlignmentSpeed.Pitch, TimeElapsed);
+                    AdjustAlignment(ref CameraCurrentAlignment.Roll, CameraAlignmentDirection.Roll, ref CameraAlignmentSpeed.Roll, TimeElapsed);
+                    double tr = CameraCurrentAlignment.TrackPosition;
+                    AdjustAlignment(ref CameraCurrentAlignment.TrackPosition, CameraAlignmentDirection.TrackPosition, ref CameraAlignmentSpeed.TrackPosition, TimeElapsed);
+                    if (tr != CameraCurrentAlignment.TrackPosition)
                     {
-                        TrackManager.UpdateTrackFollower(ref World.CameraTrackFollower, World.CameraCurrentAlignment.TrackPosition, true, false);
+                        TrackManager.UpdateTrackFollower(ref CameraTrackFollower, CameraCurrentAlignment.TrackPosition, true, false);
                         q = true;
                     }
                     if (q)
@@ -847,18 +822,18 @@ namespace OpenBve
                     }
                 }
                 // camera
-                double cx = World.CameraTrackFollower.WorldPosition.X;
-                double cy = World.CameraTrackFollower.WorldPosition.Y;
-                double cz = World.CameraTrackFollower.WorldPosition.Z;
-                double dx = World.CameraTrackFollower.WorldDirection.X;
-                double dy = World.CameraTrackFollower.WorldDirection.Y;
-                double dz = World.CameraTrackFollower.WorldDirection.Z;
-                double ux = World.CameraTrackFollower.WorldUp.X;
-                double uy = World.CameraTrackFollower.WorldUp.Y;
-                double uz = World.CameraTrackFollower.WorldUp.Z;
-                double sx = World.CameraTrackFollower.WorldSide.X;
-                double sy = World.CameraTrackFollower.WorldSide.Y;
-                double sz = World.CameraTrackFollower.WorldSide.Z;
+                double cx = CameraTrackFollower.WorldPosition.X;
+                double cy = CameraTrackFollower.WorldPosition.Y;
+                double cz = CameraTrackFollower.WorldPosition.Z;
+                double dx = CameraTrackFollower.WorldDirection.X;
+                double dy = CameraTrackFollower.WorldDirection.Y;
+                double dz = CameraTrackFollower.WorldDirection.Z;
+                double ux = CameraTrackFollower.WorldUp.X;
+                double uy = CameraTrackFollower.WorldUp.Y;
+                double uz = CameraTrackFollower.WorldUp.Z;
+                double sx = CameraTrackFollower.WorldSide.X;
+                double sy = CameraTrackFollower.WorldSide.Y;
+                double sz = CameraTrackFollower.WorldSide.Z;
                 double lookaheadYaw;
                 double lookaheadPitch;
                 if (CameraMode == CameraViewMode.InteriorLookAhead)
@@ -873,9 +848,9 @@ namespace OpenBve
                     TrackManager.TrackFollower f = TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].FrontAxle.Follower;
                     f.TriggerType = TrackManager.EventTriggerType.None;
                     TrackManager.UpdateTrackFollower(ref f, f.TrackPosition + d, true, false);
-                    double rx = f.WorldPosition.X - cx + World.CameraTrackFollower.WorldSide.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
-                    double ry = f.WorldPosition.Y - cy + World.CameraTrackFollower.WorldSide.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
-                    double rz = f.WorldPosition.Z - cz + World.CameraTrackFollower.WorldSide.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + World.CameraTrackFollower.WorldUp.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + World.CameraTrackFollower.WorldDirection.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
+                    double rx = f.WorldPosition.X - cx + CameraTrackFollower.WorldSide.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + CameraTrackFollower.WorldUp.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + CameraTrackFollower.WorldDirection.X * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
+                    double ry = f.WorldPosition.Y - cy + CameraTrackFollower.WorldSide.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + CameraTrackFollower.WorldUp.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + CameraTrackFollower.WorldDirection.Y * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
+                    double rz = f.WorldPosition.Z - cz + CameraTrackFollower.WorldSide.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverX + CameraTrackFollower.WorldUp.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverY + CameraTrackFollower.WorldDirection.Z * TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverZ;
                     Vectors.Normalize(ref rx, ref ry, ref rz);
                     double t = dz * (sy * ux - sx * uy) + dy * (-sz * ux + sx * uz) + dx * (sz * uy - sy * uz);
                     if (t != 0.0)
@@ -911,12 +886,10 @@ namespace OpenBve
                 }
                 {
                     // cab pitch and yaw
-                    double tx = World.CameraCurrentAlignment.Position.X;
-                    double ty = World.CameraCurrentAlignment.Position.Y;
-                    double tz = World.CameraCurrentAlignment.Position.Z;
-                    double dx2 = dx, dy2 = dy, dz2 = dz;
-                    double ux2 = ux, uy2 = uy, uz2 = uz;
-                    if ((World.CameraMode == CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
+                    Vectors.Vector3D APos = CameraCurrentAlignment.Position;
+                    Vectors.Vector3D WDir = CameraTrackFollower.WorldDirection;
+                    Vectors.Vector3D WUp = CameraTrackFollower.WorldUp;
+                    if ((CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
                     {
                         int c = TrainManager.PlayerTrain.DriverCar;
                         if (c >= 0)
@@ -926,26 +899,26 @@ namespace OpenBve
                                 double a = TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverPitch;
                                 double cosa = Math.Cos(-a);
                                 double sina = Math.Sin(-a);
-                                Vectors.Rotate(ref dx2, ref dy2, ref dz2, sx, sy, sz, cosa, sina);
-                                Vectors.Rotate(ref ux2, ref uy2, ref uz2, sx, sy, sz, cosa, sina);
+                                WDir.Rotate(CameraTrackFollower.WorldSide, cosa, sina);
+                                WUp.Rotate(CameraTrackFollower.WorldSide, cosa, sina);
                             }
                         }
                     }
-                    cx += sx * tx + ux2 * ty + dx2 * tz;
-                    cy += sy * tx + uy2 * ty + dy2 * tz;
-                    cz += sz * tx + uz2 * ty + dz2 * tz;
+                    cx += sx * APos.X + WUp.X * APos.Y + WDir.X * APos.Z;
+                    cy += sy * APos.X + WUp.Y * APos.Y + WDir.Y * APos.Z;
+                    cz += sz * APos.X + WUp.Z * APos.Y + WDir.Z * APos.Z;
                 }
                 // yaw, pitch, roll
-                double headYaw = World.CameraCurrentAlignment.Yaw + lookaheadYaw;
-                if ((World.CameraMode == CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
+                double headYaw = CameraCurrentAlignment.Yaw + lookaheadYaw;
+                if ((CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
                 {
                     if (TrainManager.PlayerTrain.DriverCar >= 0)
                     {
                         headYaw += TrainManager.PlayerTrain.Cars[TrainManager.PlayerTrain.DriverCar].DriverYaw;
                     }
                 }
-                double headPitch = World.CameraCurrentAlignment.Pitch + lookaheadPitch;
-                if ((World.CameraMode == CameraViewMode.Interior | World.CameraMode == World.CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
+                double headPitch = CameraCurrentAlignment.Pitch + lookaheadPitch;
+                if ((CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead) & TrainManager.PlayerTrain != null)
                 {
                     if (TrainManager.PlayerTrain.DriverCar >= 0)
                     {
@@ -954,7 +927,7 @@ namespace OpenBve
                 }
                 double bodyPitch = 0.0;
                 double bodyRoll = 0.0;
-                double headRoll = World.CameraCurrentAlignment.Roll;
+                double headRoll = CameraCurrentAlignment.Roll;
                 // rotation
                 if (CameraRestriction == CameraRestrictionMode.NotAvailable & (CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead))
                 {

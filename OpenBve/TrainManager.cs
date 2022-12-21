@@ -1,6 +1,8 @@
-﻿using OpenBve.Parsers;
+﻿using OpenBveApi.Math;
+using OpenBve.Parsers;
 using OpenBve.Worlds;
 using System;
+using System.Windows.Forms;
 
 namespace OpenBve
 {
@@ -655,23 +657,16 @@ namespace OpenBve
         internal static void UpdateTopplingCantAndSpring(Train Train, int CarIndex, double TimeElapsed)
         {
             // get direction, up and side vectors
-            double dx, dy, dz;
-            double ux, uy, uz;
-            double sx, sy, sz;
-            {
-                dx = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition).X;
-                dy = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition).Y;
-                dz = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition).Z;
-                double t = 1.0 / Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
-                dx *= t; dy *= t; dz *= t;
-                t = 1.0 / Math.Sqrt((dx * dx) + (dz * dz));
-                double ex = dx * t;
-                double ez = dz * t;
-                sx = ez;
-                sy = 0.0;
-                sz = -ex;
-                Vectors.Cross(dx, dy, dz, sx, sy, sz, out ux, out uy, out uz);
-            }
+            Vectors.Vector3D Direction;
+            Direction = Vectors.Vector3D.Subtract(Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition, Train.Cars[CarIndex].RearAxle.Follower.WorldPosition);
+            Direction.Normalize();
+
+            Vector2 e = new Vector2(Direction.X, Direction.Z);
+            e.Normalize();
+
+            Vectors.Vector3D Side = new Vectors.Vector3D(e.Y, 0.0, -e.X);
+            Vectors.Vector3D Up = Vectors.Vector3D.Cross(Direction, Side);
+
             // cant and radius
             double c;
             {
@@ -895,9 +890,11 @@ namespace OpenBve
                 double a = Train.Cars[CarIndex].Specs.CurrentRollDueToTopplingAngle + Train.Cars[CarIndex].Specs.CurrentRollDueToCantAngle;
                 double x = Math.Sign(a) * 0.5 * Game.RouteRailGauge * (1.0 - Math.Cos(a));
                 double y = Math.Abs(0.5 * Game.RouteRailGauge * Math.Sin(a));
-                double cx = sx * x + ux * y;
-                double cy = sy * x + uy * y;
-                double cz = sz * x + uz * y;
+                
+                double cx = (Side.X * x) + (Up.X * y);
+                double cy = (Side.Y * x) + (Up.Y * y);
+                double cz = (Side.Z * x) + (Up.Z * y);
+                
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X += cx;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y += cy;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z += cz;
@@ -910,19 +907,9 @@ namespace OpenBve
                 double a = -Train.Cars[CarIndex].Specs.CurrentRollDueToTopplingAngle - Train.Cars[CarIndex].Specs.CurrentRollDueToCantAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                Vectors.Rotate( ref sx, 
-                                ref sy, 
-                                ref sz, 
-                                dx, dy, dz, 
-                                cosa, sina);
-                Vectors.Rotate( ref ux, 
-                                ref uy, 
-                                ref uz, 
-                                dx, dy, dz, 
-                                cosa, sina);
-                Train.Cars[CarIndex].Up.X = ux;
-                Train.Cars[CarIndex].Up.Y = uy;
-                Train.Cars[CarIndex].Up.Z = uz;
+                Side.Rotate(Direction, cosa, sina);
+                Up.Rotate(Direction, cosa, sina);
+                Train.Cars[CarIndex].Up = Up;
             }
             // apply pitching
             if (Train.Cars[CarIndex].CurrentCarSection >= 0 && Train.Cars[CarIndex].CarSections[Train.Cars[CarIndex].CurrentCarSection].Overlay)
@@ -930,16 +917,9 @@ namespace OpenBve
                 double a = Train.Cars[CarIndex].Specs.CurrentPitchDueToAccelerationAngle;
                 double cosa = Math.Cos(a);
                 double sina = Math.Sin(a);
-                Vectors.Rotate( ref dx, 
-                                ref dy, 
-                                ref dz, 
-                                sx, sy, sz, 
-                                cosa, sina);
-                Vectors.Rotate( ref ux, 
-                                ref uy, 
-                                ref uz, 
-                                sx, sy, sz, 
-                                cosa, sina);
+                Direction.Rotate(Side, cosa, sina);
+                Up.Rotate(Side, cosa, sina);
+                
                 double cx = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X);
                 double cy = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y);
                 double cz = 0.5 * (Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z + Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z);
@@ -949,25 +929,18 @@ namespace OpenBve
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X -= cx;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y -= cy;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z -= cz;
-                Vectors.Rotate( ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X, 
-                                ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y, 
-                                ref Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z, 
-                                sx, sy, sz, 
-                                cosa, sina);
-                Vectors.Rotate( ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X, 
-                                ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y, 
-                                ref Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z, 
-                                sx, sy, sz, 
-                                cosa, sina);
+
+                Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Rotate(Side, cosa, sina);
+                Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Rotate(Side, cosa, sina);
+
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.X += cx;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Y += cy;
                 Train.Cars[CarIndex].FrontAxle.Follower.WorldPosition.Z += cz;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.X += cx;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Y += cy;
                 Train.Cars[CarIndex].RearAxle.Follower.WorldPosition.Z += cz;
-                Train.Cars[CarIndex].Up.X = ux;
-                Train.Cars[CarIndex].Up.Y = uy;
-                Train.Cars[CarIndex].Up.Z = uz;
+
+                Train.Cars[CarIndex].Up = Up;
             }
             // spring sound
             {
