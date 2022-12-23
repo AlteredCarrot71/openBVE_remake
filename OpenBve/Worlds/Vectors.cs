@@ -104,13 +104,13 @@ namespace OpenBve.Worlds
 
             public void Normalize()
             {
-                double t = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z);
-                if (t != 0.0)
+                double Magnitude = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z);
+                if (Magnitude != 0.0)
                 {
-                    t = 1.0 / Math.Sqrt(t);
-                    this.X *= t;
-                    this.Y *= t;
-                    this.Z *= t;
+                    Magnitude = 1.0 / Math.Sqrt(Magnitude);
+                    this.X *= Magnitude;
+                    this.Y *= Magnitude;
+                    this.Z *= Magnitude;
                 }
             }
 

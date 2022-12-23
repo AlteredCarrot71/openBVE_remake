@@ -620,21 +620,20 @@ namespace OpenBve
         }
         internal static bool PerformCameraRestrictionTest()
         {
-            if (World.CameraRestriction == CameraRestrictionMode.On)
+            if (CameraRestriction == CameraRestrictionMode.On)
             {
                 Vectors.Vector3D[] p = new Vectors.Vector3D[] { CameraRestrictionBottomLeft, CameraRestrictionTopRight };
                 Vector2[] r = new Vector2[2];
                 for (int j = 0; j < 2; j++)
                 {
                     // determine relative world coordinates
-                    //Vectors.Rotate(ref p[j].X, ref p[j].Y, ref p[j].Z, World.AbsoluteCameraDirection.X, World.AbsoluteCameraDirection.Y, World.AbsoluteCameraDirection.Z, World.AbsoluteCameraUp.X, World.AbsoluteCameraUp.Y, World.AbsoluteCameraUp.Z, World.AbsoluteCameraSide.X, World.AbsoluteCameraSide.Y, World.AbsoluteCameraSide.Z);
-                    p[j].Rotate(World.AbsoluteCameraDirection, World.AbsoluteCameraUp, World.AbsoluteCameraSide);
-                    double rx = -Math.Tan(World.CameraCurrentAlignment.Yaw) - World.CameraCurrentAlignment.Position.X;
-                    double ry = -Math.Tan(World.CameraCurrentAlignment.Pitch) - World.CameraCurrentAlignment.Position.Y;
-                    double rz = -World.CameraCurrentAlignment.Position.Z;
-                    p[j].X += rx * World.AbsoluteCameraSide.X + ry * World.AbsoluteCameraUp.X + rz * World.AbsoluteCameraDirection.X;
-                    p[j].Y += rx * World.AbsoluteCameraSide.Y + ry * World.AbsoluteCameraUp.Y + rz * World.AbsoluteCameraDirection.Y;
-                    p[j].Z += rx * World.AbsoluteCameraSide.Z + ry * World.AbsoluteCameraUp.Z + rz * World.AbsoluteCameraDirection.Z;
+                    p[j].Rotate(AbsoluteCameraDirection, AbsoluteCameraUp, AbsoluteCameraSide);
+                    double rx = -Math.Tan(CameraCurrentAlignment.Yaw) - CameraCurrentAlignment.Position.X;
+                    double ry = -Math.Tan(CameraCurrentAlignment.Pitch) - CameraCurrentAlignment.Position.Y;
+                    double rz = -CameraCurrentAlignment.Position.Z;
+                    p[j].X += rx * AbsoluteCameraSide.X + ry * AbsoluteCameraUp.X + rz * AbsoluteCameraDirection.X;
+                    p[j].Y += rx * AbsoluteCameraSide.Y + ry * AbsoluteCameraUp.Y + rz * AbsoluteCameraDirection.Y;
+                    p[j].Z += rx * AbsoluteCameraSide.Z + ry * AbsoluteCameraUp.Z + rz * AbsoluteCameraDirection.Z;
                     // determine screen coordinates
                     double ez = AbsoluteCameraDirection.X * p[j].X + AbsoluteCameraDirection.Y * p[j].Y + AbsoluteCameraDirection.Z * p[j].Z;
                     if (ez == 0.0) return false;
@@ -676,7 +675,7 @@ namespace OpenBve
                 }
                 // camera
                 // position to focus on
-                double tx, ty, tz;
+                Vectors.Vector3D TempVector;
                 double zoomMultiplier;
                 {
                     const double heightFactor = 0.75;
@@ -717,24 +716,19 @@ namespace OpenBve
                             double t = 0.5 - (secondBestDistance - bestDistance) / (2.0 * maxDistance);
                             if (t < 0.0) t = 0.0;
                             t = 2.0 * t * t; /* in order to change the shape of the interpolation curve */
-                            tx = (1.0 - t) * BestTrainPosition.X + t * SecondBestTrainPosition.X;
-                            ty = (1.0 - t) * BestTrainPosition.Y + t * SecondBestTrainPosition.Y;
-                            tz = (1.0 - t) * BestTrainPosition.Z + t * SecondBestTrainPosition.Z;
+                            TempVector = ((1.0 - t) * BestTrainPosition) + (t * SecondBestTrainPosition);
                             zoomMultiplier = 1.0 - 2.0 * t;
                         }
                         else
                         {
-                            tx = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.X + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.X);
-                            ty = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Y + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.Y) + heightFactor * bestTrain.Cars[0].Height;
-                            tz = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition.Z + bestTrain.Cars[0].RearAxle.Follower.WorldPosition.Z);
+                            TempVector = 0.5 * (bestTrain.Cars[0].FrontAxle.Follower.WorldPosition + bestTrain.Cars[0].RearAxle.Follower.WorldPosition);
+                            TempVector.Y += heightFactor * bestTrain.Cars[0].Height;
                             zoomMultiplier = 1.0;
                         }
                     }
                     else
                     {
-                        tx = 0.0;
-                        ty = 0.0;
-                        tz = 0.0;
+                        TempVector = Vectors.Vector3D.Null;
                         zoomMultiplier = 1.0;
                     }
                 }
@@ -756,13 +750,14 @@ namespace OpenBve
                     double cy = CameraTrackFollower.WorldPosition.Y + (sy * ox) + (uy * oy) + (dy * oz);
                     double cz = CameraTrackFollower.WorldPosition.Z + (sz * ox) + (uz * oy) + (dz * oz);
                     AbsoluteCameraPosition = new Vectors.Vector3D(cx, cy, cz);
-                    dx = tx - cx;
-                    dy = ty - cy;
-                    dz = tz - cz;
-                    double t = 1.0 / Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
-                    dx *= t;
-                    dy *= t;
-                    dz *= t;
+                    dx = TempVector.X - AbsoluteCameraPosition.X;
+                    dy = TempVector.Y - AbsoluteCameraPosition.Y;
+                    dz = TempVector.Z - AbsoluteCameraPosition.Z;
+                    double t = Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
+                    double ti = 1.0 / t;
+                    dx *= ti;
+                    dy *= ti;
+                    dz *= ti;
                     AbsoluteCameraDirection = new Vectors.Vector3D(dx, dy, dz);
                     AbsoluteCameraSide = new Vectors.Vector3D(dz, 0.0, -dx);
                     AbsoluteCameraSide.Normalize();
@@ -785,7 +780,7 @@ namespace OpenBve
                         {
                             zoom = 1.0;
                         }
-                        World.VerticalViewingAngle = World.OriginalVerticalViewingAngle / zoom;
+                        VerticalViewingAngle = OriginalVerticalViewingAngle / zoom;
                         MainLoop.UpdateViewport(MainLoop.ViewPortChangeMode.NoChange);
                     }
                 }
@@ -1095,9 +1090,9 @@ namespace OpenBve
         }
         private static void ApplyZoom()
         {
-            World.VerticalViewingAngle = World.OriginalVerticalViewingAngle * Math.Exp(World.CameraCurrentAlignment.Zoom);
-            if (World.VerticalViewingAngle < 0.001) World.VerticalViewingAngle = 0.001;
-            if (World.VerticalViewingAngle > 1.5) World.VerticalViewingAngle = 1.5;
+            VerticalViewingAngle = OriginalVerticalViewingAngle * Math.Exp(CameraCurrentAlignment.Zoom);
+            if (VerticalViewingAngle < 0.001) VerticalViewingAngle = 0.001;
+            if (VerticalViewingAngle > 1.5) VerticalViewingAngle = 1.5;
             MainLoop.UpdateViewport(MainLoop.ViewPortChangeMode.NoChange);
         }
         #endregion
@@ -1105,8 +1100,8 @@ namespace OpenBve
         #region update viewing distance
         internal static void UpdateViewingDistances()
         {
-            double f = Math.Atan2(World.CameraTrackFollower.WorldDirection.Z, World.CameraTrackFollower.WorldDirection.X);
-            double c = Math.Atan2(World.AbsoluteCameraDirection.Z, World.AbsoluteCameraDirection.X) - f;
+            double f = Math.Atan2(CameraTrackFollower.WorldDirection.Z, CameraTrackFollower.WorldDirection.X);
+            double c = Math.Atan2(AbsoluteCameraDirection.Z, AbsoluteCameraDirection.X) - f;
             if (c < -Math.PI)
             {
                 c += 2.0 * Math.PI;
@@ -1115,8 +1110,8 @@ namespace OpenBve
             {
                 c -= 2.0 * Math.PI;
             }
-            double a0 = c - 0.5 * World.HorizontalViewingAngle;
-            double a1 = c + 0.5 * World.HorizontalViewingAngle;
+            double a0 = c - 0.5 * HorizontalViewingAngle;
+            double a1 = c + 0.5 * HorizontalViewingAngle;
             double max;
             if (a0 <= 0.0 & a1 >= 0.0)
             {
@@ -1141,10 +1136,10 @@ namespace OpenBve
                 min = c0 < c1 ? c0 : c1;
                 if (min > 0.0) min = 0.0;
             }
-            double d = World.BackgroundImageDistance + World.ExtraViewingDistance;
-            World.ForwardViewingDistance = d * max;
-            World.BackwardViewingDistance = -d * min;
-            ObjectManager.UpdateVisibility(World.CameraTrackFollower.TrackPosition + World.CameraCurrentAlignment.Position.Z, true);
+            double d = BackgroundImageDistance + ExtraViewingDistance;
+            ForwardViewingDistance = d * max;
+            BackwardViewingDistance = -d * min;
+            ObjectManager.UpdateVisibility(CameraTrackFollower.TrackPosition + CameraCurrentAlignment.Position.Z, true);
         }
         #endregion
 
