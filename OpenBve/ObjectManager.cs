@@ -1052,9 +1052,6 @@ namespace OpenBve
                     case ".b3d":
                         Result = CsvB3dObjectParser.ReadObject(FileName, Encoding, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
                         break;
-                    case ".x":
-                        Result = XObjectParser.ReadObject(FileName, Encoding, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
-                        break;
                     case ".animated":
                         Result = AnimatedObjectParser.ReadObject(FileName, Encoding, LoadMode);
                         break;
@@ -1111,9 +1108,6 @@ namespace OpenBve
                     case ".csv":
                     case ".b3d":
                         Result = CsvB3dObjectParser.ReadObject(FileName, Encoding, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
-                        break;
-                    case ".x":
-                        Result = XObjectParser.ReadObject(FileName, Encoding, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
                         break;
                     case ".animated":
                         Interface.AddMessage(Interface.MessageType.Error, false, "Tried to load an animated object even though only static objects are allowed: " + FileName);

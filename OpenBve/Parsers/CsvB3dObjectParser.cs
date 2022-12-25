@@ -77,7 +77,7 @@ namespace OpenBve.Parsers
             string[] Lines = System.IO.File.ReadAllLines(FileName, Encoding);
             // parse lines
             MeshBuilder Builder = new MeshBuilder();
-            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[4];
+            Vectors.Vector3D[] Normals = new Vectors.Vector3D[4];
             for (int i = 0; i < Lines.Length; i++)
             {
                 {
@@ -162,7 +162,7 @@ namespace OpenBve.Parsers
                                 }
                                 ApplyMeshBuilder(ref Object, Builder, LoadMode, ForceTextureRepeatX, ForceTextureRepeatY);
                                 Builder = new MeshBuilder();
-                                Normals = new Vectors.Vector3Df[4];
+                                Normals = new Vectors.Vector3D[4];
                             }
                             break;
                         case "addvertex":
@@ -216,10 +216,10 @@ namespace OpenBve.Parsers
                                 Array.Resize<World.Vertex>(ref Builder.Vertices, Builder.Vertices.Length + 1);
                                 while (Builder.Vertices.Length >= Normals.Length)
                                 {
-                                    Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
+                                    Array.Resize<Vectors.Vector3D>(ref Normals, Normals.Length << 1);
                                 }
                                 Builder.Vertices[Builder.Vertices.Length - 1].Coordinates = new Vectors.Vector3D(vx, vy, vz);
-                                Normals[Builder.Vertices.Length - 1] = new Vectors.Vector3Df((float)nx, (float)ny, (float)nz);
+                                Normals[Builder.Vertices.Length - 1] = new Vectors.Vector3D(nx, ny, nz);
                             }
                             break;
                         case "addface":
@@ -286,7 +286,7 @@ namespace OpenBve.Parsers
                                         Builder.Faces[f].Vertices = new World.MeshFaceVertex[Arguments.Length];
                                         while (Builder.Vertices.Length > Normals.Length)
                                         {
-                                            Array.Resize<Vectors.Vector3Df>(ref Normals, Normals.Length << 1);
+                                            Array.Resize<Vectors.Vector3D>(ref Normals, Normals.Length << 1);
                                         }
                                         for (int j = 0; j < Arguments.Length; j++)
                                         {
@@ -959,7 +959,7 @@ namespace OpenBve.Parsers
             // initialization
             int v = Builder.Vertices.Length;
             Array.Resize<World.Vertex>(ref Builder.Vertices, v + 2 * n);
-            Vectors.Vector3Df[] Normals = new Vectors.Vector3Df[2 * n];
+            Vectors.Vector3D[] Normals = new Vectors.Vector3D[2 * n];
             double d = 2.0 * Math.PI / (double)n;
             double g = 0.5 * h;
             double t = 0.0;
@@ -980,8 +980,8 @@ namespace OpenBve.Parsers
                 Vectors.Vector3D tnormal = new Vectors.Vector3D(dx * ns, 0.0, dz * ns);
                 Vectors.Vector3D tside = Vectors.Vector3D.Cross(tnormal, Vectors.Vector3D.Down);
                 tnormal.Rotate(tside, cosa, sina);
-                Normals[2 * i + 0] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);
-                Normals[2 * i + 1] = new Vectors.Vector3Df((float)tnormal.X, (float)tnormal.Y, (float)tnormal.Z);
+                Normals[2 * i + 0] = new Vectors.Vector3D(tnormal.X, tnormal.Y, tnormal.Z);
+                Normals[2 * i + 1] = new Vectors.Vector3D(tnormal.X, tnormal.Y, tnormal.Z);
                 t += d;
             }
             // faces
@@ -1054,13 +1054,13 @@ namespace OpenBve.Parsers
             {
                 for (int j = 0; j < Builder.Faces[i].Vertices.Length; j++)
                 {
-                    float nx2 = Builder.Faces[i].Vertices[j].Normal.X * Builder.Faces[i].Vertices[j].Normal.X;
-                    float ny2 = Builder.Faces[i].Vertices[j].Normal.Y * Builder.Faces[i].Vertices[j].Normal.Y;
-                    float nz2 = Builder.Faces[i].Vertices[j].Normal.Z * Builder.Faces[i].Vertices[j].Normal.Z;
-                    float u = nx2 * rx2 + ny2 * ry2 + nz2 * rz2;
+                    double nx2 = Builder.Faces[i].Vertices[j].Normal.X * Builder.Faces[i].Vertices[j].Normal.X;
+                    double ny2 = Builder.Faces[i].Vertices[j].Normal.Y * Builder.Faces[i].Vertices[j].Normal.Y;
+                    double nz2 = Builder.Faces[i].Vertices[j].Normal.Z * Builder.Faces[i].Vertices[j].Normal.Z;
+                    double u = nx2 * rx2 + ny2 * ry2 + nz2 * rz2;
                     if (u != 0.0)
                     {
-                        u = (float)Math.Sqrt((double)((nx2 + ny2 + nz2) / u));
+                        u = Math.Sqrt((nx2 + ny2 + nz2) / u);
                         Builder.Faces[i].Vertices[j].Normal.X *= rx * u;
                         Builder.Faces[i].Vertices[j].Normal.Y *= ry * u;
                         Builder.Faces[i].Vertices[j].Normal.Z *= rz * u;
@@ -1094,13 +1094,13 @@ namespace OpenBve.Parsers
             {
                 for (int k = 0; k < Object.Mesh.Faces[j].Vertices.Length; k++)
                 {
-                    float nx2 = Object.Mesh.Faces[j].Vertices[k].Normal.X * Object.Mesh.Faces[j].Vertices[k].Normal.X;
-                    float ny2 = Object.Mesh.Faces[j].Vertices[k].Normal.Y * Object.Mesh.Faces[j].Vertices[k].Normal.Y;
-                    float nz2 = Object.Mesh.Faces[j].Vertices[k].Normal.Z * Object.Mesh.Faces[j].Vertices[k].Normal.Z;
-                    float u = nx2 * rx2 + ny2 * ry2 + nz2 * rz2;
+                    double nx2 = Object.Mesh.Faces[j].Vertices[k].Normal.X * Object.Mesh.Faces[j].Vertices[k].Normal.X;
+                    double ny2 = Object.Mesh.Faces[j].Vertices[k].Normal.Y * Object.Mesh.Faces[j].Vertices[k].Normal.Y;
+                    double nz2 = Object.Mesh.Faces[j].Vertices[k].Normal.Z * Object.Mesh.Faces[j].Vertices[k].Normal.Z;
+                    double u = nx2 * rx2 + ny2 * ry2 + nz2 * rz2;
                     if (u != 0.0)
                     {
-                        u = (float)Math.Sqrt((double)((nx2 + ny2 + nz2) / u));
+                        u = Math.Sqrt((nx2 + ny2 + nz2) / u);
                         Object.Mesh.Faces[j].Vertices[k].Normal.X *= rx * u;
                         Object.Mesh.Faces[j].Vertices[k].Normal.Y *= ry * u;
                         Object.Mesh.Faces[j].Vertices[k].Normal.Z *= rz * u;

@@ -28,6 +28,15 @@ namespace OpenBve.Worlds
                 this.Z = t * Vector.Y;
             }
             /// <summary>Returns the sum of two vectors.</summary>
+
+            public bool IsZero()
+            {
+                if (this.X != 0.0) return false;
+                if (this.Y != 0.0) return false;
+                if (this.Z != 0.0) return false;
+                return true;
+            }
+
             public static Vector3D Add(Vector3D A, Vector3D B)
             {
                 return new Vector3D(A.X + B.X, A.Y + B.Y, A.Z + B.Z);
@@ -121,73 +130,6 @@ namespace OpenBve.Worlds
             public static Vector3D Down = new Vector3D(0.0, 1.0, 0.0);
 
             public static Vector3D Forward = new Vector3D(0.0, 0.0, 1.0);
-        }
-        /// <summary>Represents a 3D vector of System.Float coordinates.</summary>
-        public struct Vector3Df
-        {
-            internal float X;
-            internal float Y;
-            internal float Z;
-            public Vector3Df(float X, float Y, float Z)
-            {
-                this.X = X;
-                this.Y = Y;
-                this.Z = Z;
-            }
-            public bool IsZero()
-            {
-                if (this.X != 0.0f) return false;
-                if (this.Y != 0.0f) return false;
-                if (this.Z != 0.0f) return false;
-                return true;
-            }
-
-            public void Rotate(Vector3D Direction, double cosa, double sina)
-            {
-                double t = 1.0 / Math.Sqrt((Direction.X * Direction.X) + (Direction.Y * Direction.Y) + (Direction.Z * Direction.Z));
-                double dx = Direction.X * t;
-                double dy = Direction.Y * t;
-                double dz = Direction.Z * t;
-                double oc = 1.0 - cosa;
-                double x = ((cosa + (oc * dx * dx)) * (double)this.X) + (((oc * dx * dy) - (sina * dz)) * (double)this.Y) + (((oc * dx * dz) + (sina * dy)) * (double)this.Z);
-                double y = ((cosa + (oc * dy * dy)) * (double)this.Y) + (((oc * dx * dy) + (sina * dz)) * (double)this.X) + (((oc * dy * dz) - (sina * dx)) * (double)this.Z);
-                double z = ((cosa + (oc * dz * dz)) * (double)this.Z) + (((oc * dx * dz) - (sina * dy)) * (double)this.X) + (((oc * dy * dz) + (sina * dx)) * (double)this.Y);
-                this.X = (float)x;
-                this.Y = (float)y;
-                this.Z = (float)z;
-            }
-            public void Rotate(Vector3D Direction, Vector3D Up, Vector3D Side)
-            {
-                double x, y, z;
-                x = (Side.X * (double)this.X) + (Up.X * (double)this.Y) + (Direction.X * (double)this.Z);
-                y = (Side.Y * (double)this.X) + (Up.Y * (double)this.Y) + (Direction.Y * (double)this.Z);
-                z = (Side.Z * (double)this.X) + (Up.Z * (double)this.Y) + (Direction.Z * (double)this.Z);
-                this.X = (float)x; 
-                this.Y = (float)y; 
-                this.Z = (float)z;
-            }
-            public void Rotate(Transformation t)
-            {
-                double x, y, z;
-                x = (t.X.X * (double)this.X) + (t.Y.X * (double)this.Y) + (t.Z.X * (double)this.Z);
-                y = (t.X.Y * (double)this.X) + (t.Y.Y * (double)this.Y) + (t.Z.Y * (double)this.Z);
-                z = (t.X.Z * (double)this.X) + (t.Y.Z * (double)this.Y) + (t.Z.Z * (double)this.Z);
-                this.X = (float)x; 
-                this.Y = (float)y; 
-                this.Z = (float)z;
-            }
-
-            public void Normalize()
-            {
-                float t = (this.X * this.X) + (this.Y * this.Y) + (this.Z * this.Z);
-                if (t != 0.0)
-                {
-                    t = (float)((float)1.0 / Math.Sqrt(t));
-                    this.X *= t;
-                    this.Y *= t;
-                    this.Z *= t;
-                }
-            }
         }
         
         public struct Transformation

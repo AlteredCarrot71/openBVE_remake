@@ -97,13 +97,13 @@ namespace OpenBve
             /// <summary>A reference to an element in the Vertex array of the contained Mesh structure.</summary>
             internal ushort Index;
             /// <summary>The normal to be used at the vertex.</summary>
-            internal Vectors.Vector3Df Normal;
+            internal Vectors.Vector3D Normal;
             internal MeshFaceVertex(int Index)
             {
                 this.Index = (ushort)Index;
-                this.Normal = new Vectors.Vector3Df(0.0f, 0.0f, 0.0f);
+                this.Normal = new Vectors.Vector3D(0.0, 0.0, 0.0);
             }
-            internal MeshFaceVertex(int Index, Vectors.Vector3Df Normal)
+            internal MeshFaceVertex(int Index, Vectors.Vector3D Normal)
             {
                 this.Index = (ushort)Index;
                 this.Normal = Normal;
@@ -259,7 +259,7 @@ namespace OpenBve
                     {
                         if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
                         {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(mx, my, mz);
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3D(mx, my, mz);
                         }
                     }
                 }
@@ -269,7 +269,7 @@ namespace OpenBve
                     {
                         if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
                         {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(0.0f, 1.0f, 0.0f);
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3D(0.0, 1.0, 0.0);
                         }
                     }
                 }

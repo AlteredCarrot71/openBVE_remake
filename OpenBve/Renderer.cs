@@ -146,7 +146,7 @@ namespace OpenBve
         internal static bool OptionLighting = true;
         internal static Color24 OptionAmbientColor = new Color24(160, 160, 160);
         internal static Color24 OptionDiffuseColor = new Color24(160, 160, 160);
-        internal static Vectors.Vector3Df OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+        internal static Vectors.Vector3D OptionLightPosition = new Vectors.Vector3D(0.223606797749979, 0.86602540378444, -0.447213595499958);
         internal static float OptionLightingResultingAmount = 1.0f;
         internal static bool OptionNormals = false;
         internal static bool OptionWireframe = false;
@@ -184,7 +184,7 @@ namespace OpenBve
             OptionLighting = true;
             OptionAmbientColor = new Color24(160, 160, 160);
             OptionDiffuseColor = new Color24(160, 160, 160);
-            OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
+            OptionLightPosition = new Vectors.Vector3D(0.223606797749979, 0.86602540378444, -0.447213595499958);
             OptionLightingResultingAmount = 1.0f;
             OptionClock = false;
             OptionBrakeSystems = false;
@@ -353,7 +353,7 @@ namespace OpenBve
             double uy = World.AbsoluteCameraUp.Y;
             double uz = World.AbsoluteCameraUp.Z;
             Glu.gluLookAt(0.0, 0.0, 0.0, dx, dy, dz, ux, uy, uz);
-            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, new float[] { OptionLightPosition.X, OptionLightPosition.Y, OptionLightPosition.Z, 0.0f });
+            Gl.glLightfv(Gl.GL_LIGHT0, Gl.GL_POSITION, new float[] { (float)OptionLightPosition.X, (float)OptionLightPosition.Y, (float)OptionLightPosition.Z, 0.0f });
             // fog
             double fd = Game.NextFog.TrackPosition - Game.PreviousFog.TrackPosition;
             if (fd != 0.0)
@@ -848,9 +848,9 @@ namespace OpenBve
                 {
                     for (int j = 0; j < Face.Vertices.Length; j++)
                     {
-                        Gl.glNormal3f(Face.Vertices[j].Normal.X, Face.Vertices[j].Normal.Y, Face.Vertices[j].Normal.Z);
+                        Gl.glNormal3d(Face.Vertices[j].Normal.X, Face.Vertices[j].Normal.Y, Face.Vertices[j].Normal.Z);
                         Gl.glTexCoord2d(Vertices[Face.Vertices[j].Index].TextureCoordinates.X, Vertices[Face.Vertices[j].Index].TextureCoordinates.Y);
-                        Gl.glVertex3f((float)(Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
+                        Gl.glVertex3d((Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
                     }
                 }
                 else
@@ -868,15 +868,15 @@ namespace OpenBve
                 {
                     for (int j = 0; j < Face.Vertices.Length; j++)
                     {
-                        Gl.glNormal3f(Face.Vertices[j].Normal.X, Face.Vertices[j].Normal.Y, Face.Vertices[j].Normal.Z);
-                        Gl.glVertex3f((float)(Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
+                        Gl.glNormal3d(Face.Vertices[j].Normal.X, Face.Vertices[j].Normal.Y, Face.Vertices[j].Normal.Z);
+                        Gl.glVertex3d((Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
                     }
                 }
                 else
                 {
                     for (int j = 0; j < Face.Vertices.Length; j++)
                     {
-                        Gl.glVertex3f((float)(Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (float)(Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
+                        Gl.glVertex3d((Vertices[Face.Vertices[j].Index].Coordinates.X - CameraX), (Vertices[Face.Vertices[j].Index].Coordinates.Y - CameraY), (Vertices[Face.Vertices[j].Index].Coordinates.Z - CameraZ));
                     }
                 }
             }
@@ -1080,8 +1080,8 @@ namespace OpenBve
                         y1 = (float)(0.375 * World.BackgroundImageDistance);
                     }
                     const int n = 32;
-                    Vectors.Vector3Df[] bottom = new Vectors.Vector3Df[n];
-                    Vectors.Vector3Df[] top = new Vectors.Vector3Df[n];
+                    Vectors.Vector3D[] bottom = new Vectors.Vector3D[n];
+                    Vectors.Vector3D[] top = new Vectors.Vector3D[n];
                     double angleValue = 2.61799387799149 - 3.14159265358979 / (double)n;
                     double angleIncrement = 6.28318530717958 / (double)n;
                     /*
@@ -1093,8 +1093,8 @@ namespace OpenBve
                     {
                         float x = (float)(World.BackgroundImageDistance * Math.Cos(angleValue));
                         float z = (float)(World.BackgroundImageDistance * Math.Sin(angleValue));
-                        bottom[i] = new Vectors.Vector3Df(scale * x, scale * y0, scale * z);
-                        top[i] = new Vectors.Vector3Df(scale * x, scale * y1, scale * z);
+                        bottom[i] = new Vectors.Vector3D(scale * x, scale * y0, scale * z);
+                        top[i] = new Vectors.Vector3D(scale * x, scale * y1, scale * z);
                         angleValue += angleIncrement;
                     }
                     float textureStart = 0.5f * (float)Data.Repetition / (float)n;
@@ -1106,29 +1106,29 @@ namespace OpenBve
                         // side wall
                         Gl.glBegin(Gl.GL_QUADS);
                         Gl.glTexCoord2d(textureX, 0.005f);
-                        Gl.glVertex3f(top[i].X, top[i].Y, top[i].Z);
+                        Gl.glVertex3d(top[i].X, top[i].Y, top[i].Z);
                         Gl.glTexCoord2d(textureX, 0.995f);
-                        Gl.glVertex3f(bottom[i].X, bottom[i].Y, bottom[i].Z);
+                        Gl.glVertex3d(bottom[i].X, bottom[i].Y, bottom[i].Z);
                         Gl.glTexCoord2d(textureX + textureIncrement, 0.995f);
-                        Gl.glVertex3f(bottom[j].X, bottom[j].Y, bottom[j].Z);
+                        Gl.glVertex3d(bottom[j].X, bottom[j].Y, bottom[j].Z);
                         Gl.glTexCoord2d(textureX + textureIncrement, 0.005f);
-                        Gl.glVertex3f(top[j].X, top[j].Y, top[j].Z);
+                        Gl.glVertex3d(top[j].X, top[j].Y, top[j].Z);
                         Gl.glEnd();
                         // top cap
                         Gl.glBegin(Gl.GL_TRIANGLES);
                         Gl.glTexCoord2d(textureX, 0.005f);
-                        Gl.glVertex3f(top[i].X, top[i].Y, top[i].Z);
+                        Gl.glVertex3d(top[i].X, top[i].Y, top[i].Z);
                         Gl.glTexCoord2d(textureX + textureIncrement, 0.005f);
-                        Gl.glVertex3f(top[j].X, top[j].Y, top[j].Z);
+                        Gl.glVertex3d(top[j].X, top[j].Y, top[j].Z);
                         Gl.glTexCoord2d(textureX + 0.5 * textureIncrement, 0.1f);
-                        Gl.glVertex3f(0.0f, top[i].Y, 0.0f);
+                        Gl.glVertex3d(0.0f, top[i].Y, 0.0f);
                         // bottom cap
                         Gl.glTexCoord2d(textureX + 0.5 * textureIncrement, 0.9f);
-                        Gl.glVertex3f(0.0f, bottom[i].Y, 0.0f);
+                        Gl.glVertex3d(0.0, bottom[i].Y, 0.0);
                         Gl.glTexCoord2d(textureX + textureIncrement, 0.995f);
-                        Gl.glVertex3f(bottom[j].X, bottom[j].Y, bottom[j].Z);
+                        Gl.glVertex3d(bottom[j].X, bottom[j].Y, bottom[j].Z);
                         Gl.glTexCoord2d(textureX, 0.995f);
-                        Gl.glVertex3f(bottom[i].X, bottom[i].Y, bottom[i].Z);
+                        Gl.glVertex3d(bottom[i].X, bottom[i].Y, bottom[i].Z);
                         Gl.glEnd();
                         // finish
                         textureX += textureIncrement;

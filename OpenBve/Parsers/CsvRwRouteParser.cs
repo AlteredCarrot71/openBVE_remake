@@ -2312,7 +2312,7 @@ namespace OpenBve.Parsers
                                         double dx = Math.Cos(theta) * Math.Sin(phi);
                                         double dy = -Math.Sin(theta);
                                         double dz = Math.Cos(theta) * Math.Cos(phi);
-                                        Renderer.OptionLightPosition = new Vectors.Vector3Df((float)-dx, (float)-dy, (float)-dz);
+                                        Renderer.OptionLightPosition = new Vectors.Vector3D(-dx, -dy, -dz);
                                     }
                                     break;
                                 // train
