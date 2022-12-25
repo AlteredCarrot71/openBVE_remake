@@ -272,13 +272,6 @@ namespace OpenBve.Worlds
             }
         }
 
-        public static void Cross(double ax, double ay, double az, double bx, double by, double bz, out double cx, out double cy, out double cz)
-        {
-            cx = (ay * bz) - (az * by);
-            cy = (az * bx) - (ax * bz);
-            cz = (ax * by) - (ay * bx);
-        }
-
         public static void Rotate(ref double px, ref double py, ref double pz, double dx, double dy, double dz, double cosa, double sina)
         {
             double t = 1.0 / Math.Sqrt((dx * dx) + (dy * dy) + (dz * dz));

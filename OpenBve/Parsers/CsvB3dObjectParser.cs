@@ -1,4 +1,5 @@
-﻿using OpenBveApi.Math;
+﻿using OpenBveApi.Colors;
+using OpenBveApi.Math;
 using OpenBve.Worlds;
 using System;
 
@@ -9,10 +10,10 @@ namespace OpenBve.Parsers
         // structures
         private class Material
         {
-            internal Colors.ColorRGBA Color;
-            internal Colors.ColorRGB EmissiveColor;
+            internal Color32 Color;
+            internal Color24 EmissiveColor;
             internal bool EmissiveColorUsed;
-            internal Colors.ColorRGB TransparentColor;
+            internal Color24 TransparentColor;
             internal bool TransparentColorUsed;
             internal string DaytimeTexture;
             internal string NighttimeTexture;
@@ -20,10 +21,10 @@ namespace OpenBve.Parsers
             internal ushort GlowAttenuationData;
             internal Material()
             {
-                this.Color = new Colors.ColorRGBA(255, 255, 255, 255);
-                this.EmissiveColor = new Colors.ColorRGB(0, 0, 0);
+                this.Color = new Color32(255, 255, 255, 255);
+                this.EmissiveColor = new Color24(0, 0, 0);
                 this.EmissiveColorUsed = false;
-                this.TransparentColor = new Colors.ColorRGB(0, 0, 0);
+                this.TransparentColor = new Color24(0, 0, 0);
                 this.TransparentColorUsed = false;
                 this.DaytimeTexture = null;
                 this.NighttimeTexture = null;
@@ -614,7 +615,7 @@ namespace OpenBve.Parsers
                                 for (int j = m; j < Builder.Materials.Length; j++)
                                 {
                                     Builder.Materials[j] = new Material(Builder.Materials[j - m]);
-                                    Builder.Materials[j].Color = new Colors.ColorRGBA((byte)r, (byte)g, (byte)b, (byte)a);
+                                    Builder.Materials[j].Color = new Color32((byte)r, (byte)g, (byte)b, (byte)a);
                                     Builder.Materials[j].BlendMode = Builder.Materials[0].BlendMode;
                                     Builder.Materials[j].GlowAttenuationData = Builder.Materials[0].GlowAttenuationData;
                                     Builder.Materials[j].DaytimeTexture = Builder.Materials[0].DaytimeTexture;
@@ -679,7 +680,7 @@ namespace OpenBve.Parsers
                                 for (int j = m; j < Builder.Materials.Length; j++)
                                 {
                                     Builder.Materials[j] = new Material(Builder.Materials[j - m]);
-                                    Builder.Materials[j].EmissiveColor = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                                    Builder.Materials[j].EmissiveColor = new Color24((byte)r, (byte)g, (byte)b);
                                     Builder.Materials[j].EmissiveColorUsed = true;
                                     Builder.Materials[j].BlendMode = Builder.Materials[0].BlendMode;
                                     Builder.Materials[j].GlowAttenuationData = Builder.Materials[0].GlowAttenuationData;
@@ -742,7 +743,7 @@ namespace OpenBve.Parsers
                                 }
                                 for (int j = 0; j < Builder.Materials.Length; j++)
                                 {
-                                    Builder.Materials[j].TransparentColor = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                                    Builder.Materials[j].TransparentColor = new Color24((byte)r, (byte)g, (byte)b);
                                     Builder.Materials[j].TransparentColorUsed = true;
                                 }
                             }

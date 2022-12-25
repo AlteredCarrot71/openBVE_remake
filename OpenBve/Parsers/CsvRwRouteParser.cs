@@ -1,4 +1,5 @@
-﻿using OpenBveApi.Math;
+﻿using OpenBveApi.Colors;
+using OpenBveApi.Math;
 using OpenBve.Worlds;
 using System;
 using System.Collections.Generic;
@@ -271,7 +272,7 @@ namespace OpenBve.Parsers
                 Data.Blocks[0].Brightness = new Brightness[] { };
                 Data.Blocks[0].Fog.Start = Game.NoFogStart;
                 Data.Blocks[0].Fog.End = Game.NoFogEnd;
-                Data.Blocks[0].Fog.Color = new Colors.ColorRGB(128, 128, 128);
+                Data.Blocks[0].Fog.Color = new Color24(128, 128, 128);
                 Data.Blocks[0].Cycle = new int[] { -1 };
                 Data.Blocks[0].Height = IsRW ? 0.3 : 0.0;
                 Data.Blocks[0].RailFreeObj = new FreeObj[][] { };
@@ -2259,7 +2260,7 @@ namespace OpenBve.Parsers
                                             Interface.AddMessage(Interface.MessageType.Error, false, "BlueValue is required to be within the range from 0 to 255 in " + Command + " at line " + Expressions[j].Line.ToString(Culture) + ", column " + Expressions[j].Column.ToString(Culture) + " in file " + Expressions[j].File);
                                             b = b < 0 ? 0 : 255;
                                         }
-                                        Renderer.OptionAmbientColor = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                                        Renderer.OptionAmbientColor = new Color24((byte)r, (byte)g, (byte)b);
                                     }
                                     break;
                                 case "route.directionallight":
@@ -2292,7 +2293,7 @@ namespace OpenBve.Parsers
                                             Interface.AddMessage(Interface.MessageType.Error, false, "BlueValue is required to be within the range from 0 to 255 in " + Command + " at line " + Expressions[j].Line.ToString(Culture) + ", column " + Expressions[j].Column.ToString(Culture) + " in file " + Expressions[j].File);
                                             b = b < 0 ? 0 : 255;
                                         }
-                                        Renderer.OptionDiffuseColor = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                                        Renderer.OptionDiffuseColor = new Color24((byte)r, (byte)g, (byte)b);
                                     }
                                     break;
                                 case "route.lightdirection":
@@ -3342,7 +3343,7 @@ namespace OpenBve.Parsers
                                                         }
                                                         else
                                                         {
-                                                            Signal.SignalTextures = LoadAllTextures(f, new Colors.ColorRGB(0, 0, 0), 1, TextureManager.TextureLoadMode.Normal);
+                                                            Signal.SignalTextures = LoadAllTextures(f, new Color24(0, 0, 0), 1, TextureManager.TextureLoadMode.Normal);
                                                             Signal.GlowTextures = new int[] { };
                                                             if (Arguments.Length >= 2 && Arguments[1].Length != 0)
                                                             {
@@ -3355,7 +3356,7 @@ namespace OpenBve.Parsers
                                                                     /// <info>System.IO.Path.Combine is used here as only a base file name is provided and thus does not exist anyway</info>
                                                                     f = System.IO.Path.Combine(ObjectPath, Interface.GetCorrectedPathSeparation(Arguments[1]));
                                                                     Signal.GlowObject = ObjectManager.LoadStaticObject(f, Encoding, ObjectManager.ObjectLoadMode.Normal, false, false, false);
-                                                                    Signal.GlowTextures = LoadAllTextures(f, new Colors.ColorRGB(0, 0, 0), 1, TextureManager.TextureLoadMode.Bve4SignalGlow);
+                                                                    Signal.GlowTextures = LoadAllTextures(f, new Color24(0, 0, 0), 1, TextureManager.TextureLoadMode.Bve4SignalGlow);
                                                                     if (Signal.GlowObject != null)
                                                                     {
                                                                         for (int p = 0; p < Signal.GlowObject.Mesh.Materials.Length; p++)
@@ -3412,7 +3413,7 @@ namespace OpenBve.Parsers
                                                     }
                                                     else
                                                     {
-                                                        Data.Backgrounds[CommandIndex1].Texture = TextureManager.RegisterTexture(f, new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.Repeat, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                        Data.Backgrounds[CommandIndex1].Texture = TextureManager.RegisterTexture(f, new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.Repeat, TextureManager.TextureWrapMode.ClampToEdge, false);
                                                     }
                                                 }
                                             }
@@ -4196,7 +4197,7 @@ namespace OpenBve.Parsers
                                                 Data.Blocks[BlockIndex].Fog.Start = Game.NoFogStart;
                                                 Data.Blocks[BlockIndex].Fog.End = Game.NoFogEnd;
                                             }
-                                            Data.Blocks[BlockIndex].Fog.Color = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                                            Data.Blocks[BlockIndex].Fog.Color = new Color24((byte)r, (byte)g, (byte)b);
                                             Data.Blocks[BlockIndex].FogDefined = true;
                                         }
                                     }
@@ -5665,7 +5666,7 @@ namespace OpenBve.Parsers
                                                     Array.Resize<Marker>(ref Data.Markers, n + 1);
                                                     Data.Markers[n].StartingPosition = start;
                                                     Data.Markers[n].EndingPosition = end;
-                                                    Data.Markers[n].Texture = TextureManager.RegisterTexture(f, new Colors.ColorRGB(64, 64, 64), 1, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                    Data.Markers[n].Texture = TextureManager.RegisterTexture(f, new Color24(64, 64, 64), 1, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                                 }
                                             }
                                         }
@@ -6321,7 +6322,7 @@ namespace OpenBve.Parsers
         }
 
         // load all textures
-        private static int[] LoadAllTextures(string BaseFile, Colors.ColorRGB TransparentColor, byte TransparentColorUsed, TextureManager.TextureLoadMode LoadMode)
+        private static int[] LoadAllTextures(string BaseFile, Color24 TransparentColor, byte TransparentColorUsed, TextureManager.TextureLoadMode LoadMode)
         {
             string Folder = Interface.GetCorrectedFolderName(System.IO.Path.GetDirectoryName(BaseFile));
             if (!System.IO.Directory.Exists(Folder)) return new int[] { };
@@ -6555,8 +6556,8 @@ namespace OpenBve.Parsers
             int CurrentTrackLength = 0;
             int PreviousFogElement = -1;
             int PreviousFogEvent = -1;
-            Game.Fog PreviousFog = new Game.Fog(Game.NoFogStart, Game.NoFogEnd, new Colors.ColorRGB(128, 128, 128), -Data.BlockInterval);
-            Game.Fog CurrentFog = new Game.Fog(Game.NoFogStart, Game.NoFogEnd, new Colors.ColorRGB(128, 128, 128), 0.0);
+            Game.Fog PreviousFog = new Game.Fog(Game.NoFogStart, Game.NoFogEnd, new Color24(128, 128, 128), -Data.BlockInterval);
+            Game.Fog CurrentFog = new Game.Fog(Game.NoFogStart, Game.NoFogEnd, new Color24(128, 128, 128), 0.0);
             // process blocks
             double progressFactor = Data.Blocks.Length - Data.FirstUsedBlock == 0 ? 0.5 : 0.5 / (double)(Data.Blocks.Length - Data.FirstUsedBlock);
             for (int i = Data.FirstUsedBlock; i < Data.Blocks.Length; i++)
@@ -7022,14 +7023,12 @@ namespace OpenBve.Parsers
                                 double y2 = Data.Blocks[i + 1].Rail[j].RailEndY;
                                 Vectors.Vector3D offset2 = new Vectors.Vector3D(Direction2.Y * x2, y2, -Direction2.X * x2);
                                 Vectors.Vector3D pos2 = Vectors.Vector3D.Add(Position2, offset2);
-                                double rx = pos2.X - pos.X;
-                                double ry = pos2.Y - pos.Y;
-                                double rz = pos2.Z - pos.Z;
-                                Vectors.Normalize(ref rx, ref ry, ref rz);
-                                RailTransformation.Z = new Vectors.Vector3D(rx, ry, rz);
-                                RailTransformation.X = new Vectors.Vector3D(rz, 0.0, -rx);
+                                Vectors.Vector3D Rail = pos2 - pos;
+                                Rail.Normalize();
+                                RailTransformation.X = new Vectors.Vector3D(Rail.Z, 0.0, -Rail.X);
                                 RailTransformation.X.Normalize();
-                                RailTransformation.Y = Vectors.Vector3D.Cross(RailTransformation.Z, RailTransformation.X);
+                                RailTransformation.Y = Vectors.Vector3D.Cross(Rail, RailTransformation.X);
+                                RailTransformation.Z = Rail;
                                 double dx = Data.Blocks[i + 1].Rail[j].RailEndX - Data.Blocks[i].Rail[j].RailStartX;
                                 double dy = Data.Blocks[i + 1].Rail[j].RailEndY - Data.Blocks[i].Rail[j].RailStartY;
                                 planar = Math.Atan(dx / c);
@@ -7156,16 +7155,13 @@ namespace OpenBve.Parsers
                                         double dx = Data.Blocks[i].Sound[k].X;
                                         double dy = Data.Blocks[i].Sound[k].Y;
                                         double wa = Math.Atan2(Direction.Y, Direction.X) - planar;
-                                        double wx = Math.Cos(wa);
-                                        double wy = Math.Tan(updown);
-                                        double wz = Math.Sin(wa);
-                                        Vectors.Normalize(ref wx, ref wy, ref wz);
+                                        Vectors.Vector3D W = new Vectors.Vector3D(Math.Cos(wa), Math.Tan(updown), Math.Sin(wa));
+                                        W.Normalize();
                                         double sx = Direction.Y;
                                         double sy = 0.0;
                                         double sz = -Direction.X;
-                                        double ux, uy, uz;
-                                        Vectors.Cross(wx, wy, wz, sx, sy, sz, out ux, out uy, out uz);
-                                        Vectors.Vector3D wpos = Vectors.Vector3D.Add(pos, new Vectors.Vector3D(sx * dx + ux * dy + wx * d, sy * dx + uy * dy + wy * d, sz * dx + uz * dy + wz * d));
+                                        Vectors.Vector3D Up = Vectors.Vector3D.Add(W, new Vectors.Vector3D(sx, sy, sz));
+                                        Vectors.Vector3D wpos = Vectors.Vector3D.Add(pos, new Vectors.Vector3D((sx * dx) + (Up.X * dy) + (W.X * d), (sy * dx) + (Up.Y * dy) + (W.Y * d), (sz * dx) + (Up.Z * dy) + (W.Z * d)));
                                         SoundManager.PlaySound(Data.Blocks[i].Sound[k].SoundIndex, null, -1, wpos, SoundManager.Importance.AlwaysPlay, true, 1.0, 1.0);
                                     }
                                 }
@@ -7790,7 +7786,7 @@ namespace OpenBve.Parsers
                                             int o = ObjectManager.CreateStaticObject(LimitOneDigit, wpos, RailTransformation, NullTransformation, Data.AccurateObjectDisposal, 0.0, StartingDistance, EndingDistance, Data.BlockInterval, tpos, b, true);
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 1)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                         }
                                         else if (lim < 100.0)
@@ -7801,11 +7797,11 @@ namespace OpenBve.Parsers
                                             int o = ObjectManager.CreateStaticObject(LimitTwoDigits, wpos, RailTransformation, NullTransformation, Data.AccurateObjectDisposal, 0.0, StartingDistance, EndingDistance, Data.BlockInterval, tpos, b, true);
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 1)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d1 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d1 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 2)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[1].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[1].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                         }
                                         else
@@ -7817,15 +7813,15 @@ namespace OpenBve.Parsers
                                             int o = ObjectManager.CreateStaticObject(LimitThreeDigits, wpos, RailTransformation, NullTransformation, Data.AccurateObjectDisposal, 0.0, StartingDistance, EndingDistance, Data.BlockInterval, tpos, b, true);
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 1)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d2 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[0].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d2 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 2)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[1].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d1 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[1].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d1 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                             if (ObjectManager.Objects[o].Mesh.Materials.Length >= 3)
                                             {
-                                                ObjectManager.Objects[o].Mesh.Materials[2].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+                                                ObjectManager.Objects[o].Mesh.Materials[2].DaytimeTextureIndex = TextureManager.RegisterTexture(Interface.GetCombinedFileName(LimitGraphicsPath, "limit_" + d0 + ".png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
                                             }
                                         }
                                     }

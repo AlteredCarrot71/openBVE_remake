@@ -1,4 +1,5 @@
-﻿using OpenBveApi.Math;
+﻿using OpenBveApi.Colors;
+using OpenBveApi.Math;
 using OpenBve.Worlds;
 using System;
 
@@ -40,7 +41,7 @@ namespace OpenBve.Parsers
             double PanelBitmapWidth = 1024.0, PanelBitmapHeight = 1024.0;
             string PanelDaytimeImage = null;
             string PanelNighttimeImage = null;
-            Colors.ColorRGB PanelTransparentColor = new Colors.ColorRGB(0, 0, 255);
+            Color24 PanelTransparentColor = new Color24(0, 0, 255);
             // parse lines for panel
             for (int i = 0; i < Lines.Length; i++)
             {
@@ -230,7 +231,7 @@ namespace OpenBve.Parsers
                     TextureManager.UseTexture(tday, TextureManager.UseMode.QueryDimensions);
                     PanelBitmapWidth = (double)TextureManager.Textures[tday].ClipWidth;
                     PanelBitmapHeight = (double)TextureManager.Textures[tday].ClipHeight;
-                    CreateElement(Train, 0.0, 0.0, PanelBitmapWidth, PanelBitmapHeight, 0.5, 0.5, 0.0, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday, tnight, new Colors.ColorRGBA(255, 255, 255, 255), false);
+                    CreateElement(Train, 0.0, 0.0, PanelBitmapWidth, PanelBitmapHeight, 0.5, 0.5, 0.0, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday, tnight, new Color32(255, 255, 255, 255), false);
                 }
             }
             // parse lines for rest
@@ -256,7 +257,7 @@ namespace OpenBve.Parsers
                                     string Subject = "true";
                                     double LocationX = 0.0, LocationY = 0.0;
                                     string DaytimeImage = null, NighttimeImage = null;
-                                    Colors.ColorRGB TransparentColor = new Colors.ColorRGB(0, 0, 255);
+                                    Color24 TransparentColor = new Color24(0, 0, 255);
                                     int Layer = 0;
                                     i++; while (i < Lines.Length && !(Lines[i].StartsWith("[", StringComparison.Ordinal) & Lines[i].EndsWith("]", StringComparison.Ordinal)))
                                     {
@@ -355,7 +356,7 @@ namespace OpenBve.Parsers
                                         TextureManager.UseTexture(tday, TextureManager.UseMode.QueryDimensions);
                                         int w = TextureManager.Textures[tday].ClipWidth;
                                         int h = TextureManager.Textures[tday].ClipHeight;
-                                        int j = CreateElement(Train, LocationX, LocationY, w, h, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday, tnight, new Colors.ColorRGBA(255, 255, 255, 255), false);
+                                        int j = CreateElement(Train, LocationX, LocationY, w, h, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday, tnight, new Color32(255, 255, 255, 255), false);
                                         string f = GetStackLanguageFromSubject(Train, Subject, Section + " in " + FileName);
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].StateFunction = FunctionScripts.GetFunctionScriptFromPostfixNotation(f + " 1 == --");
                                     }
@@ -367,8 +368,8 @@ namespace OpenBve.Parsers
                                     string Subject = "true";
                                     double LocationX = 0.0, LocationY = 0.0;
                                     string DaytimeImage = null, NighttimeImage = null;
-                                    Colors.ColorRGBA Color = new Colors.ColorRGBA(255, 255, 255, 255);
-                                    Colors.ColorRGB TransparentColor = new Colors.ColorRGB(0, 0, 255);
+                                    Color32 Color = new Color32(255, 255, 255, 255);
+                                    Color24 TransparentColor = new Color24(0, 0, 255);
                                     double OriginX = -1.0, OriginY = -1.0;
                                     bool OriginDefined = false;
                                     double Layer = 0.0, Radius = 0.0;
@@ -610,7 +611,7 @@ namespace OpenBve.Parsers
                                     string Subject = "true";
                                     double LocationX = 0.0, LocationY = 0.0;
                                     string DaytimeImage = null, NighttimeImage = null;
-                                    Colors.ColorRGB TransparentColor = new Colors.ColorRGB(0, 0, 255);
+                                    Color24 TransparentColor = new Color24(0, 0, 255);
                                     double Layer = 0.0; int Interval = 0;
                                     i++; while (i < Lines.Length && !(Lines[i].StartsWith("[", StringComparison.Ordinal) & Lines[i].EndsWith("]", StringComparison.Ordinal)))
                                     {
@@ -750,7 +751,7 @@ namespace OpenBve.Parsers
                                         int j = -1;
                                         for (int k = 0; k < tday.Length; k++)
                                         {
-                                            int l = CreateElement(Train, LocationX, LocationY, (double)wday, (double)Interval, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday[k], tnight[k], new Colors.ColorRGBA(255, 255, 255, 255), k != 0);
+                                            int l = CreateElement(Train, LocationX, LocationY, (double)wday, (double)Interval, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, tday[k], tnight[k], new Color32(255, 255, 255, 255), k != 0);
                                             if (k == 0) j = l;
                                         }
                                         string f = GetStackLanguageFromSubject(Train, Subject, Section + " in " + FileName);
@@ -763,7 +764,7 @@ namespace OpenBve.Parsers
                                 {
                                     string Subject = "true";
                                     double LocationX = 0.0, LocationY = 0.0;
-                                    Colors.ColorRGBA Color = new Colors.ColorRGBA(0, 0, 0, 255);
+                                    Color32 Color = new Color32(0, 0, 0, 255);
                                     double Radius = 0.0;
                                     int Layer = 0;
                                     double InitialAngle = -2.0943951023932, LastAngle = 2.0943951023932;
@@ -947,7 +948,7 @@ namespace OpenBve.Parsers
                                 {
                                     double LocationX = 0.0, LocationY = 0.0;
                                     double Width = 0.0, Height = 0.0;
-                                    Colors.ColorRGB TransparentColor = new Colors.ColorRGB(0, 0, 255);
+                                    Color24 TransparentColor = new Color24(0, 0, 255);
                                     double Layer = 0.0;
                                     i++; while (i < Lines.Length && !(Lines[i].StartsWith("[", StringComparison.Ordinal) & Lines[i].EndsWith("]", StringComparison.Ordinal)))
                                     {
@@ -1026,7 +1027,7 @@ namespace OpenBve.Parsers
                                     }
                                     if (Width > 0.0 & Height > 0.0)
                                     {
-                                        int j = CreateElement(Train, LocationX, LocationY, Width, Height, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, -1, -1, new Colors.ColorRGBA(255, 255, 255, 255), false);
+                                        int j = CreateElement(Train, LocationX, LocationY, Width, Height, 0.5, 0.5, (double)Layer * StackDistance, PanelResolution, PanelLeft, PanelRight, PanelTop, PanelBottom, PanelBitmapWidth, PanelBitmapHeight, PanelCenterX, PanelCenterY, PanelOriginX, PanelOriginY, DriverX, DriverY, DriverZ, -1, -1, new Color32(255, 255, 255, 255), false);
                                         Train.Cars[Train.DriverCar].CarSections[0].Elements[j].StateFunction = FunctionScripts.GetFunctionScriptFromPostfixNotation("timetable");
                                         Timetable.AddObjectForCustomTimetable(Train.Cars[Train.DriverCar].CarSections[0].Elements[j]);
                                     }
@@ -1199,7 +1200,7 @@ namespace OpenBve.Parsers
         }
 
         // create element
-        private static int CreateElement(TrainManager.Train Train, double Left, double Top, double Width, double Height, double RelativeRotationCenterX, double RelativeRotationCenterY, double Distance, double PanelResolution, double PanelLeft, double PanelRight, double PanelTop, double PanelBottom, double PanelBitmapWidth, double PanelBitmapHeight, double PanelCenterX, double PanelCenterY, double PanelOriginX, double PanelOriginY, double DriverX, double DriverY, double DriverZ, int DaytimeTextureIndex, int NighttimeTextureIndex, Colors.ColorRGBA Color, bool AddStateToLastElement)
+        private static int CreateElement(TrainManager.Train Train, double Left, double Top, double Width, double Height, double RelativeRotationCenterX, double RelativeRotationCenterY, double Distance, double PanelResolution, double PanelLeft, double PanelRight, double PanelTop, double PanelBottom, double PanelBitmapWidth, double PanelBitmapHeight, double PanelCenterX, double PanelCenterY, double PanelOriginX, double PanelOriginY, double DriverX, double DriverY, double DriverZ, int DaytimeTextureIndex, int NighttimeTextureIndex, Color32 Color, bool AddStateToLastElement)
         {
             double WorldWidth, WorldHeight;
             if (Renderer.ScreenWidth >= Renderer.ScreenHeight)
@@ -1242,7 +1243,7 @@ namespace OpenBve.Parsers
             Object.Mesh.Materials = new World.MeshMaterial[1];
             Object.Mesh.Materials[0].Flags = (byte)(DaytimeTextureIndex >= 0 ? World.MeshMaterial.TransparentColorMask : 0);
             Object.Mesh.Materials[0].Color = Color;
-            Object.Mesh.Materials[0].TransparentColor = new Colors.ColorRGB(0, 0, 255);
+            Object.Mesh.Materials[0].TransparentColor = new Color24(0, 0, 255);
             Object.Mesh.Materials[0].DaytimeTextureIndex = DaytimeTextureIndex;
             Object.Mesh.Materials[0].NighttimeTextureIndex = NighttimeTextureIndex;
             Object.Dynamic = true;

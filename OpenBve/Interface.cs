@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Colors;
+using OpenBve.Worlds;
 using ReTao.Sdl;
 using System;
 using System.Globalization;
@@ -2021,9 +2022,9 @@ namespace OpenBve
             internal HudImage BottomLeft;
             internal HudImage BottomMiddle;
             internal HudImage BottomRight;
-            internal Colors.ColorRGBA BackgroundColor;
-            internal Colors.ColorRGBA OverlayColor;
-            internal Colors.ColorRGBA TextColor;
+            internal Color32 BackgroundColor;
+            internal Color32 OverlayColor;
+            internal Color32 TextColor;
             internal HudVectorF TextPosition;
             internal HudVector TextAlignment;
             internal Fonts.FontType TextSize;
@@ -2059,9 +2060,9 @@ namespace OpenBve
                 this.BottomMiddle.OverlayTextureIndex = -1;
                 this.BottomRight.BackgroundTextureIndex = -1;
                 this.BottomRight.OverlayTextureIndex = -1;
-                this.BackgroundColor = new Colors.ColorRGBA(255, 255, 255, 255);
-                this.OverlayColor = new Colors.ColorRGBA(255, 255, 255, 255);
-                this.TextColor = new Colors.ColorRGBA(255, 255, 255, 255);
+                this.BackgroundColor = new Color32(255, 255, 255, 255);
+                this.OverlayColor = new Color32(255, 255, 255, 255);
+                this.TextColor = new Color32(255, 255, 255, 255);
                 this.TextPosition.X = 0.0f;
                 this.TextPosition.Y = 0.0f;
                 this.TextAlignment.X = -1;
@@ -2364,7 +2365,7 @@ namespace OpenBve
                                                     g = g < 0 ? 0 : g > 255 ? 255 : g;
                                                     b = b < 0 ? 0 : b > 255 ? 255 : b;
                                                     a = a < 0 ? 0 : a > 255 ? 255 : a;
-                                                    CurrentHudElements[Length - 1].BackgroundColor = new Colors.ColorRGBA((byte)r, (byte)g, (byte)b, (byte)a);
+                                                    CurrentHudElements[Length - 1].BackgroundColor = new Color32((byte)r, (byte)g, (byte)b, (byte)a);
                                                 }
                                                 break;
                                             }
@@ -2399,7 +2400,7 @@ namespace OpenBve
                                                     g = g < 0 ? 0 : g > 255 ? 255 : g;
                                                     b = b < 0 ? 0 : b > 255 ? 255 : b;
                                                     a = a < 0 ? 0 : a > 255 ? 255 : a;
-                                                    CurrentHudElements[Length - 1].OverlayColor = new Colors.ColorRGBA((byte)r, (byte)g, (byte)b, (byte)a);
+                                                    CurrentHudElements[Length - 1].OverlayColor = new Color32((byte)r, (byte)g, (byte)b, (byte)a);
                                                 }
                                                 break;
                                             }
@@ -2434,7 +2435,7 @@ namespace OpenBve
                                                     g = g < 0 ? 0 : g > 255 ? 255 : g;
                                                     b = b < 0 ? 0 : b > 255 ? 255 : b;
                                                     a = a < 0 ? 0 : a > 255 ? 255 : a;
-                                                    CurrentHudElements[Length - 1].TextColor = new Colors.ColorRGBA((byte)r, (byte)g, (byte)b, (byte)a);
+                                                    CurrentHudElements[Length - 1].TextColor = new Color32((byte)r, (byte)g, (byte)b, (byte)a);
                                                 }
                                                 break;
                                             }
@@ -2775,7 +2776,7 @@ namespace OpenBve
         }
 
         // try parse hex color
-        internal static bool TryParseHexColor(string Expression, out Colors.ColorRGB Color)
+        internal static bool TryParseHexColor(string Expression, out Color24 Color)
         {
             if (Expression.StartsWith("#"))
             {
@@ -2787,28 +2788,28 @@ namespace OpenBve
                     int b = x & 0xFF;
                     if (r >= 0 & r <= 255 & g >= 0 & g <= 255 & b >= 0 & b <= 255)
                     {
-                        Color = new Colors.ColorRGB((byte)r, (byte)g, (byte)b);
+                        Color = new Color24((byte)r, (byte)g, (byte)b);
                         return true;
                     }
                     else
                     {
-                        Color = new Colors.ColorRGB(0, 0, 255);
+                        Color = new Color24(0, 0, 255);
                         return false;
                     }
                 }
                 else
                 {
-                    Color = new Colors.ColorRGB(0, 0, 255);
+                    Color = new Color24(0, 0, 255);
                     return false;
                 }
             }
             else
             {
-                Color = new Colors.ColorRGB(0, 0, 255);
+                Color = new Color24(0, 0, 255);
                 return false;
             }
         }
-        internal static bool TryParseHexColor(string Expression, out Colors.ColorRGBA Color)
+        internal static bool TryParseHexColor(string Expression, out Color32 Color)
         {
             if (Expression.StartsWith("#"))
             {
@@ -2820,24 +2821,24 @@ namespace OpenBve
                     int b = x & 0xFF;
                     if (r >= 0 & r <= 255 & g >= 0 & g <= 255 & b >= 0 & b <= 255)
                     {
-                        Color = new Colors.ColorRGBA((byte)r, (byte)g, (byte)b, 255);
+                        Color = new Color32((byte)r, (byte)g, (byte)b, 255);
                         return true;
                     }
                     else
                     {
-                        Color = new Colors.ColorRGBA(0, 0, 255, 255);
+                        Color = new Color32(0, 0, 255, 255);
                         return false;
                     }
                 }
                 else
                 {
-                    Color = new Colors.ColorRGBA(0, 0, 255, 255);
+                    Color = new Color32(0, 0, 255, 255);
                     return false;
                 }
             }
             else
             {
-                Color = new Colors.ColorRGBA(0, 0, 255, 255);
+                Color = new Color32(0, 0, 255, 255);
                 return false;
             }
         }

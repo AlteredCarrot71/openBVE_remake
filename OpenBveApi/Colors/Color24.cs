@@ -5,14 +5,16 @@ namespace OpenBveApi.Colors
     /// <summary>Represents a 24-bit color with red, green and blue channels at 8 bits each.</summary>
     public struct Color24
     {
-        // --- members ---
+        #region members
         /// <summary>The red component.</summary>
         public byte R;
         /// <summary>The green component.</summary>
         public byte G;
         /// <summary>The blue component.</summary>
         public byte B;
-        // --- constructors ---
+        #endregion
+
+        #region constructors
         /// <summary>Creates a new color.</summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -23,7 +25,9 @@ namespace OpenBveApi.Colors
             this.G = g;
             this.B = b;
         }
-        // --- operators ---
+        #endregion
+
+        #region operators
         /// <summary>Checks whether two colors are equal.</summary>
         /// <param name="a">The first color.</param>
         /// <param name="b">The second color.</param>
@@ -40,7 +44,9 @@ namespace OpenBveApi.Colors
         {
             return a.R != b.R | a.G != b.G | a.B != b.B;
         }
-        // --- read-only fields ---
+        #endregion
+
+        #region read-only fields
         /// <summary>Represents a black color.</summary>
         public static readonly Color24 Black = new Color24(0, 0, 0);
         /// <summary>Represents a red color.</summary>
@@ -57,7 +63,9 @@ namespace OpenBveApi.Colors
         public static readonly Color24 Yellow = new Color24(255, 255, 0);
         /// <summary>Represents a white color.</summary>
         public static readonly Color24 White = new Color24(255, 255, 255);
+        #endregion
 
+        #region common overrides
         /// <summary>Checks whether two colors are equal.</summary>
         public override bool Equals(object obj)
         {
@@ -69,5 +77,6 @@ namespace OpenBveApi.Colors
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

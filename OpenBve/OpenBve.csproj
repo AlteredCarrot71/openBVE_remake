@@ -157,7 +157,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Worlds\Colors.cs" />
     <Compile Include="Worlds\Vectors.cs" />
     <EmbeddedResource Include="formImage.resx">
       <SubType>Designer</SubType>

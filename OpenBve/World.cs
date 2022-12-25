@@ -1,4 +1,5 @@
-﻿using OpenBveApi.Math;
+﻿using OpenBveApi.Colors;
+using OpenBveApi.Math;
 using OpenBve.Worlds;
 using System;
 
@@ -44,9 +45,9 @@ namespace OpenBve
         {
             /// <summary>A bit mask combining constants of the MeshMaterial structure.</summary>
             internal byte Flags;
-            internal Colors.ColorRGBA Color;
-            internal Colors.ColorRGB TransparentColor;
-            internal Colors.ColorRGB EmissiveColor;
+            internal Color32 Color;
+            internal Color24 TransparentColor;
+            internal Color24 EmissiveColor;
             internal int DaytimeTextureIndex;
             internal int NighttimeTextureIndex;
             /// <summary>A value between 0 (daytime) and 255 (nighttime).</summary>
@@ -188,7 +189,7 @@ namespace OpenBve
             /// <summary>Creates a mesh consisting of one face, which is represented by individual vertices, and a color.</summary>
             /// <param name="Vertices">The vertices that make up one face.</param>
             /// <param name="Color">The color to be applied on the face.</param>
-            internal Mesh(Vertex[] Vertices, Colors.ColorRGBA Color)
+            internal Mesh(Vertex[] Vertices, Color32 Color)
             {
                 this.Vertices = Vertices;
                 this.Materials = new MeshMaterial[1];
@@ -207,7 +208,7 @@ namespace OpenBve
             /// <param name="Vertices">The vertices used.</param>
             /// <param name="FaceVertices">A list of faces represented by a list of references to vertices.</param>
             /// <param name="Color">The color to be applied on all of the faces.</param>
-            internal Mesh(Vertex[] Vertices, int[][] FaceVertices, Colors.ColorRGBA Color)
+            internal Mesh(Vertex[] Vertices, int[][] FaceVertices, Color32 Color)
             {
                 this.Vertices = Vertices;
                 this.Materials = new MeshMaterial[1];
@@ -218,6 +219,59 @@ namespace OpenBve
                 for (int i = 0; i < FaceVertices.Length; i++)
                 {
                     this.Faces[i] = new MeshFace(FaceVertices[i]);
+                }
+            }
+        }
+        #endregion
+
+        #region mesh create normals
+        internal static void CreateNormals(ref Mesh Mesh)
+        {
+            for (int i = 0; i < Mesh.Faces.Length; i++)
+            {
+                CreateNormals(ref Mesh, i);
+            }
+        }
+        internal static void CreateNormals(ref Mesh Mesh, int FaceIndex)
+        {
+            if (Mesh.Faces[FaceIndex].Vertices.Length >= 3)
+            {
+                int i0 = (int)Mesh.Faces[FaceIndex].Vertices[0].Index;
+                int i1 = (int)Mesh.Faces[FaceIndex].Vertices[1].Index;
+                int i2 = (int)Mesh.Faces[FaceIndex].Vertices[2].Index;
+                double ax = Mesh.Vertices[i1].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
+                double ay = Mesh.Vertices[i1].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
+                double az = Mesh.Vertices[i1].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
+                double bx = Mesh.Vertices[i2].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
+                double by = Mesh.Vertices[i2].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
+                double bz = Mesh.Vertices[i2].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
+                double nx = ay * bz - az * by;
+                double ny = az * bx - ax * bz;
+                double nz = ax * by - ay * bx;
+                double t = nx * nx + ny * ny + nz * nz;
+                if (t != 0.0)
+                {
+                    t = 1.0 / Math.Sqrt(t);
+                    float mx = (float)(nx * t);
+                    float my = (float)(ny * t);
+                    float mz = (float)(nz * t);
+                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
+                    {
+                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
+                        {
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(mx, my, mz);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
+                    {
+                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
+                        {
+                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(0.0f, 1.0f, 0.0f);
+                        }
+                    }
                 }
             }
         }
@@ -255,6 +309,30 @@ namespace OpenBve
         {
             Mode = (GlowAttenuationMode)(Data >> 12);
             HalfDistance = (double)(Data & 4095);
+        }
+        #endregion
+
+        #region mouse grab
+        internal static bool MouseGrabEnabled = false;
+        internal static bool MouseGrabIgnoreOnce = false;
+        internal static Vector2 MouseGrabTarget = new Vector2(0.0, 0.0);
+        internal static void UpdateMouseGrab(double TimeElapsed)
+        {
+            if (MouseGrabEnabled)
+            {
+                double factor;
+                if (CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead)
+                {
+                    factor = 1.0;
+                }
+                else
+                {
+                    factor = 3.0;
+                }
+                CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
+                CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
+                MouseGrabTarget = new Vector2(0.0, 0.0);
+            }
         }
         #endregion
 
@@ -438,30 +516,6 @@ namespace OpenBve
                     }
                     ObjectManager.UpdateDamping(ref CurrentDriverBody.RollDamping, TimeElapsed, ref CurrentDriverBody.Roll);
                 }
-            }
-        }
-        #endregion
-
-        #region mouse grab
-        internal static bool MouseGrabEnabled = false;
-        internal static bool MouseGrabIgnoreOnce = false;
-        internal static Vector2 MouseGrabTarget = new Vector2(0.0, 0.0);
-        internal static void UpdateMouseGrab(double TimeElapsed)
-        {
-            if (MouseGrabEnabled)
-            {
-                double factor;
-                if (CameraMode == CameraViewMode.Interior | CameraMode == CameraViewMode.InteriorLookAhead)
-                {
-                    factor = 1.0;
-                }
-                else
-                {
-                    factor = 3.0;
-                }
-                CameraAlignmentDirection.Yaw += factor * MouseGrabTarget.X;
-                CameraAlignmentDirection.Pitch -= factor * MouseGrabTarget.Y;
-                MouseGrabTarget = new Vector2(0.0, 0.0);
             }
         }
         #endregion
@@ -1140,60 +1194,6 @@ namespace OpenBve
             ForwardViewingDistance = d * max;
             BackwardViewingDistance = -d * min;
             ObjectManager.UpdateVisibility(CameraTrackFollower.TrackPosition + CameraCurrentAlignment.Position.Z, true);
-        }
-        #endregion
-
-        // ================================
-        #region mesh create normals
-        internal static void CreateNormals(ref Mesh Mesh)
-        {
-            for (int i = 0; i < Mesh.Faces.Length; i++)
-            {
-                CreateNormals(ref Mesh, i);
-            }
-        }
-        internal static void CreateNormals(ref Mesh Mesh, int FaceIndex)
-        {
-            if (Mesh.Faces[FaceIndex].Vertices.Length >= 3)
-            {
-                int i0 = (int)Mesh.Faces[FaceIndex].Vertices[0].Index;
-                int i1 = (int)Mesh.Faces[FaceIndex].Vertices[1].Index;
-                int i2 = (int)Mesh.Faces[FaceIndex].Vertices[2].Index;
-                double ax = Mesh.Vertices[i1].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
-                double ay = Mesh.Vertices[i1].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
-                double az = Mesh.Vertices[i1].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
-                double bx = Mesh.Vertices[i2].Coordinates.X - Mesh.Vertices[i0].Coordinates.X;
-                double by = Mesh.Vertices[i2].Coordinates.Y - Mesh.Vertices[i0].Coordinates.Y;
-                double bz = Mesh.Vertices[i2].Coordinates.Z - Mesh.Vertices[i0].Coordinates.Z;
-                double nx = ay * bz - az * by;
-                double ny = az * bx - ax * bz;
-                double nz = ax * by - ay * bx;
-                double t = nx * nx + ny * ny + nz * nz;
-                if (t != 0.0)
-                {
-                    t = 1.0 / Math.Sqrt(t);
-                    float mx = (float)(nx * t);
-                    float my = (float)(ny * t);
-                    float mz = (float)(nz * t);
-                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
-                    {
-                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
-                        {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(mx, my, mz);
-                        }
-                    }
-                }
-                else
-                {
-                    for (int j = 0; j < Mesh.Faces[FaceIndex].Vertices.Length; j++)
-                    {
-                        if (Mesh.Faces[FaceIndex].Vertices[j].Normal.IsZero())
-                        {
-                            Mesh.Faces[FaceIndex].Vertices[j].Normal = new Vectors.Vector3Df(0.0f, 1.0f, 0.0f);
-                        }
-                    }
-                }
-            }
         }
         #endregion
     }

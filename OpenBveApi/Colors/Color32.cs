@@ -5,7 +5,7 @@ namespace OpenBveApi.Colors
     /// <summary>Represents a 32-bit color with red, green, blue and alpha channels at 8 bits each.</summary>
     public struct Color32
     {
-        // --- members ---
+        #region members
         /// <summary>The red component.</summary>
         public byte R;
         /// <summary>The green component.</summary>
@@ -14,7 +14,9 @@ namespace OpenBveApi.Colors
         public byte B;
         /// <summary>The alpha component.</summary>
         public byte A;
-        // --- constructors ---
+        #endregion
+
+        #region constructors
         /// <summary>Creates a new color.</summary>
         /// <param name="r">The red component.</param>
         /// <param name="g">The green component.</param>
@@ -59,7 +61,9 @@ namespace OpenBveApi.Colors
             this.B = color.B;
             this.A = 255;
         }
-        // --- operators ---
+        #endregion
+
+        #region operators
         /// <summary>Checks whether two colors are equal.</summary>
         /// <param name="a">The first color.</param>
         /// <param name="b">The second color.</param>
@@ -76,7 +80,9 @@ namespace OpenBveApi.Colors
         {
             return a.R != b.R | a.G != b.G | a.B != b.B | a.A != b.A;
         }
-        // --- read-only fields ---
+        #endregion
+
+        #region read-only fields
         /// <summary>Represents a black color.</summary>
         public static readonly Color32 Black = new Color32(0, 0, 0);
         /// <summary>Represents a red color.</summary>
@@ -95,7 +101,9 @@ namespace OpenBveApi.Colors
         public static readonly Color32 White = new Color32(255, 255, 255);
         /// <summary>Represents a transparent black color.</summary>
         public static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
+        #endregion
 
+        #region common overrides
         /// <summary>Checks whether two colors are equal.</summary>
         public override bool Equals(object obj)
         {
@@ -107,5 +115,6 @@ namespace OpenBveApi.Colors
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

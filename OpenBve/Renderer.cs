@@ -1,4 +1,5 @@
-﻿using OpenBve.Worlds;
+﻿using OpenBveApi.Colors;
+using OpenBve.Worlds;
 using ReTao.OpenGl;
 using System;
 
@@ -143,8 +144,8 @@ namespace OpenBve
 
         // options
         internal static bool OptionLighting = true;
-        internal static Colors.ColorRGB OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
-        internal static Colors.ColorRGB OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
+        internal static Color24 OptionAmbientColor = new Color24(160, 160, 160);
+        internal static Color24 OptionDiffuseColor = new Color24(160, 160, 160);
         internal static Vectors.Vector3Df OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
         internal static float OptionLightingResultingAmount = 1.0f;
         internal static bool OptionNormals = false;
@@ -181,8 +182,8 @@ namespace OpenBve
             OverlayOpaque = new ObjectList();
             OverlayAlpha = new ObjectList();
             OptionLighting = true;
-            OptionAmbientColor = new Colors.ColorRGB(160, 160, 160);
-            OptionDiffuseColor = new Colors.ColorRGB(160, 160, 160);
+            OptionAmbientColor = new Color24(160, 160, 160);
+            OptionDiffuseColor = new Color24(160, 160, 160);
             OptionLightPosition = new Vectors.Vector3Df(0.223606797749979f, 0.86602540378444f, -0.447213595499958f);
             OptionLightingResultingAmount = 1.0f;
             OptionClock = false;
@@ -213,7 +214,7 @@ namespace OpenBve
             // hud
             Interface.LoadHUD();
             string Path = Program.FileSystem.GetDataFolder("In-game");
-            TextureLogo = TextureManager.RegisterTexture(Interface.GetCombinedFileName(Path, "logo.png"), new Colors.ColorRGB(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
+            TextureLogo = TextureManager.RegisterTexture(Interface.GetCombinedFileName(Path, "logo.png"), new Color24(0, 0, 0), 0, TextureManager.TextureWrapMode.ClampToEdge, TextureManager.TextureWrapMode.ClampToEdge, false);
             TextureManager.ValidateTexture(ref TextureLogo);
             // opengl
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
@@ -3311,7 +3312,7 @@ namespace OpenBve
         }
 
         // get color
-        private static void CreateBackColor(Colors.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
+        private static void CreateBackColor(Color32 Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
         {
             if (Original.R == 0 & Original.G == 0 & Original.B == 0)
             {
@@ -3354,7 +3355,7 @@ namespace OpenBve
             }
             A = inv255 * (float)Original.A;
         }
-        private static void CreateTextColor(Colors.ColorRGBA Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
+        private static void CreateTextColor(Color32 Original, Game.MessageColor SystemColor, out float R, out float G, out float B, out float A)
         {
             if (Original.R == 0 & Original.G == 0 & Original.B == 0)
             {
