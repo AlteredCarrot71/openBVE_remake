@@ -27,7 +27,6 @@ namespace OpenBve.Worlds
                 this.Y = t * Y;
                 this.Z = t * Vector.Y;
             }
-            /// <summary>Returns the sum of two vectors.</summary>
 
             public bool IsZero()
             {
@@ -37,6 +36,7 @@ namespace OpenBve.Worlds
                 return true;
             }
 
+            /// <summary>Returns the sum of two vectors.</summary>
             public static Vector3D Add(Vector3D A, Vector3D B)
             {
                 return new Vector3D(A.X + B.X, A.Y + B.Y, A.Z + B.Z);

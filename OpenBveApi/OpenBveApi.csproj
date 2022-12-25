@@ -96,6 +96,7 @@
     <Compile Include="Hosts\ProblemType.cs" />
     <Compile Include="Hosts\HostInterface.cs" />
     <Compile Include="Math\Orientation3.cs" />
+    <Compile Include="Math\Transformation.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="Math\Vector3.cs" />
     <Compile Include="Objects\AbstractGlow.cs" />
