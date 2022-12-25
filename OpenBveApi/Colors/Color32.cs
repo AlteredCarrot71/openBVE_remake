@@ -7,13 +7,13 @@ namespace OpenBveApi.Colors
     {
         #region members
         /// <summary>The red component.</summary>
-        public byte R;
+        public byte R { get; set; }
         /// <summary>The green component.</summary>
-        public byte G;
+        public byte G { get; set; }
         /// <summary>The blue component.</summary>
-        public byte B;
+        public byte B { get; set; }
         /// <summary>The alpha component.</summary>
-        public byte A;
+        public byte A { get; set; }
         #endregion
 
         #region constructors

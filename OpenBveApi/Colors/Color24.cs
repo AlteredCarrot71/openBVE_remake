@@ -5,13 +5,13 @@ namespace OpenBveApi.Colors
     /// <summary>Represents a 24-bit color with red, green and blue channels at 8 bits each.</summary>
     public struct Color24
     {
-        #region members
+        #region
         /// <summary>The red component.</summary>
-        public byte R;
+        public byte R { get; set; } 
         /// <summary>The green component.</summary>
-        public byte G;
+        public byte G { get; set; }
         /// <summary>The blue component.</summary>
-        public byte B;
+        public byte B { get; set; }
         #endregion
 
         #region constructors
